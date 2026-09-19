@@ -1,0 +1,46 @@
+name: Feature request
+description: Propose a scoped improvement to Nomyr.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Who has this problem, and what are they unable to do today?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Proposed outcome
+      description: Describe the intended behavior and evidence of success.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Specification and phase alignment
+      description: Link relevant specifications, ADRs, plans, or phase documents and explain the intended boundary.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Share workarounds or other approaches you considered.
+  - type: textarea
+    id: security
+    attributes:
+      label: Security, contract, and operational implications
+      description: Note effects on credentials, runtime planes, public contracts, permissions, deployment, or compatibility.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues and pull requests for this request.
+          required: true
+        - label: I have not described a planned capability as already implemented.
+          required: true

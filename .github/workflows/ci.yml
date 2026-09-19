@@ -4,12 +4,14 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   test:
+    name: Build and test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -25,3 +27,23 @@ jobs:
         working-directory: web
       - run: make test-fast
       - run: make build
+
+  title:
+    name: Conventional PR title
+    runs-on: ubuntu-latest
+    env:
+      PR_TITLE: ${{ github.event.pull_request.title }}
+    steps:
+      - name: Validate title
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          pattern='^(feat|fix|docs|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9._/-]+\))?(!)?: .+'
+          if [[ ! "$PR_TITLE" =~ $pattern ]]; then
+            echo "Pull request titles must follow Conventional Commits."
+            echo "Example: fix(cli): reject non-loopback demo addresses"
+            exit 1
+          fi
+      - name: Confirm non-PR run
+        if: github.event_name != 'pull_request'
+        run: echo "Pull request title validation runs for pull request events."
