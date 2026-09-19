@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package nhi.action.v1;
+
+option go_package = "nomyr/pkg/actionsdk/gen/actionmodel;actionmodel";
+
+service ActionService {
+  rpc Describe(DescribeRequest) returns (DescribeResponse);
+}
+
+message DescribeRequest {}
+
+message DescribeResponse {
+  string action_id = 1;
+  string version = 2;
+}

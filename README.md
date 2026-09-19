@@ -29,3 +29,24 @@ Nomyr’s design puts self-hosting, clear ownership, separation of duties, and v
 - [GitHub organization](https://github.com/nomyr-security)
 - [Questions and collaboration](https://github.com/nomyr-security/nomyr/issues)
 - Contact: [oss@nomyr.io](mailto:oss@nomyr.io)
+
+## Local development
+
+Requirements: Go (see `go.mod`) and Node.js 22 with npm.
+
+```sh
+make web-install
+make test-fast
+make build
+./bin/nomyr demo
+```
+
+Open http://127.0.0.1:8080. The local demo uses synthetic data and does not
+connect to providers or execute security actions. Keep it bound to loopback;
+it does not provide authentication or TLS.
+
+## License
+
+Nomyr core is licensed under [AGPL-3.0-only](LICENSE). SDKs and public
+API/schema contracts are licensed under Apache-2.0. See [LICENSING.md](LICENSING.md)
+for directory boundaries and third-party license notices.

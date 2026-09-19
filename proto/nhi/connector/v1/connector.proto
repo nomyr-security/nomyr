@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package nhi.connector.v1;
+
+option go_package = "nomyr/pkg/connectorsdk/gen/connectormodel;connectormodel";
+
+service ConnectorService {
+  rpc Describe(DescribeRequest) returns (DescribeResponse);
+}
+
+message DescribeRequest {}
+
+message DescribeResponse {
+  string connector_id = 1;
+  string version = 2;
+}
