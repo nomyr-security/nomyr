@@ -31,9 +31,8 @@ platform** for service accounts, cloud roles, API keys, certificates, OAuth
 applications, workload identities, automation, and AI agents.
 
 It is being built as an open-source alternative to commercial NHI security
-platforms such as [Astrix Security](https://astrix.security/) and
-[Oasis Security](https://www.oasis.security/): a system teams can inspect,
-self-host, extend, and operate inside their own security boundary.
+platforms such as Astrix Security and Oasis Security: a system teams can
+inspect, self-host, extend, and operate inside their own security boundary.
 
 Nomyr gives security, identity, and platform teams one place to discover machine
 access, establish accountable ownership, understand effective reach, govern
