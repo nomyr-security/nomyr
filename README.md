@@ -1,44 +1,139 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="brand/svg/nomyr-lockup-on-dark.svg">
-  <img src="brand/svg/nomyr-lockup.svg" alt="Nomyr" width="240">
-</picture>
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="brand/svg/nomyr-lockup-on-dark.svg">
+    <img src="brand/svg/nomyr-lockup.svg" alt="Nomyr" width="360">
+  </picture>
 
-# Nomyr — Open-Source Non-Human Identity Security
+  <h1>Open-source non-human identity security</h1>
 
-**Non-human identity security. From discovery to retirement.**
+  <p><strong>Every machine identity you have, and the human who answers for it.</strong></p>
 
-Nomyr is building an open-source, self-hostable **non-human identity (NHI) security platform** for the identities that power software: service accounts, cloud roles, API keys, certificates, OAuth applications, workload identities, and AI agents.
+  <p>
+    <a href="https://nomyr.io"><img alt="Website" src="https://img.shields.io/badge/website-nomyr.io-07C983?style=flat-square"></a>
+    <a href="https://github.com/nomyr-security/nomyr/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/nomyr-security/nomyr/actions/workflows/ci.yml/badge.svg"></a>
+    <a href="LICENSE"><img alt="Core license: AGPL-3.0-only" src="https://img.shields.io/badge/core-AGPL--3.0--only-0C3B43?style=flat-square"></a>
+    <a href="LICENSING.md"><img alt="SDK and contracts license: Apache-2.0" src="https://img.shields.io/badge/SDKs%20%26%20contracts-Apache--2.0-3FB5C4?style=flat-square"></a>
+    <a href="https://nomyr.zulipchat.com/"><img alt="Community chat" src="https://img.shields.io/badge/community-Zulip-6492FE?style=flat-square"></a>
+  </p>
 
-Our goal is to give security and platform teams one place to understand machine access, establish ownership, reduce risk, and govern the complete identity lifecycle across cloud, SaaS, Kubernetes, and on-premises environments.
+  <p>
+    <a href="https://nomyr.io">Website</a> ·
+    <a href="docs/README.md">Documentation</a> ·
+    <a href="docs/plan/00-master-plan.md">Roadmap</a> ·
+    <a href="CONTRIBUTING.md">Contributing</a> ·
+    <a href="https://github.com/nomyr-security/nomyr/issues">Issues</a> ·
+    <a href="SECURITY.md">Security</a>
+  </p>
+</div>
 
-[Explore the project](https://github.com/nomyr-security/nomyr) · [Contribute](CONTRIBUTING.md) · [Ask a question](https://github.com/nomyr-security/nomyr/issues)
+Nomyr is an **open-source, self-hostable non-human identity (NHI) security
+platform** for service accounts, cloud roles, API keys, certificates, OAuth
+applications, workload identities, automation, and AI agents.
 
-## Why non-human identity security?
+It is being built as an open-source alternative to commercial NHI security
+platforms such as [Astrix Security](https://astrix.security/) and
+[Oasis Security](https://www.oasis.security/): a system teams can inspect,
+self-host, extend, and operate inside their own security boundary.
 
-Applications, services, and AI agents need access to infrastructure and data. Their identities and credentials can outlive the workloads that created them, accumulate permissions, or lose an accountable owner. Securing them requires understanding both the identity and how its access is used.
+Nomyr gives security, identity, and platform teams one place to discover machine
+access, establish accountable ownership, understand effective reach, govern
+risk, and carry identities from provisioning through verified retirement.
 
-Nomyr brings that problem into one product scope: machine identity discovery, service account governance, credential lifecycle management, workload access, and AI agent security. It is designed for security engineers, IAM teams, and platform teams responsible for machine access.
+> Nomyr is independent of Astrix Security and Oasis Security and is not
+> affiliated with or endorsed by either company. Their names and trademarks
+> belong to their respective owners.
 
-## Non-human identity lifecycle: discovery to retirement
+## Why Nomyr
 
-Nomyr’s product scope connects six essential parts of non-human identity security:
+Human IAM answers who an employee is. Secrets managers protect selected values.
+Cloud IAM describes configured permissions. Those systems rarely answer the
+whole machine-identity question:
 
-- **Discover and map.** Build an inventory of identities, credentials, permissions, and activity. Connect each identity to its consumers, resources, and accountable owners.
-- **Understand and prioritize risk.** Identify excessive access, exposed credentials, stale accounts, ownership gaps, and suspicious behavior with the context needed to act.
-- **Govern access.** Bring ownership, access reviews, policy decisions, approvals, and third-party application oversight into a shared workflow.
-- **Manage credentials and identities.** Coordinate provisioning, vault and federation bindings, credential rotation, certificate renewal, and verified retirement.
-- **Secure workloads and AI agents.** Govern short-lived access, delegated permissions, and agent sessions with scoped policies and attributable activity.
-- **Respond and verify.** Connect investigation to approved containment and remediation, verify outcomes, and retain evidence for audit and reporting.
+- Which service accounts, keys, roles, certificates, workloads, integrations,
+  MCP servers, and AI agents exist across the environment?
+- Who is accountable for each identity, based on authoritative evidence?
+- What can the identity actually reach, including multi-hop and delegated paths?
+- Is access configured, observed, effective, inferred, or still unknown?
+- Which credential can be rotated or retired without breaking its consumers?
+- Did an approved remediation produce the intended result?
 
-## Built around control and evidence
+Nomyr is designed to connect those answers in an evidence-backed identity graph
+instead of flattening inventory, posture, ownership, and activity into one
+confidence score.
 
-The platform is designed to work with existing identity providers, cloud IAM, vaults, certificate authorities, and runtime gateways. Teams should be able to start with visibility, introduce approved actions, and adopt policy-driven automation within explicitly authorized scopes.
+## Product scope
 
-Nomyr’s design puts self-hosting, clear ownership, separation of duties, and verifiable outcomes at the center. Security decisions should explain what is known, what remains uncertain, and whether an action actually achieved its intended result.
+### Discover every machine identity
 
-## Local development
+Build a unified inventory across cloud IAM, SaaS, CI/CD, Kubernetes, identity
+providers, vaults, certificate authorities, code repositories, and on-premises
+systems. Map identities to credentials, consumers, resources, permissions,
+activity, and owners.
 
-Requirements: Go (see `go.mod`) and Node.js 22 with npm.
+### Resolve ownership with evidence
+
+Rank ownership candidates from authoritative sources such as service catalogs,
+CODEOWNERS, deployment metadata, creation events, and approved attestations.
+When evidence is insufficient, keep the identity explicitly unresolved.
+
+### Measure posture and blast radius separately
+
+Identify stale credentials, excessive privileges, exposed secrets, ownership
+gaps, risky third-party access, and anomalous behavior. Keep severity, reach,
+evidence quality, and coverage distinct so missing telemetry cannot look like
+improved security.
+
+### Govern the complete lifecycle
+
+Coordinate provisioning, ownership, vaulting, federation, rotation, renewal,
+access review, exception handling, and retirement. Track where a lifecycle is
+blocked, who must decide, and what evidence is required to proceed.
+
+### Secure workloads and AI agents
+
+Apply scoped policies to workload identities, delegated access, agent sessions,
+tools, and MCP servers. Support visibility first, human-approved remediation,
+and explicitly authorized automation without silently widening execution scope.
+
+### Verify remediation and preserve evidence
+
+Connect findings to approved actions, verify the result against the original
+intent, and retain replayable evidence for audit, incident response, and
+compliance workflows.
+
+## What makes Nomyr different
+
+| Principle | Nomyr approach |
+| --- | --- |
+| **Open source and self-hostable** | Inspect the code, run it in your environment, and keep identity metadata and evidence under your control. |
+| **Evidence before inference** | Show why Nomyr believes an owner, access path, or finding is valid. Preserve unresolved and unknown states. |
+| **Contracts first** | Define public behavior in OpenAPI, protobuf, and JSON Schema before wiring implementations. |
+| **Separated authority** | Keep user experience, control, secret custody, and action execution in distinct runtime planes. |
+| **Human accountability** | Route consequential actions through explicit scope, policy, and approval instead of hiding responsibility inside automation. |
+| **Verifiable outcomes** | Treat a completed action as a claim to verify, not automatic proof that risk was removed. |
+
+## Architecture
+
+Nomyr is designed as four physically separate runtime planes:
+
+1. **Experience plane** — CLI, API, and web interfaces for people and tools.
+2. **Control plane** — inventory, graph, policy, evidence, workflow, and audit
+   coordination without reusable secret values.
+3. **Custody plane** — isolated handling of reusable credentials and secret
+   material.
+4. **Action plane** — explicitly authorized execution close to the target
+   environment.
+
+The friendly `nomyr` binary does not link custody or action implementations.
+Public contracts live under [`api/`](api/), [`proto/`](proto/), and
+[`schemas/`](schemas/). Architecture and product design are documented under
+[`docs/`](docs/README.md); checked-in source and tests remain authoritative for
+currently executable behavior.
+
+## Run Nomyr locally
+
+Requirements: the Go version declared in [`go.mod`](go.mod) and Node.js 22 with
+npm.
 
 ```sh
 git clone https://github.com/nomyr-security/nomyr.git
@@ -49,24 +144,62 @@ make build
 ./bin/nomyr demo
 ```
 
-Open http://127.0.0.1:8080. The local demo uses synthetic data and does not
-connect to providers or execute security actions. Keep it bound to loopback;
-it does not provide authentication or TLS.
+Open <http://127.0.0.1:8080>.
 
-## Contribute to Nomyr
+The local demo uses synthetic data and does not connect to providers or execute
+security actions. Keep it bound to loopback; it does not provide authentication
+or TLS. The repository is under active development, and capabilities are added
+with their contracts, tests, and security boundaries rather than claimed ahead
+of implementation.
 
-Help shape open-source machine identity security through code, documentation, security research, and real-world use cases. Read the [contribution guidelines](CONTRIBUTING.md) for setup, checks, and pull request expectations. Use [GitHub issues](https://github.com/nomyr-security/nomyr/issues) for bugs, feature proposals, and questions.
+Useful commands:
 
-Report security vulnerabilities privately to [oss@nomyr.io](mailto:oss@nomyr.io). Please keep credentials and sensitive environment details out of public issues.
+```sh
+./bin/nomyr version
+./bin/nomyr doctor
+./bin/nomyr context
+./bin/nomyr demo --listen 127.0.0.1:8080
+```
 
-Follow the [Nomyr GitHub organization](https://github.com/nomyr-security) for project activity.
+## Repository map
 
-## Open-source licensing
+| Path | Purpose |
+| --- | --- |
+| [`cmd/`](cmd/) | Nomyr CLI and runtime entrypoints |
+| [`internal/`](internal/) | Internal Go implementation and runtime boundaries |
+| [`web/`](web/) | Static Next.js web interface embedded into the Go build |
+| [`api/`](api/) | Apache-2.0 public HTTP contracts |
+| [`proto/`](proto/) | Apache-2.0 connector and action protocol definitions |
+| [`schemas/`](schemas/) | Apache-2.0 JSON Schema contracts |
+| [`sdk/`](sdk/) | Apache-2.0 SDK boundary |
+| [`docs/`](docs/README.md) | Specifications, architecture decisions, plans, and phase documentation |
+| [`brand/`](brand/README.md) | Nomyr logos, icons, social images, and usage guidance |
 
-Nomyr core is licensed under [AGPL-3.0-only](LICENSE). SDKs and public
-API/schema contracts are licensed under Apache-2.0. See [LICENSING.md](LICENSING.md)
-for directory boundaries and third-party license notices.
+## Community and contribution
 
-## Brand assets
+Nomyr is built in the open. Contributions to code, contracts, integrations,
+tests, documentation, accessibility, and security research are welcome.
 
-The complete [Nomyr brand kit](brand/README.md) includes SVG masters, PNG exports, web icons, and social artwork. Runtime assets live in `web/public`; its manifest uses relative URLs to support deployment paths. Use the supplied lockups without retyping the wordmark.
+- Read the [contribution guidelines](CONTRIBUTING.md).
+- Open a structured [bug report or feature request](https://github.com/nomyr-security/nomyr/issues/new/choose).
+- Join the [Nomyr community on Zulip](https://nomyr.zulipchat.com/).
+- Follow the [Nomyr GitHub organization](https://github.com/nomyr-security).
+- Visit [nomyr.io](https://nomyr.io) for the public project site.
+
+Report vulnerabilities privately according to the
+[security policy](SECURITY.md). Never post credentials, customer data, or private
+infrastructure details in a public issue.
+
+## Licensing
+
+Nomyr core is licensed under
+[GNU AGPL-3.0-only](LICENSE). SDKs and designated public API, protobuf, and JSON
+Schema contracts are licensed under Apache-2.0. See
+[`LICENSING.md`](LICENSING.md) for exact directory boundaries and third-party
+notice requirements.
+
+## Brand
+
+The [Nomyr brand kit](brand/README.md) includes SVG masters, PNG exports,
+favicons, social artwork, color tokens, and usage rules. Use the supplied
+lockups instead of recreating the wordmark.
