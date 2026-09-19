@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="brand/svg/nomyr-lockup-on-dark.svg">
+  <img src="brand/svg/nomyr-lockup.svg" alt="Nomyr" width="240">
+</picture>
+
 # Nomyr — Open-Source Non-Human Identity Security
 
 **Non-human identity security. From discovery to retirement.**
@@ -61,3 +66,7 @@ Follow the [Nomyr GitHub organization](https://github.com/nomyr-security) for pr
 Nomyr core is licensed under [AGPL-3.0-only](LICENSE). SDKs and public
 API/schema contracts are licensed under Apache-2.0. See [LICENSING.md](LICENSING.md)
 for directory boundaries and third-party license notices.
+
+## Brand assets
+
+The complete [Nomyr brand kit](brand/README.md) includes SVG masters, PNG exports, web icons, and social artwork. Runtime assets live in `web/public`; its manifest uses relative URLs to support deployment paths. Use the supplied lockups without retyping the wordmark.

@@ -1,0 +1,28 @@
+{
+  "name": "Nomyr",
+  "short_name": "Nomyr",
+  "description": "Open-source non-human identity security.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#081A1E",
+  "theme_color": "#0C3B43",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "scope": "./"
+}

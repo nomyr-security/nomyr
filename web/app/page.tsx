@@ -4,7 +4,7 @@ export default function HomePage() {
   return (
     <main>
       <div className="eyebrow">Non-human identity security</div>
-      <h1>Nomyr</h1>
+      <h1><img className="brand-lockup" src="/brand/nomyr-lockup-on-dark.svg" alt="Nomyr" width="341" height="96" /></h1>
       <p className="lede">From discovery and governance to identity lifecycle and AI agent access.</p>
       <section aria-labelledby="status-heading">
         <h2 id="status-heading">Local development demo</h2>
