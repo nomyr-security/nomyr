@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -16,11 +17,22 @@ import (
 	"nomyr/internal/buildinfo"
 	"nomyr/internal/demo"
 	platformserver "nomyr/internal/platform/server"
+	"nomyr/internal/usagemetrics"
 	"nomyr/internal/webui"
 )
 
 func main() {
-	if executeError := newRootCommand().Execute(); executeError != nil {
+	root := newRootCommand()
+	startedAt := time.Now()
+	executed, executeError := root.ExecuteC()
+	commandPath := root.CommandPath()
+	if executed != nil {
+		commandPath = executed.CommandPath()
+	}
+	metricContext, cancelMetrics := context.WithTimeout(context.Background(), 800*time.Millisecond)
+	usagemetrics.RecordCommand(metricContext, commandPath, time.Since(startedAt), executeError == nil)
+	cancelMetrics()
+	if executeError != nil {
 		var contractError *apperror.Error
 		if errors.As(executeError, &contractError) {
 			fmt.Fprintln(os.Stderr, contractError)
@@ -38,8 +50,41 @@ func newRootCommand() *cobra.Command {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 	}
-	root.AddCommand(newVersionCommand(), newDoctorCommand(), newLoginCommand(), newContextCommand(), newDemoCommand())
+	root.AddCommand(newVersionCommand(), newDoctorCommand(), newLoginCommand(), newContextCommand(), newDemoCommand(), newTelemetryCommand())
 	return root
+}
+
+func newTelemetryCommand() *cobra.Command {
+	command := &cobra.Command{Use: "telemetry", Short: "Manage anonymous usage metrics"}
+	command.AddCommand(
+		&cobra.Command{Use: "enable", Short: "Enable anonymous usage metrics", RunE: func(command *cobra.Command, _ []string) error {
+			if _, err := usagemetrics.Enable(); err != nil {
+				return err
+			}
+			fmt.Fprintln(command.OutOrStdout(), "Anonymous usage metrics enabled. See https://github.com/nomyr-security/nomyr/blob/main/TELEMETRY.md")
+			return nil
+		}},
+		&cobra.Command{Use: "disable", Short: "Disable anonymous usage metrics", RunE: func(command *cobra.Command, _ []string) error {
+			if err := usagemetrics.Disable(); err != nil {
+				return err
+			}
+			fmt.Fprintln(command.OutOrStdout(), "Anonymous usage metrics disabled and the local installation ID removed.")
+			return nil
+		}},
+		&cobra.Command{Use: "status", Short: "Show anonymous usage metrics status", RunE: func(command *cobra.Command, _ []string) error {
+			config, err := usagemetrics.Status()
+			if err != nil {
+				return err
+			}
+			if config.Enabled {
+				fmt.Fprintln(command.OutOrStdout(), "Anonymous usage metrics: enabled")
+			} else {
+				fmt.Fprintln(command.OutOrStdout(), "Anonymous usage metrics: disabled")
+			}
+			return nil
+		}},
+	)
+	return command
 }
 
 func newVersionCommand() *cobra.Command {

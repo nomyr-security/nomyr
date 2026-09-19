@@ -1,0 +1,48 @@
+name: Archive repository traffic
+
+on:
+  schedule:
+    - cron: "37 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: archive-repository-traffic
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    name: Archive GitHub traffic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Nomyr
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Check out the private metrics archive
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          repository: nomyr-security/nomyr-metrics
+          token: ${{ secrets.TRAFFIC_ARCHIVE_TOKEN }}
+          path: metrics
+
+      - name: Collect GitHub traffic
+        env:
+          ARCHIVE_ROOT: ${{ github.workspace }}/metrics
+          GH_TOKEN: ${{ secrets.TRAFFIC_READ_TOKEN }}
+          SOURCE_REPOSITORY: ${{ github.repository }}
+        run: .github/scripts/archive-github-traffic.sh
+
+      - name: Commit new metrics
+        working-directory: metrics
+        run: |
+          git add data
+          if git diff --cached --quiet; then
+            echo "No traffic changes to archive."
+            exit 0
+          fi
+          git config user.name "Nomyr Metrics Bot"
+          git config user.email "oss@nomyr.io"
+          git commit -m "data: update GitHub traffic $(date -u +%F)"
+          git push

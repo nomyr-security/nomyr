@@ -1,7 +1,6 @@
 .DS_Store
 .env
 .env.*
-!.env.example
 bin/
 .cache/
 coverage/
@@ -28,3 +27,6 @@ AGENTS.md
 CLAUDE.md
 .github/workflows/openwiki-update.yml
 web/tsconfig.tsbuildinfo
+
+# Private telemetry collector implementation and deployment configuration
+deploy/telemetry-worker/
