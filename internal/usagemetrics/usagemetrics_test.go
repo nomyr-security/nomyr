@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func TestOptInRecordsOnlyAnonymousContractFields(t *testing.T) {
+func TestDefaultMetricsRecordOnlyAnonymousContractFields(t *testing.T) {
 	t.Setenv("NOMYR_CONFIG_HOME", t.TempDir())
 	received := make(chan []Event, 1)
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
@@ -24,14 +24,6 @@ func TestOptInRecordsOnlyAnonymousContractFields(t *testing.T) {
 	}))
 	defer server.Close()
 	t.Setenv("NOMYR_TELEMETRY_ENDPOINT", server.URL)
-
-	config, err := Enable()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(config.InstallationID) != 32 {
-		t.Fatalf("installation ID length = %d, want 32", len(config.InstallationID))
-	}
 
 	RecordCommand(context.Background(), "nomyr doctor --json /private/path", 25*time.Millisecond, true)
 	events := <-received
@@ -49,13 +41,22 @@ func TestOptInRecordsOnlyAnonymousContractFields(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if !stored.Enabled {
+		t.Fatal("usage metrics should be enabled by default")
+	}
+	if len(stored.InstallationID) != 32 {
+		t.Fatalf("installation ID length = %d, want 32", len(stored.InstallationID))
+	}
 	if !stored.InstallationReported {
 		t.Fatal("installation event was not marked as reported")
 	}
 }
 
-func TestDisabledMetricsDoNotSend(t *testing.T) {
+func TestOptedOutMetricsDoNotSend(t *testing.T) {
 	t.Setenv("NOMYR_CONFIG_HOME", t.TempDir())
+	if err := Disable(); err != nil {
+		t.Fatal(err)
+	}
 	requests := 0
 	server := httptest.NewServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {
 		requests++

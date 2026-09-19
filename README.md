@@ -159,11 +159,11 @@ Useful commands:
 ./bin/nomyr demo --listen 127.0.0.1:8080
 ```
 
-Anonymous usage metrics are disabled by default. Run
-`./bin/nomyr telemetry enable` to opt in, `./bin/nomyr telemetry status` to
-inspect the setting, or `./bin/nomyr telemetry disable` to opt out and remove
-the local anonymous installation ID. See [TELEMETRY.md](TELEMETRY.md) for the
-exact event fields and privacy limits.
+Anonymous usage metrics are enabled by default. Run
+`./bin/nomyr telemetry disable` to opt out and remove the local anonymous
+installation ID, `./bin/nomyr telemetry status` to inspect the setting, or
+`./bin/nomyr telemetry enable` to opt back in. See [TELEMETRY.md](TELEMETRY.md)
+for the exact event fields and privacy limits.
 
 ## Repository map
 

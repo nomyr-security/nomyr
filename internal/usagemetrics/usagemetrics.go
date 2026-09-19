@@ -61,15 +61,21 @@ func Disable() error {
 func Status() (Config, error) {
 	config, err := load()
 	if errors.Is(err, os.ErrNotExist) {
-		return Config{}, nil
+		return Config{Enabled: true}, nil
 	}
 	return config, err
 }
 
 func RecordCommand(ctx context.Context, command string, elapsed time.Duration, succeeded bool) {
 	config, err := Status()
-	if err != nil || !config.Enabled || config.InstallationID == "" {
+	if err != nil || !config.Enabled {
 		return
+	}
+	if config.InstallationID == "" {
+		config.InstallationID, err = newInstallationID()
+		if err != nil || save(config) != nil {
+			return
+		}
 	}
 
 	version := buildinfo.Current().Version

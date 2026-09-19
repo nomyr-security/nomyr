@@ -1,10 +1,13 @@
 # Anonymous usage metrics
 
-Nomyr usage metrics are disabled by default. You can explicitly enable them with:
+Nomyr usage metrics are enabled by default. You can opt out at any time with:
 
 ```console
-nomyr telemetry enable
+nomyr telemetry disable
 ```
+
+Running the disable command before any other Nomyr command prevents an event from being sent and
+removes any existing local anonymous installation ID. Use `nomyr telemetry enable` to opt back in.
 
 When enabled, Nomyr sends an `installation_created` event once and a
 `command_completed` event after each CLI invocation. The event contains a random anonymous
@@ -25,8 +28,7 @@ higher-priority skip rule exempts the same path on every host except `telemetry.
 landing site and other `nomyr.io` subdomains are outside this rate limit. A source address is used
 only as a transient rate-limit key and is not written to the metrics database.
 Because the endpoint is public and anonymous, these controls reduce automated abuse but cannot verify
-that every event represents a human user. Treat the resulting counts as directional opt-in usage
-metrics.
+that every event represents a human user. Treat the resulting counts as directional usage metrics.
 
 The collector is served only at `https://telemetry.nomyr.io`. Its account-specific `workers.dev`
 production and preview URLs are disabled.
