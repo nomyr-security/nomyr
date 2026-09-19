@@ -1,12 +1,20 @@
-# Nomyr
+# Nomyr — Open-Source Non-Human Identity Security
 
 **Non-human identity security. From discovery to retirement.**
 
-Nomyr is building an open-source, self-hostable security platform for the identities that power software: service accounts, cloud roles, API keys, certificates, OAuth applications, workload identities, and AI agents.
+Nomyr is building an open-source, self-hostable **non-human identity (NHI) security platform** for the identities that power software: service accounts, cloud roles, API keys, certificates, OAuth applications, workload identities, and AI agents.
 
 Our goal is to give security and platform teams one place to understand machine access, establish ownership, reduce risk, and govern the complete identity lifecycle across cloud, SaaS, Kubernetes, and on-premises environments.
 
-## The full identity lifecycle
+[Explore the project](https://github.com/nomyr-security/nomyr) · [Contribute](CONTRIBUTING.md) · [Ask a question](https://github.com/nomyr-security/nomyr/issues)
+
+## Why non-human identity security?
+
+Applications, services, and AI agents need access to infrastructure and data. Their identities and credentials can outlive the workloads that created them, accumulate permissions, or lose an accountable owner. Securing them requires understanding both the identity and how its access is used.
+
+Nomyr brings that problem into one product scope: machine identity discovery, service account governance, credential lifecycle management, workload access, and AI agent security. It is designed for security engineers, IAM teams, and platform teams responsible for machine access.
+
+## Non-human identity lifecycle: discovery to retirement
 
 Nomyr’s product scope connects six essential parts of non-human identity security:
 
@@ -23,18 +31,13 @@ The platform is designed to work with existing identity providers, cloud IAM, va
 
 Nomyr’s design puts self-hosting, clear ownership, separation of duties, and verifiable outcomes at the center. Security decisions should explain what is known, what remains uncertain, and whether an action actually achieved its intended result.
 
-## Connect
-
-- [Website](https://nomyr.io)
-- [GitHub organization](https://github.com/nomyr-security)
-- [Questions and collaboration](https://github.com/nomyr-security/nomyr/issues)
-- Contact: [oss@nomyr.io](mailto:oss@nomyr.io)
-
 ## Local development
 
 Requirements: Go (see `go.mod`) and Node.js 22 with npm.
 
 ```sh
+git clone https://github.com/nomyr-security/nomyr.git
+cd nomyr
 make web-install
 make test-fast
 make build
@@ -45,7 +48,15 @@ Open http://127.0.0.1:8080. The local demo uses synthetic data and does not
 connect to providers or execute security actions. Keep it bound to loopback;
 it does not provide authentication or TLS.
 
-## License
+## Contribute to Nomyr
+
+Help shape open-source machine identity security through code, documentation, security research, and real-world use cases. Read the [contribution guidelines](CONTRIBUTING.md) for setup, checks, and pull request expectations. Use [GitHub issues](https://github.com/nomyr-security/nomyr/issues) for bugs, feature proposals, and questions.
+
+Report security vulnerabilities privately to [oss@nomyr.io](mailto:oss@nomyr.io). Please keep credentials and sensitive environment details out of public issues.
+
+Follow the [Nomyr GitHub organization](https://github.com/nomyr-security) for project activity.
+
+## Open-source licensing
 
 Nomyr core is licensed under [AGPL-3.0-only](LICENSE). SDKs and public
 API/schema contracts are licensed under Apache-2.0. See [LICENSING.md](LICENSING.md)
