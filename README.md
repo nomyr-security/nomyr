@@ -18,8 +18,8 @@
 
   <p>
     <a href="https://nomyr.io">Website</a> ·
-    <a href="docs/README.md">Documentation</a> ·
-    <a href="docs/plan/00-master-plan.md">Roadmap</a> ·
+    <a href="#product-scope">Product</a> ·
+    <a href="#architecture">Architecture</a> ·
     <a href="CONTRIBUTING.md">Contributing</a> ·
     <a href="https://github.com/nomyr-security/nomyr/issues">Issues</a> ·
     <a href="SECURITY.md">Security</a>
@@ -126,8 +126,7 @@ Nomyr is designed as four physically separate runtime planes:
 
 The friendly `nomyr` binary does not link custody or action implementations.
 Public contracts live under [`api/`](api/), [`proto/`](proto/), and
-[`schemas/`](schemas/). Architecture and product design are documented under
-[`docs/`](docs/README.md); checked-in source and tests remain authoritative for
+[`schemas/`](schemas/). Checked-in source and tests remain authoritative for
 currently executable behavior.
 
 ## Run Nomyr locally
@@ -172,7 +171,6 @@ Useful commands:
 | [`proto/`](proto/) | Apache-2.0 connector and action protocol definitions |
 | [`schemas/`](schemas/) | Apache-2.0 JSON Schema contracts |
 | [`sdk/`](sdk/) | Apache-2.0 SDK boundary |
-| [`docs/`](docs/README.md) | Specifications, architecture decisions, plans, and phase documentation |
 | [`brand/`](brand/README.md) | Nomyr logos, icons, social images, and usage guidance |
 
 ## Community and contribution
