@@ -53,6 +53,11 @@ fi
 grep -q 'contents: read' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'persist-credentials: false' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'anchore/grype/releases/download/v0.121.0/grype_0.121.0_linux_amd64.tar.gz' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q '64e07133d3486115de647a66581461dccf5c732748a0a3119077395565f15519' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'registry:$image' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'mcr.microsoft.com/devcontainers/base:ubuntu-24.04@sha256:' "$repo_root/.devcontainer/devcontainer.json"
 grep -q 'if: always()' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'runner.temp' "$repo_root/.github/workflows/dev-compose.yml"
 if "$repo_root/tools/dev/stack" invalid >/dev/null 2>&1; then
