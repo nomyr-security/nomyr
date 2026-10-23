@@ -1,0 +1,50 @@
+name: contracts
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    name: Lint, compatibility, and generation drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22.22.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12.8"
+      - name: Install pinned contract tools
+        run: |
+          set -a
+          source tools/contracts/versions.env
+          set +a
+          go install "github.com/bufbuild/buf/cmd/buf@$BUF_VERSION"
+          go install "github.com/oasdiff/oasdiff@${OASDIFF_VERSION}"
+          go install "github.com/daveshanley/vacuum@$VACUUM_VERSION"
+          python -m pip install --requirement tools/contracts/requirements.txt
+      - name: Buf lint and breaking check
+        run: |
+          buf lint proto
+          buf breaking proto --against '.git#branch=main,subdir=proto'
+      - name: OpenAPI lint and breaking check
+        run: |
+          vacuum lint api/openapi/v1.yaml
+          git show origin/main:api/openapi/v1.yaml > "$RUNNER_TEMP/openapi-main.yaml"
+          oasdiff breaking "$RUNNER_TEMP/openapi-main.yaml" api/openapi/v1.yaml
+      - name: JSON Schema validation and fixtures
+        run: python tools/contracts/validate-json-schemas.py
+      - name: Generated output drift
+        run: tools/contracts/generate.sh --check

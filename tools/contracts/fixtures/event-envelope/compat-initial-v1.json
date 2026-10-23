@@ -1,0 +1,8 @@
+{
+  "id": "evt-synthetic-legacy-001",
+  "type": "identity.discovered",
+  "tenant_id": "tenant-synthetic",
+  "occurred_at": "2026-01-01T00:00:00Z",
+  "recorded_at": "2026-01-01T00:00:01Z",
+  "data": {}
+}

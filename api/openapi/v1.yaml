@@ -3,6 +3,9 @@ info:
   title: Nomyr API
   version: 0.0.0
   description: API contract for Nomyr. Operations are available only where implemented by the server.
+  contact:
+    name: Nomyr API maintainers
+    url: https://github.com/nomyr-security/nomyr
   license:
     name: Apache License 2.0
     identifier: Apache-2.0
@@ -45,6 +48,10 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Capability"
+                  limit:
+                    type: integer
+                    minimum: 1
+                    maximum: 200
                   next_cursor:
                     type: [string, "null"]
         "401":
@@ -91,6 +98,7 @@ components:
         status: {type: string, const: ok}
     Capability:
       type: object
+      additionalProperties: false
       required: [id, status]
       properties:
         id: {type: string}
@@ -100,6 +108,7 @@ components:
         reason: {type: string}
     Problem:
       type: object
+      additionalProperties: false
       required: [type, title, status, code]
       properties:
         type: {type: string, format: uri-reference}
@@ -109,3 +118,4 @@ components:
         instance: {type: string, format: uri-reference}
         code: {type: string, pattern: "^NHI-[A-Z]+-[0-9]{4}$"}
         correlation_id: {type: string}
+        retry_after_seconds: {type: integer, minimum: 0}

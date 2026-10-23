@@ -7,10 +7,41 @@
   "properties": {
     "id": {"type": "string", "minLength": 1},
     "type": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
     "tenant_id": {"type": "string", "minLength": 1},
+    "workspace_id": {"type": "string", "minLength": 1},
+    "subject": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": {"type": "string", "minLength": 1},
+        "id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "actor": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": {"type": "string", "minLength": 1},
+        "id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "correlation_id": {"type": "string", "minLength": 1},
+    "causation_id": {"type": "string", "minLength": 1},
+    "policy_version": {"type": "string", "minLength": 1},
+    "source_version": {"type": "string", "minLength": 1},
+    "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
     "occurred_at": {"type": "string", "format": "date-time"},
     "recorded_at": {"type": "string", "format": "date-time"},
     "data": {"type": "object"}
   },
+  "allOf": [
+    {
+      "if": {"required": ["subject"]},
+      "then": {"required": ["version", "workspace_id", "actor", "correlation_id", "causation_id", "policy_version", "source_version", "evidence_refs"]}
+    }
+  ],
   "additionalProperties": false
 }
