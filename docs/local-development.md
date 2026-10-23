@@ -29,6 +29,8 @@ NATS JetStream, OpenBao dev mode, and Keycloak dev mode. PostgreSQL, ClickHouse,
 and NATS use explicit version tags and registry digests. Temporal, OpenBao, and
 Keycloak are built from the pinned upstream sources in `deploy/compose/images/`
 with repository-root build context. Local state is held in named Docker volumes.
+Keycloak readiness checks require HTTP 200 from the management `/health/ready`
+endpoint, not merely an open management port.
 Temporal's standalone development server stores its local development database
 in the named `temporal-data` volume using the explicit `--db-filename` path; it
 does not store Nomyr product state. The current demo does not connect to

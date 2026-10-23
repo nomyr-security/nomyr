@@ -50,6 +50,9 @@ grep -A4 '^  temporal:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dock
 grep -q -- '--db-filename' "$repo_root/deploy/compose/compose.yaml"
 grep -q 'temporal-data:/home/temporal/data' "$repo_root/deploy/compose/compose.yaml"
 grep -q '^  temporal-data:' "$repo_root/deploy/compose/compose.yaml"
+grep -A20 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'GET /health/ready'
+grep -A20 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'grep -q.*HTTP/1.1 200'
+grep -q 'GET /health/ready' "$repo_root/tools/dev/stack"
 grep -A4 '^  openbao:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/openbao/Dockerfile'
 grep -A4 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/keycloak/Dockerfile'
 if grep -E '^    ports:' "$repo_root/deploy/compose/compose.yaml" | grep -v '127\.0\.0\.1:'; then

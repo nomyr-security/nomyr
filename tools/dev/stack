@@ -55,6 +55,7 @@ case "${1:-}" in
 		done
 		compose exec -T postgres pg_isready -U nomyr -d nomyr >/dev/null
 		compose exec -T temporal temporal operator cluster health --address 127.0.0.1:7233 >/dev/null
+		compose exec -T keycloak bash -ec 'exec 3<>/dev/tcp/127.0.0.1/9000; printf "GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n" >&3; grep -q "^HTTP/1.1 200" <&3'
 		printf '%s\n' 'Development service smoke checks passed.'
 		;;
 	*)

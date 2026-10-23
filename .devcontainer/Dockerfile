@@ -12,7 +12,8 @@ RUN grep -Eq '^URIs: https?://((azure\.)?archive|security|ports)\.ubuntu\.com/' 
          arm64) mise_asset="mise-v${MISE_VERSION}-linux-arm64.tar.gz"; mise_sha256=cac510e51793ad45e65fe92305bdbe4309c9c60b5907badbc7eba111738ab08f ;; \
          *) echo "unsupported mise target architecture: $TARGETARCH" >&2; exit 1 ;; \
        esac \
-    && curl --fail --location --silent --show-error \
+    && curl --proto '=https' --proto-redir '=https' --tlsv1.2 \
+         --fail --location --silent --show-error \
          "https://github.com/jdx/mise/releases/download/v${MISE_VERSION}/${mise_asset}" \
          --output /tmp/mise.tar.gz \
     && printf '%s  %s\n' "$mise_sha256" /tmp/mise.tar.gz | sha256sum --check --status \
