@@ -1,11 +1,12 @@
-const states = ["Loading", "Data", "Empty", "No access", "Error", "Partial", "Unknown"];
+import {getMessages} from "../lib/i18n/messages";
 
 export default function HomePage() {
+  const copy = getMessages();
   return (
     <main>
-      <div className="eyebrow">Non-human identity security</div>
+      <div className="eyebrow">{copy.demoLabel}</div>
       <h1><img className="brand-lockup" src="/brand/nomyr-lockup-on-dark.svg" alt="Nomyr" width="341" height="96" /></h1>
-      <p className="lede">From discovery and governance to identity lifecycle and AI agent access.</p>
+      <p className="lede">{copy.syntheticOnly}</p>
       <section aria-labelledby="status-heading">
         <h2 id="status-heading">Local development demo</h2>
         <div className="status-grid">
@@ -13,10 +14,7 @@ export default function HomePage() {
           <article><strong>Demo scope</strong><span>No live provider connections or security actions</span></article>
         </div>
       </section>
-      <section aria-labelledby="states-heading">
-        <h2 id="states-heading">Required data states</h2>
-        <ul>{states.map((state) => <li key={state}>{state}</li>)}</ul>
-      </section>
+      <p><a className="button" href="/ui-states/">Explore component states</a></p>
       <p className="watermark">Demo data only</p>
     </main>
   );
