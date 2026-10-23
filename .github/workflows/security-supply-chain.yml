@@ -1,0 +1,323 @@
+name: Security and supply chain
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-supply-chain-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scanner-tools:
+    name: Build and audit pinned scanner tools
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.10"
+          cache: false
+      - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+      - name: Build scanners from verified source
+        run: sh tools/security/build-scanners.sh "$RUNNER_TEMP/scanner-tools"
+      - name: Audit scanner binaries and preserve bounded Grype finding disposition
+        run: sh tools/security/audit-scanner-binaries.sh "$RUNNER_TEMP/scanner-tools"
+      - name: Audit Cosign release binary without executing it
+        run: sh tools/security/audit-cosign-binary.sh "$RUNNER_TEMP/scanner-tools"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: nomyr-security-scanner-tools-${{ github.sha }}
+          path: ${{ runner.temp }}/scanner-tools
+          if-no-files-found: warn
+          retention-days: 14
+
+  secrets:
+    name: Secret scanning
+    needs: scanner-tools
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: nomyr-security-scanner-tools-${{ github.sha }}
+          path: ${{ runner.temp }}/scanner-tools
+      - name: Restore scanner executable permissions
+        run: |
+          set -eu
+          cd "$RUNNER_TEMP/scanner-tools"
+          sha256sum --check scanner-build.SHA256SUMS
+          chmod +x bin/*
+      - name: Scan current files and full Git history
+        run: $RUNNER_TEMP/scanner-tools/bin/gitleaks git --redact --exit-code 1 --log-opts='--all' .
+
+  dependency-review:
+    name: Dependency and license review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: moderate
+          license-check: true
+          deny-licenses: GPL-3.0-only, GPL-3.0-or-later, AGPL-3.0-only, AGPL-3.0-or-later, SSPL-1.0
+
+  dependency-audit:
+    name: Audit npm and Python dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.23.4
+      - name: Install web dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts --audit=false
+        working-directory: web
+      - name: Audit all locked npm dependencies
+        run: npm audit --audit-level=moderate
+        working-directory: web
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12.15"
+      - name: Install hash-pinned pip-audit tooling
+        run: >-
+          python -m pip install --disable-pip-version-check --require-hashes
+          --only-binary=:all: --requirement tools/security/pip-audit-requirements.txt
+      - name: Audit all locked contract Python dependencies
+        run: pip-audit --strict --requirement tools/contracts/requirements.txt
+
+  images:
+    name: Build ${{ matrix.plane }} image and SBOM
+    needs: scanner-tools
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        plane: [experience, control-api, control-worker, collection, action]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.10"
+          cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: nomyr-security-scanner-tools-${{ github.sha }}
+          path: ${{ runner.temp }}/scanner-tools
+      - name: Restore scanner executable permissions
+        run: |
+          set -eu
+          cd "$RUNNER_TEMP/scanner-tools"
+          sha256sum --check scanner-build.SHA256SUMS
+          chmod +x bin/*
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        if: matrix.plane == 'experience'
+        with:
+          node-version: 22.23.4
+      - name: Export static web UI for the embedded CLI
+        if: matrix.plane == 'experience'
+        run: |
+          npm ci --ignore-scripts
+          npm run build
+          mkdir -p ../internal/webui/assets/generated
+          cp -R out/. ../internal/webui/assets/generated/
+        working-directory: web
+      - name: Build isolated plane binary
+        run: |
+          set -eu
+          mkdir -p .cache/security
+          case '${{ matrix.plane }}' in
+            experience) package=./cmd/nomyr ;;
+            control-api) package=./cmd/api ;;
+            control-worker) package=./cmd/worker ;;
+            collection) package=./cmd/collector ;;
+            action) package=./cmd/runner ;;
+          esac
+          CGO_ENABLED=0 go build -trimpath -buildvcs=false -o ".cache/security/nomyr-${{ matrix.plane }}" "$package"
+      - name: Build image and image SBOM
+        run: |
+          set -eu
+          image="nomyr-${{ matrix.plane }}:${GITHUB_SHA}"
+          dockerfile='containers/${{ matrix.plane }}/Dockerfile'
+          case '${{ matrix.plane }}' in
+            control-api) dockerfile='containers/control/Dockerfile' ;;
+          esac
+          docker buildx build --platform linux/amd64 --load \
+            --build-arg BINARY=".cache/security/nomyr-${{ matrix.plane }}" \
+            --tag "$image" --file "$dockerfile" .
+          if [ '${{ matrix.plane }}' = experience ]; then
+            mkdir -p "$RUNNER_TEMP/nomyr-config"
+            printf '%s\n' '{"enabled":false}' > "$RUNNER_TEMP/nomyr-config/telemetry.json"
+            chmod 755 "$RUNNER_TEMP/nomyr-config"
+            chmod 644 "$RUNNER_TEMP/nomyr-config/telemetry.json"
+            docker run --rm --entrypoint /nomyr \
+              --mount "type=bind,src=$RUNNER_TEMP/nomyr-config,dst=/tmp/nomyr-config,readonly" \
+              --env NOMYR_CONFIG_HOME=/tmp/nomyr-config "$image" version
+          else
+            docker run --rm "$image" > "$RUNNER_TEMP/process-output.json"
+            grep -q 'not-implemented' "$RUNNER_TEMP/process-output.json"
+          fi
+          docker save "$image" --output "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar"
+          "$RUNNER_TEMP/scanner-tools/bin/syft" "docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar" \
+            -o "cyclonedx-json=$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json"
+          export DOCKER_HOST="unix://$RUNNER_TEMP/no-daemon.sock"
+          set +e
+          "$RUNNER_TEMP/scanner-tools/bin/grype" "docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar" \
+            --fail-on medium --output table --file "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image-vulnerabilities.txt"
+          image_scan_status=$?
+          cat "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image-vulnerabilities.txt"
+          "$RUNNER_TEMP/scanner-tools/bin/grype" "sbom:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json" \
+            --fail-on medium --output sarif --file "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.sbom-vulnerabilities.sarif"
+          sbom_scan_status=$?
+          set -e
+          if [ "$image_scan_status" -ne 0 ] || [ "$sbom_scan_status" -ne 0 ]; then
+            echo "Grype found at least one medium-or-higher image/SBOM vulnerability, or scanning failed (image=$image_scan_status, SBOM=$sbom_scan_status)." >&2
+            exit 1
+          fi
+          cd "$RUNNER_TEMP"
+          sha256sum "nomyr-${{ matrix.plane }}.image.tar" "nomyr-${{ matrix.plane }}.cdx.json" > "nomyr-${{ matrix.plane }}.SHA256SUMS"
+      - name: Upload plane image and SBOM
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: nomyr-${{ matrix.plane }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/nomyr-${{ matrix.plane }}.image.tar
+            ${{ runner.temp }}/nomyr-${{ matrix.plane }}.cdx.json
+            ${{ runner.temp }}/nomyr-${{ matrix.plane }}.SHA256SUMS
+            ${{ runner.temp }}/nomyr-${{ matrix.plane }}.image-vulnerabilities.txt
+            ${{ runner.temp }}/nomyr-${{ matrix.plane }}.sbom-vulnerabilities.sarif
+          if-no-files-found: error
+          retention-days: 14
+        if: always()
+
+  container-definitions:
+    name: Container boundary checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.10"
+          cache: false
+      - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+      - name: Verify patched Go-built development tools
+        run: mise exec -- tools/bootstrap/check
+      - name: Test container plane definitions
+        run: sh tools/security/test-container-definitions.sh
+      - name: Test security workflow trust boundaries
+        run: sh tools/security/test-workflow-boundaries.sh
+
+  attest:
+    name: Sign and attest trusted main artifacts
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: images
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+      attestations: write
+    strategy:
+      fail-fast: false
+      matrix:
+        plane: [experience, control-api, control-worker, collection, action]
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: nomyr-${{ matrix.plane }}-${{ github.sha }}
+          path: artifacts
+      - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.4
+      - name: Verify installed Cosign release bytes before signing
+        run: printf '%s  %s\n' '424e2c97d0b45fd7a6b608a87f090f35633f4c23ece5f092d48bba11aaf4bbfa' "$(command -v cosign)" | sha256sum --check -
+      - name: Keyless sign image archive and SBOM
+        env:
+          COSIGN_YES: "true"
+        run: |
+          set -eu
+          cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.image.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.image.tar"
+          cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.cdx.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.cdx.json"
+          cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.SHA256SUMS.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.SHA256SUMS"
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: artifacts/nomyr-${{ matrix.plane }}.image.tar
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: artifacts/nomyr-${{ matrix.plane }}.cdx.json
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: artifacts/nomyr-${{ matrix.plane }}.SHA256SUMS
+      - name: Verify provenance identity and rejection behavior
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          gh attestation verify "artifacts/nomyr-${{ matrix.plane }}.image.tar" \
+            --repo nomyr-security/nomyr \
+            --signer-workflow nomyr-security/nomyr/.github/workflows/security-supply-chain.yml \
+            --source-ref refs/heads/main
+          if gh attestation verify "artifacts/nomyr-${{ matrix.plane }}.image.tar" \
+            --repo nomyr-security/nomyr \
+            --signer-workflow nomyr-security/nomyr/.github/workflows/scorecard.yml; then
+            echo 'verification unexpectedly accepted an unrelated signer workflow' >&2
+            exit 1
+          fi
+      - name: Verify keyless image signature
+        run: |
+          cosign verify-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.image.sigstore.json" \
+            --certificate-identity https://github.com/nomyr-security/nomyr/.github/workflows/security-supply-chain.yml@refs/heads/main \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com "artifacts/nomyr-${{ matrix.plane }}.image.tar"
+      - name: Upload signatures and attestations
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: nomyr-${{ matrix.plane }}-signed-${{ github.sha }}
+          path: artifacts/*.sigstore.json
+          if-no-files-found: error
+          retention-days: 90
+
+  codeql:
+    name: CodeQL analysis
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: github/codeql-action/init@8498dc4c2b27cdd99baf0f87955b29ebbf30c78d # v4.39.1
+        with:
+          languages: go, javascript-typescript
+      - uses: github/codeql-action/autobuild@8498dc4c2b27cdd99baf0f87955b29ebbf30c78d # v4.39.1
+      - uses: github/codeql-action/analyze@8498dc4c2b27cdd99baf0f87955b29ebbf30c78d # v4.39.1

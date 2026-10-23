@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Nomyr technologies
+# SPDX-License-Identifier: AGPL-3.0-only
+# Refresh the Linux x86_64 / CPython 3.12 lock with:
+# uv pip compile tools/security/pip-audit.in --python-platform x86_64-unknown-linux-gnu --python-version 3.12 --only-binary=:all: --generate-hashes --no-annotate --no-header --output-file tools/security/pip-audit-requirements.txt
+pip-audit==2.10.1
