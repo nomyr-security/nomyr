@@ -21,6 +21,8 @@
     <a href="#product-scope">Product</a> ·
     <a href="#architecture">Architecture</a> ·
     <a href="CONTRIBUTING.md">Contributing</a> ·
+    <a href="GOVERNANCE.md">Governance</a> ·
+    <a href="CODE_OF_CONDUCT.md">Code of Conduct</a> ·
     <a href="https://github.com/nomyr-security/nomyr/issues">Issues</a> ·
     <a href="SECURITY.md">Security</a>
   </p>
@@ -184,6 +186,8 @@ Nomyr is built in the open. Contributions to code, contracts, integrations,
 tests, documentation, accessibility, and security research are welcome.
 
 - Read the [contribution guidelines](CONTRIBUTING.md).
+- Review [governance](GOVERNANCE.md), [maintainers](MAINTAINERS.md), and
+  [support](SUPPORT.md) information.
 - Open a structured [bug report or feature request](https://github.com/nomyr-security/nomyr/issues/new/choose).
 - Join the [Nomyr community on Zulip](https://nomyr.zulipchat.com/).
 - Follow the [Nomyr GitHub organization](https://github.com/nomyr-security).

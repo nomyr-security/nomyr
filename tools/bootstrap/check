@@ -1,0 +1,38 @@
+#!/bin/sh
+set -u
+
+failed=0
+
+check_command() {
+	name=$1
+	shift
+	if ! command -v "$name" >/dev/null 2>&1; then
+		printf 'missing: %s\n' "$name"
+		failed=1
+		return
+	fi
+	if ! version_output=$("$@" 2>&1); then
+		printf 'unavailable: %s (%s)\n' "$name" "$version_output"
+		failed=1
+		return
+	fi
+	version=$(printf '%s\n' "$version_output" | sed -n '1p')
+	printf 'available: %s (%s)\n' "$name" "$version"
+}
+
+if ! command -v mise >/dev/null 2>&1; then
+	printf '%s\n' 'missing: mise (install mise, then run make bootstrap)'
+	failed=1
+else
+	check_command go go version
+	check_command node node --version
+	check_command npm npm --version
+	check_command buf buf --version
+	check_command golangci-lint golangci-lint --version
+	check_command govulncheck govulncheck -version
+fi
+
+if [ "$failed" -ne 0 ]; then
+	printf '%s\n' 'Run make bootstrap to install the versions pinned in mise.toml.' >&2
+	exit 1
+fi

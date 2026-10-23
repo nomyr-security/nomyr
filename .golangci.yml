@@ -1,0 +1,13 @@
+version: "2"
+
+linters:
+  exclusions:
+    rules:
+      - path: ^cmd/nomyr/main\.go$
+        linters:
+          - errcheck
+        text: 'Error return value of `fmt\.(Fprintln|Fprintf)` is not checked'
+      - path: ^internal/usagemetrics/usagemetrics\.go$
+        linters:
+          - errcheck
+        text: 'Error return value of `response\.Body\.Close` is not checked'
