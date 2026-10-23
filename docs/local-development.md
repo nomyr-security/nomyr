@@ -52,7 +52,8 @@ image pulls and local volumes determine actual use.
 Credentials are created locally and stored only in ignored `.dev.env`. Do not
 commit or publish that file. Compose output from startup does not print its
 contents. The OpenBao dev-mode token is only for this disposable local stack;
-dev-mode services and their credentials are not suitable for production.
+OpenBao container logging is disabled so its startup output cannot persist that
+token. Dev-mode services and their credentials are not suitable for production.
 
 ## Check and reset
 

@@ -73,6 +73,8 @@ services:
     image: openbao/openbao:2.4.3
     command: ["server", "-dev", "-dev-listen-address=0.0.0.0:8200", "-dev-root-token-id=${NOMYR_DEV_OPENBAO_TOKEN}"]
     ports: ["127.0.0.1:8200:8200"]
+    logging:
+      driver: none
     healthcheck:
       test: ["CMD", "bao", "status", "-address=http://127.0.0.1:8200"]
       interval: 5s
