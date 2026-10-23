@@ -1,0 +1,1528 @@
+{
+  "records": [
+    {
+      "id": "FR-DISC-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-PROV-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DISC-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-PROV-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DISC-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-PROV-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DISC-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-PROV-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DISC-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-PROV-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DISC-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-PROV-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-INV-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-VAULT-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-INV-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-VAULT-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-INV-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-VAULT-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-INV-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-VAULT-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-INV-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-VAULT-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-INV-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ROT-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-GRAPH-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ROT-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-GRAPH-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ROT-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-GRAPH-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ROT-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-GRAPH-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ROT-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-GRAPH-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ROT-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-GRAPH-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ROT-07",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-OWN-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-LIFE-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-OWN-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-LIFE-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-OWN-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-LIFE-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-OWN-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-LIFE-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-OWN-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-LIFE-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-OWN-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-LIFE-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ENT-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-THIRD-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ENT-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-THIRD-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ENT-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-THIRD-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ENT-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-THIRD-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ENT-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-THIRD-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ENT-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-AGENT-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ENT-07",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-AGENT-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-TELE-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-AGENT-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-TELE-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-AGENT-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-TELE-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-AGENT-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-TELE-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-AGENT-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-TELE-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ACCESS-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-TELE-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ACCESS-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXP-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ACCESS-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXP-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ACCESS-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXP-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ACCESS-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXP-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ACCESS-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXP-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DEV-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXP-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DEV-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-POST-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DEV-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-POST-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DEV-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-POST-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DEV-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-POST-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REPORT-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-POST-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REPORT-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-POST-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REPORT-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DET-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REPORT-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DET-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REPORT-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DET-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REPORT-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DET-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ADMIN-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DET-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ADMIN-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DET-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ADMIN-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-DET-07",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ADMIN-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-CASE-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ADMIN-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-CASE-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-ADMIN-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-CASE-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXT-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-CASE-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXT-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-CASE-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXT-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-CASE-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXT-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REVIEW-01",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXT-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REVIEW-02",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-EXT-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REVIEW-03",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REVIEW-04",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REVIEW-05",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "FR-REVIEW-06",
+      "kind": "functional_requirement",
+      "status": "specified",
+      "source": "requirements/README.md#L28"
+    },
+    {
+      "id": "6.1",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.2",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.3",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.4",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.5",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.6",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.7",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.8",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.9",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.10",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.11",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.12",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.13",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "6.14",
+      "kind": "workflow",
+      "status": "specified",
+      "source": "requirements/README.md#L31"
+    },
+    {
+      "id": "D01",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D02",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D03",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D04",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D05",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D06",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D07",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D08",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D09",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D10",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D11",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D12",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D13",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D14",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D15",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D16",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D17",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D18",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D19",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D20",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D21",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D22",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D23",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D24",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D25",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D26",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D27",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D28",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D29",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D30",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D31",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D32",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D33",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D34",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D35",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D36",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D37",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D38",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D39",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D40",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D41",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D42",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D43",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D44",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D45",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D46",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D47",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "D48",
+      "kind": "detection",
+      "status": "specified",
+      "source": "requirements/README.md#L29"
+    },
+    {
+      "id": "AT01",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT02",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT03",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT04",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT05",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT06",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT07",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT08",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT09",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT10",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT11",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT12",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT13",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT14",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT15",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT16",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT17",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT18",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT19",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT20",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT21",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT22",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT23",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT24",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT25",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT26",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT27",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT28",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT29",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT30",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT31",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AT32",
+      "kind": "acceptance_test",
+      "status": "specified",
+      "source": "requirements/README.md#L30"
+    },
+    {
+      "id": "AWS IAM / Organizations",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "AWS workload services",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Microsoft Entra ID",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Azure resources",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "GCP IAM / workloads",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Kubernetes",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Active Directory",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Windows / Linux / macOS hosts",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "GitHub / GHE",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "GitLab",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Jenkins, Azure DevOps",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Okta",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Google Workspace, M365/SharePoint/Teams, Slack, Salesforce",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "ServiceNow (identity side + W)",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Snowflake, Databricks",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "PostgreSQL, MySQL, SQL Server, Oracle, MongoDB, Redis",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "HashiCorp Vault, OpenBao",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "AWS SM/SSM/KMS, Azure Key Vault, GCP Secret Manager",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "CyberArk / Conjur; Infisical / 1Password / Bitwarden SM",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Certificate authorities / cert-manager / ACME",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "SSH / SSH CAs",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "AI platform administration",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "MCP / agent frameworks",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "SPIRE / workload federation / access gateways",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "HR / directory / CMDB / service catalogs (B)",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "SIEM / SOAR / ITSM / collaboration (U/W)",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Cartography / Prowler / scanners / BloodHound / PMapper (imports)",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    },
+    {
+      "id": "Custom application SDK / generic HTTP",
+      "kind": "connector",
+      "status": "specified",
+      "source": "requirements/README.md#L32"
+    }
+  ]
+}

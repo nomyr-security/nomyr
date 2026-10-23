@@ -13,4 +13,5 @@ message DescribeRequest {}
 message DescribeResponse {
   string action_id = 1;
   string version = 2;
+  repeated string supported_operations = 3;
 }

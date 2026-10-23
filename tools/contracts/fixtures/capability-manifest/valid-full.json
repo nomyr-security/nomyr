@@ -1,0 +1,36 @@
+{
+  "apiVersion": "nhi.connector/v1",
+  "kind": "CapabilityManifest",
+  "metadata": {
+    "name": "synthetic-connector",
+    "version": "1.0.0",
+    "source_versions": ["synthetic-api-v1"],
+    "authentication_methods": ["workload_identity"],
+    "permissions": {"read": ["principals.read"], "write": [], "credential_material": []},
+    "sensitive_fields": ["credential.value"],
+    "data_localization": ["synthetic-region"],
+    "full_sync": "supported",
+    "delta_sync": "unknown",
+    "event_retention_seconds": 0,
+    "evaluators": ["synthetic-evaluator"]
+  },
+  "objects": {
+    "principal": {"inventory": "supported", "native_id": "immutable_id", "secret_value_read": "unsupported", "sensitive_fields": []}
+  },
+  "activity": {"acquisition": ["polling"], "completeness": "unknown by source window"},
+  "actions": {
+    "credential.rotate": {
+      "support": "unknown",
+      "plan_required": true,
+      "idempotency": "reconcile_by_operation_id",
+      "strategy": "unknown",
+      "compensation": "not_assessed",
+      "verifies": ["provider_state"],
+      "effect": "unknown"
+    }
+  },
+  "propagation_bounds": {"minimum_seconds": 0, "maximum_seconds": 0, "status": "unknown"},
+  "negative_cases": ["synthetic unsupported case"],
+  "security": {"collector_write_access": "prohibited", "secret_export_to_control_plane": "prohibited"},
+  "capabilities": [{"object": "principal", "operation": "inventory", "status": "supported"}]
+}

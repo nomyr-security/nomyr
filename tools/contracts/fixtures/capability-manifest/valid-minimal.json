@@ -1,0 +1,6 @@
+{
+  "apiVersion": "nhi.connector/v1",
+  "kind": "CapabilityManifest",
+  "metadata": {"name": "synthetic-connector", "version": "1.0.0"},
+  "capabilities": [{"object": "principal", "operation": "inventory", "status": "unknown", "reason": "Not assessed"}]
+}
