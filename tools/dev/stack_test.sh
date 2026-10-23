@@ -96,6 +96,8 @@ grep -q 'oci-archive high' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'sha256sum.*basename.*archive' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'rm -f.*archive' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'if: always()' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'runner.temp' "$repo_root/.github/workflows/dev-compose.yml"
 if "$repo_root/tools/dev/stack" invalid >/dev/null 2>&1; then
