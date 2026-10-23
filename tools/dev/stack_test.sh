@@ -51,7 +51,8 @@ if grep -E '^    ports:' "$repo_root/deploy/compose/compose.yaml" | grep -v '127
 	exit 1
 fi
 grep -q 'contents: read' "$repo_root/.github/workflows/dev-compose.yml"
-grep -q 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'persist-credentials: false' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'if: always()' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'runner.temp' "$repo_root/.github/workflows/dev-compose.yml"
 if "$repo_root/tools/dev/stack" invalid >/dev/null 2>&1; then
