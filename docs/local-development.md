@@ -27,9 +27,9 @@ while preserving local data and generated credentials.
 The services are PostgreSQL, ClickHouse, Temporal's local development server,
 NATS JetStream, OpenBao dev mode, and Keycloak dev mode. Images use explicit
 version tags and registry digests. Local state is held in named Docker volumes.
-Temporal's standalone development server uses its own SQLite store; it does not
-store Nomyr product state. The current demo does not connect to PostgreSQL or
-any other Compose service.
+Temporal's standalone development server uses its default ephemeral SQLite
+store; it does not store Nomyr product state. The current demo does not connect
+to PostgreSQL or any other Compose service.
 
 Object storage is intentionally absent: the MinIO Community Edition container
 repository is archived and its available image is not safe to retain in this

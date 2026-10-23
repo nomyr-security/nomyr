@@ -33,9 +33,8 @@ services:
 
   temporal:
     image: temporalio/temporal:1.9.1@sha256:ad4c82c97bd12b417d1ea942610dbcd511afb250c4d5ed26c694009533df447e
-    command: ["server", "start-dev", "--ip", "0.0.0.0", "--db-filename", "/var/lib/temporal/temporal.db"]
+    command: ["server", "start-dev", "--ip", "0.0.0.0"]
     ports: ["127.0.0.1:7233:7233", "127.0.0.1:8233:8233"]
-    volumes: [temporal-data:/var/lib/temporal]
     healthcheck:
       test: ["CMD", "temporal", "operator", "cluster", "health", "--address", "127.0.0.1:7233"]
       interval: 5s
@@ -85,6 +84,5 @@ services:
 volumes:
   postgres-data:
   clickhouse-data:
-  temporal-data:
   nats-data:
   keycloak-data:
