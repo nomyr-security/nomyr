@@ -40,17 +40,23 @@ func main() {
 	if err != nil {
 		fail(err)
 	}
-	sort.Float64s(latencies)
+	firstRun, medianRun := latencyStats(latencies)
 	report := struct {
 		Command         string  `json:"command"`
 		Runs            int     `json:"runs"`
 		ColdStartFirst  float64 `json:"cold_start_first_ms"`
 		MedianStart     float64 `json:"median_start_ms"`
 		BinarySizeBytes int64   `json:"binary_size_bytes"`
-	}{"nomyr version", len(latencies), latencies[0], latencies[len(latencies)/2], file.Size()}
+	}{"nomyr version", len(latencies), firstRun, medianRun, file.Size()}
 	if err := json.NewEncoder(os.Stdout).Encode(report); err != nil {
 		fail(err)
 	}
+}
+
+func latencyStats(latencies []float64) (float64, float64) {
+	firstRun := latencies[0]
+	sort.Float64s(latencies)
+	return firstRun, latencies[len(latencies)/2]
 }
 
 func fail(err error) {
