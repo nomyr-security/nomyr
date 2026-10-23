@@ -49,8 +49,8 @@ case "${1:-}" in
 		for endpoint in \
 			http://127.0.0.1:8123/ping \
 			http://127.0.0.1:8222/healthz \
-			http://127.0.0.1:8200/v1/sys/health \
-			http://127.0.0.1:8081/health/ready; do
+			http://127.0.0.1:8200/v1/sys/health; do
+			printf 'Checking %s\n' "$endpoint"
 			curl --fail --silent --show-error "$endpoint" >/dev/null
 		done
 		compose exec -T postgres pg_isready -U nomyr -d nomyr >/dev/null
