@@ -49,7 +49,9 @@ RUN cp go.mod /tmp/openbao.mod \
     && printf 'openbao:x:10001:10001:OpenBao:/home/openbao:/sbin/nologin\n' > /runtime/passwd \
     && printf 'openbao:x:10001:\n' > /runtime/group \
     && chown -R 10001:10001 /runtime/openbao /runtime/home/openbao \
-    && chmod 1777 /runtime/tmp
+    && chown 10001:10001 /runtime/tmp \
+    && chmod 0700 /runtime/tmp \
+    && test "$(stat -c '%u:%g %a' /runtime/tmp)" = '10001:10001 700'
 
 FROM scratch
 
@@ -62,7 +64,7 @@ COPY --from=build /runtime/group /etc/group
 COPY --from=source /src/LICENSE /licenses/MPL-2.0.txt
 COPY --from=build --chown=10001:10001 /runtime/openbao /openbao
 COPY --from=build --chown=10001:10001 /runtime/home/openbao /home/openbao
-COPY --from=build /runtime/tmp /tmp
+COPY --from=build --chown=10001:10001 /runtime/tmp /tmp
 
 ENV PATH=/usr/bin HOME=/home/openbao BAO_CONFIG_DIR=/openbao/config
 

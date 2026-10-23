@@ -31,3 +31,5 @@ RUN grep -Eq '^URIs: https?://((azure\.)?archive|security|ports)\.ubuntu\.com/' 
 
 LABEL org.opencontainers.image.mise.version="${MISE_VERSION}" \
       org.opencontainers.image.mise.source="https://github.com/jdx/mise/releases/tag/v${MISE_VERSION}"
+
+USER vscode

@@ -83,9 +83,14 @@ grep -q 'cac510e51793ad45e65fe92305bdbe4309c9c60b5907badbc7eba111738ab08f' "$rep
 grep -q '/usr/local/share/mise/provenance.txt' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'install -D -m 0755 /tmp/mise/bin/mise /usr/local/bin/mise' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'mise version | grep -F' "$repo_root/.devcontainer/Dockerfile"
+grep -q '^USER vscode$' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'nomyr-image-scan' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'nomyr-devcontainer:scan' "$repo_root/.github/workflows/dev-compose.yml"
-grep -q 'docker compose.*build --pull --no-cache temporal openbao keycloak' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'for service in temporal openbao keycloak; do' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'docker compose.*build --pull --no-cache "\$service"' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'compose-build-errors.txt' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'docker image inspect "\$image"' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'local image is unavailable; check the Compose build failure logs; Syft and Grype skipped' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'deploy/compose/images/\*\*' "$repo_root/.github/workflows/dev-compose.yml"
 if grep -q 'pnpm audit\|openbao-ui-pnpm-audit' "$repo_root/.github/workflows/dev-compose.yml"; then
 	echo "headless OpenBao workflow must not build or audit the optional UI" >&2

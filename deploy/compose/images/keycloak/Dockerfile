@@ -74,8 +74,14 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && ca_version="$(dpkg-query -W -f='${Version}' ca-certificates)" \
     && dpkg --compare-versions "$ca_version" ge 20260816ubuntu0.24.04.1 \
-    && groupadd --gid 1000 keycloak \
-    && useradd --uid 1000 --gid 1000 --home-dir /home/keycloak --create-home --shell /usr/sbin/nologin keycloak
+    && if ! getent group 1000 >/dev/null; then groupadd --gid 1000 keycloak; fi \
+    && if ! getent passwd 1000 >/dev/null; then \
+        if getent passwd keycloak >/dev/null; then \
+            echo 'keycloak account exists with a non-1000 UID' >&2; exit 1; \
+        fi; \
+        useradd --uid 1000 --gid 1000 --home-dir /home/keycloak --create-home --shell /usr/sbin/nologin keycloak; \
+    fi \
+    && install -d --owner=1000 --group=1000 /home/keycloak
 
 COPY --from=build /opt/java-runtime /opt/java
 COPY --from=build /opt/keycloak /opt/keycloak
@@ -85,6 +91,7 @@ RUN install -d --owner=1000 --group=1000 /opt/keycloak/data \
 
 ENV JAVA_HOME=/opt/java \
     PATH=/opt/java/bin:$PATH \
+    HOME=/home/keycloak \
     KC_RUN_IN_CONTAINER=true \
     KC_HEALTH_ENABLED=true \
     LANG=C.UTF-8

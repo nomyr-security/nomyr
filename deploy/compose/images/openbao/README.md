@@ -89,7 +89,9 @@ No UI lockfile or broad dependency upgrade is included.
 
 The running executable is `/usr/bin/bao`; `/usr/bin/vault` remains an alias.
 The image runs as UID/GID `10001`; `/openbao/{config,file,logs}`, `/home/openbao`,
-and `/tmp` are writable by that user. It accepts the existing Compose
+and `/tmp` are writable by that user. `/tmp` is owned by `10001:10001` with
+mode `0700`, since no other runtime user needs temporary-file access. It
+accepts the existing Compose
 `server -dev -dev-listen-address=0.0.0.0:8200 -dev-root-token-id=…` command,
 exposes container port `8200`, and supports the Compose health command
 `bao status -address=http://127.0.0.1:8200`. Compose binds the host port to

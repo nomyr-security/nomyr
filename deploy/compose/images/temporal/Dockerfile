@@ -22,24 +22,26 @@ RUN set -eux; \
 WORKDIR /src
 
 ADD --checksum=sha256:2417fbc1348cc3b3e5b01166ebe4c40938d779505d8e119b2ed77bb3d6ae965c https://codeload.github.com/temporalio/cli/tar.gz/1de87a9f26991bf4f5c0a5ff96f2cea8d7a3cbde /tmp/temporal-cli.tar.gz
+COPY deploy/compose/images/temporal/dependencies.patch /tmp/temporal-dependencies.patch
 
 RUN set -eux; \
     tar -xzf /tmp/temporal-cli.tar.gz --strip-components=1 -C /src; \
-    GOTOOLCHAIN=local go get \
-      github.com/gomarkdown/markdown@v0.0.0-20260724235538-61af6e1e6971 \
-      go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.45.0 \
-      go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.45.0 \
-      go.opentelemetry.io/otel/sdk@v1.45.0 \
-      golang.org/x/net@v0.60.0; \
-    mkdir -p /out/home/.config/temporalio /out/home/.temporal /out/home/data /out/licenses/temporal; \
-    chmod 0700 /out/home /out/home/.config /out/home/.config/temporalio /out/home/.temporal /out/home/data; \
+    test "$(git hash-object /src/go.mod)" = '48cd4f572ff81cf4b3b708ce809467859a099076'; \
+    test "$(git hash-object /src/go.sum)" = '28f5a717fe83cf9de23d91dc28097033a780f327'; \
+    git apply --check --unidiff-zero --unsafe-paths /tmp/temporal-dependencies.patch; \
+    git apply --unidiff-zero --unsafe-paths /tmp/temporal-dependencies.patch; \
+    export GOFLAGS=-mod=readonly; \
+    mkdir -p /out/home/.config/temporalio /out/data /out/licenses/temporal; \
+    chmod 0555 /out/home /out/home/.config /out/home/.config/temporalio; \
+    chmod 0700 /out/data; \
+    chown 10001:10001 /out/data; \
     printf 'temporal:x:10001:10001:Temporal development user:/home/temporal:/sbin/nologin\n' > /out/passwd; \
     printf 'temporal:x:10001:\n' > /out/group; \
     cp /src/LICENSE /out/licenses/temporal/LICENSE; \
     CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH GOTOOLCHAIN=local \
-      go build -trimpath -buildvcs=false -ldflags='-s -w' \
+      go build -mod=readonly -trimpath -buildvcs=false -ldflags='-s -w' \
       -o /out/temporal /src/cmd/temporal; \
-    go list -deps -f '{{if .Module}}{{.Module.Path}}@{{.Module.Version}}|{{.Module.Dir}}{{end}}' /src/cmd/temporal \
+    go list -mod=readonly -deps -f '{{if .Module}}{{.Module.Path}}@{{.Module.Version}}|{{.Module.Dir}}{{end}}' /src/cmd/temporal \
       | sort -u \
       | while IFS='|' read -r module_ref module_dir; do \
           case "$module_dir" in /go/pkg/mod/*) \
@@ -62,8 +64,9 @@ COPY --from=build /usr/share/doc/tzdata/copyright /usr/share/licenses/tzdata/COP
 COPY --from=build /out/passwd /etc/passwd
 COPY --from=build /out/group /etc/group
 COPY --from=build /out/licenses /usr/share/licenses
-COPY --chown=10001:10001 --from=build /out/home /home/temporal
-COPY --chown=10001:10001 --from=build /out/temporal /usr/local/bin/temporal
+COPY --from=build /out/home /home/temporal
+COPY --chown=10001:10001 --from=build /out/data /home/temporal/data
+COPY --from=build /out/temporal /usr/local/bin/temporal
 
 ENV HOME=/home/temporal
 

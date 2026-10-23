@@ -79,9 +79,21 @@ jobs:
         env:
           NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
         run: |
+          set +e
           set -o pipefail
-          docker compose --env-file "$NOMYR_DEV_ENV_FILE" -f deploy/compose/compose.yaml build --pull --no-cache temporal openbao keycloak \
-            2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/compose-build.log"
+          report_dir="$RUNNER_TEMP/nomyr-image-scan"
+          build_status=0
+          for service in temporal openbao keycloak; do
+            log="$report_dir/$service-compose-build.log"
+            docker compose --env-file "$NOMYR_DEV_ENV_FILE" -f deploy/compose/compose.yaml build --pull --no-cache "$service" \
+              2>&1 | tee "$log"
+            result=$?
+            if [ "$result" -ne 0 ]; then
+              printf '%s Compose image build failed with exit %s\n' "$service" "$result" >> "$report_dir/compose-build-errors.txt"
+              build_status=1
+            fi
+          done
+          exit "$build_status"
       - name: Check service health
         env:
           NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
@@ -162,6 +174,11 @@ jobs:
             safe_name=$(printf '%s' "$image" | tr '/:@' '___')
             report="$report_dir/images/$safe_name.json"
             sbom="$report_dir/images/$safe_name.cdx.json"
+            if [ "$scheme" = docker ] && ! docker image inspect "$image" >/dev/null 2>&1; then
+              printf '%s: local image is unavailable; check the Compose build failure logs; Syft and Grype skipped\n' "$image" >> "$report_dir/scan-errors.txt"
+              scan_status=1
+              return 0
+            fi
             printf '%s:%s\n' "$scheme" "$image" > "$report_dir/images/$safe_name.source"
             "$scanner_dir/syft" "$scheme:$image" --output cyclonedx-json --file "$sbom"
             syft_result=$?
