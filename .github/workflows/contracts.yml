@@ -34,11 +34,11 @@ jobs:
           go install "github.com/bufbuild/buf/cmd/buf@$BUF_VERSION"
           go install "github.com/oasdiff/oasdiff@${OASDIFF_VERSION}"
           go install "github.com/daveshanley/vacuum@$VACUUM_VERSION"
-          python -m pip install --requirement tools/contracts/requirements.txt
+          python -m pip install --only-binary=:all: --require-hashes --requirement tools/contracts/requirements.txt
       - name: Buf lint and breaking check
         run: |
           buf lint proto
-          buf breaking proto --against '.git#branch=main,subdir=proto'
+          buf breaking proto --against '.git#branch=origin/main,subdir=proto'
       - name: OpenAPI lint and breaking check
         run: |
           vacuum lint api/openapi/v1.yaml
