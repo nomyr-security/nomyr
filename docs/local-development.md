@@ -83,8 +83,9 @@ output and the patched devcontainer image with Grype and Syft binaries built
 from verified source. It also builds and scans the service images for arm64;
 OCI archives are checksummed then removed before artifact upload. OpenBao is
 intentionally built headless for this Phase 0 stack, without its optional
-management browser UI. Medium,
-High, and Critical matches fail the job. Complete JSON reports are uploaded from the
+management browser UI. High and Critical matches fail the development-image job;
+Medium findings remain visible in the approved development-only backlog (#67).
+Product-image checks still fail at Medium. Complete JSON reports are uploaded from the
 runner temporary directory even when scanning fails. It uses read-only
 repository permissions, stores generated credentials in the runner temporary
 directory, and always attempts teardown. This is an image-scan and availability
