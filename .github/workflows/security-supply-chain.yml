@@ -290,7 +290,7 @@ jobs:
       - name: Verify keyless image signature
         run: |
           cosign verify-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.image.sigstore.json" \
-            --certificate-identity-regexp '^https://github.com/nomyr-security/nomyr/.github/workflows/security-supply-chain.yml@refs/heads/main$' \
+            --certificate-identity https://github.com/nomyr-security/nomyr/.github/workflows/security-supply-chain.yml@refs/heads/main \
             --certificate-oidc-issuer https://token.actions.githubusercontent.com "artifacts/nomyr-${{ matrix.plane }}.image.tar"
       - name: Upload signatures and attestations
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

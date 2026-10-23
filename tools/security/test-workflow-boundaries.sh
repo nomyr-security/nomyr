@@ -80,6 +80,11 @@ grep -Fq 'export DOCKER_HOST="unix://$RUNNER_TEMP/no-daemon.sock"' "$workflow"
 grep -Fq 'docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar' "$workflow"
 grep -Fq 'sbom:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json' "$workflow"
 grep -Fq 'cosign-release: v3.1.4' "$workflow"
+grep -Fq -- '--certificate-identity https://github.com/nomyr-security/nomyr/.github/workflows/security-supply-chain.yml@refs/heads/main' "$workflow"
+if grep -Fq -- '--certificate-identity-regexp' "$workflow"; then
+	echo 'keyless signature verification must require the exact trusted workflow identity' >&2
+	exit 1
+fi
 grep -Fq 'mise exec -- tools/bootstrap/check' "$workflow"
 if grep -Eq 'github\.com/(gitleaks/gitleaks|anchore/(syft|grype))/releases/download' "$workflow"; then
 	echo 'security scanners must be built from source, not downloaded as release binaries' >&2
