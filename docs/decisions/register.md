@@ -8,18 +8,18 @@ their named owner accepts them. Planned work and unresolved evidence remain expl
 
 | ADR | Topic | Status | Decision owner | Acceptance or validation still required |
 |---|---|---|---|---|
-| 0001 (local design record; not published) | Backend language | Proposed | Project owner; confirmation pending | Complete the Temporal, OPA, ledger, and connector enumeration spikes and record results. |
+| 0001 (local design record; not published) | Backend language | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Complete the Temporal, OPA, ledger, and connector enumeration spikes and record results. |
 | 0002 (local design record; not published) | Durable execution | Accepted (project owner, 2026-09-19) | Project owner | Track Phase 5 deployment and restore considerations; Temporal is not required for Phases 1–4. |
-| [0003](../adr/0003-monorepo-and-module-boundaries.md) | Monorepo and module boundaries | Proposed | Project owner; acceptance pending | Implement and test forbidden-import matrix and artifact boundaries. |
-| [0004](../adr/0004-license-model.md) | License model | Proposed | Project owner; legal review as needed | Confirm public license promise and complete pinned dependency reviews; do not infer compatibility from process boundaries. |
-| [0005](../adr/0005-tenant-isolation.md) | Tenant isolation | Proposed | Project owner; acceptance pending | Design review and cross-tenant negative tests for API, jobs, aggregates, and caches. |
-| [0006](../adr/0006-bitemporal-assertion-ledger.md) | Assertion ledger | Proposed | Project owner; acceptance pending | `pgx` data-model/write-path spike, temporal edge cases, and retention/privacy review. |
-| [0007](../adr/0007-graph-projection.md) | Graph projection | Proposed | Project owner; acceptance pending | Representative PostgreSQL traversal benchmark; review Neo4j edition, license, and fit before adoption. |
-| [0008](../adr/0008-authentication-and-authorization.md) | Authentication and authorization | Proposed | Project owner; acceptance pending | OIDC and policy-engine security review, protocol spike, and deny/unknown/tenant-scope tests. |
-| [0009](../adr/0009-event-bus-and-outbox.md) | Event bus and outbox | Proposed | Project owner; acceptance pending | Relay/consumer prototype, crash/retry and duplicate tests, tenant routing review. |
-| [0010](../adr/0010-connector-transport.md) | Connector transport | Proposed | Project owner; acceptance pending | Interoperability and compatibility spike; boundary tests for identity, sanitization, and credential exclusion. |
-| [0011](../adr/0011-signing-key-purposes.md) | Signing-key purposes | Proposed | Project owner; acceptance pending | Cryptographic and key-lifecycle review; negative verification tests. |
-| 0012 (local design record; not published) | Embedded UI and lite mode | Proposed | Project owner; acceptance pending | Static identity-route, cold-start, and embedded-PostgreSQL platform spikes; no lite capability is implied implemented. |
+| [0003](../adr/0003-monorepo-and-module-boundaries.md) | Monorepo and module boundaries | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Implement and test forbidden-import matrix and artifact boundaries. |
+| [0004](../adr/0004-license-model.md) | License model | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Confirm public license promise and complete pinned dependency reviews; do not infer compatibility from process boundaries. |
+| [0005](../adr/0005-tenant-isolation.md) | Tenant isolation | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Design review and cross-tenant negative tests for API, jobs, aggregates, and caches. |
+| [0006](../adr/0006-bitemporal-assertion-ledger.md) | Assertion ledger | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | `pgx` data-model/write-path spike, temporal edge cases, and retention/privacy review. |
+| [0007](../adr/0007-graph-projection.md) | Graph projection | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Representative PostgreSQL traversal benchmark; review Neo4j edition, license, and fit before adoption. |
+| [0008](../adr/0008-authentication-and-authorization.md) | Authentication and authorization | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | OIDC and policy-engine security review, protocol spike, and deny/unknown/tenant-scope tests. |
+| [0009](../adr/0009-event-bus-and-outbox.md) | Event bus and outbox | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Relay/consumer prototype, crash/retry and duplicate tests, tenant routing review. |
+| [0010](../adr/0010-connector-transport.md) | Connector transport | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Interoperability and compatibility spike; boundary tests for identity, sanitization, and credential exclusion. |
+| [0011](../adr/0011-signing-key-purposes.md) | Signing-key purposes | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Cryptographic and key-lifecycle review; negative verification tests. |
+| 0012 (local design record; not published) | Embedded UI and lite mode | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Static identity-route, cold-start, and embedded-PostgreSQL platform spikes; no lite capability is implied implemented. |
 
 Issue #18 is the evidence workstream for closing the remaining Phase 0 architecture validation
 gaps and supporting final ratification under issue #2. Foundational design and interface work

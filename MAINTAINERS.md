@@ -1,11 +1,12 @@
 # Maintainers
 
-No named individual maintainers have been publicly confirmed in this file.
-The repository currently requests review from `@nomyr-ai` through
-`.github/CODEOWNERS`; that team alias is not a substitute for a published human
-roster, an availability commitment, or configured required code-owner review.
+On 2026-10-23, the repository owner designated `@nomyr-ai` as the maintainer
+and decision-owner account. This records the account designation only; it does
+not independently verify a human or legal identity behind the account, establish
+an availability commitment, or confirm that required code-owner review is
+configured.
 
-Names, GitHub handles, areas of responsibility, and appointment dates should be
-added only after the people concerned and the project decision process confirm
-them. Until then, use the repository's active GitHub collaborators and the
-controls shown in repository settings to determine who can review or merge.
+No individual maintainer names or appointment history are asserted here. Use
+the repository's active GitHub collaborators and settings to determine which
+accounts can review or merge. The designation does not by itself ratify
+proposed ADRs or establish ownership of every external non-human identity.

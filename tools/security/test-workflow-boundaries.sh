@@ -34,6 +34,7 @@ grep -Fq -- '--only-binary=:all: --requirement tools/security/pip-audit-requirem
 grep -Fq 'name: Build and audit pinned scanner tools' "$workflow"
 grep -Fq 'tools/security/build-scanners.sh' "$workflow"
 grep -Fq 'tools/security/audit-scanner-binaries.sh' "$workflow"
+grep -Fq 'tools/security/audit-cosign-binary.sh' "$workflow"
 grep -Fq 'run: sh tools/security/build-scanners.sh' "$workflow"
 grep -Fq 'run: sh tools/security/audit-scanner-binaries.sh' "$workflow"
 grep -Fq 'tools/security/test-scanner-audit.sh' "$root/tools/security/test-workflow-boundaries.sh"
@@ -80,6 +81,24 @@ grep -Fq 'export DOCKER_HOST="unix://$RUNNER_TEMP/no-daemon.sock"' "$workflow"
 grep -Fq 'docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar' "$workflow"
 grep -Fq 'sbom:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json' "$workflow"
 grep -Fq 'cosign-release: v3.1.4' "$workflow"
+grep -Fq 'COSIGN_VERSION=3.1.4' "$root/tools/security/scanners.env"
+grep -Fq 'COSIGN_LINUX_AMD64_SHA256=424e2c97d0b45fd7a6b608a87f090f35633f4c23ece5f092d48bba11aaf4bbfa' "$root/tools/security/scanners.env"
+grep -Fq 'GO-2026-5932' "$root/tools/security/audit-cosign-binary.sh"
+grep -Fq 'GO-2026-6225' "$root/tools/security/audit-cosign-binary.sh"
+sign_blob_count=$(grep -Fc 'cosign sign-blob --bundle' "$workflow")
+verify_blob_count=$(grep -Fc 'cosign verify-blob --bundle' "$workflow")
+if [ "$sign_blob_count" -ne 3 ] || [ "$verify_blob_count" -ne 1 ]; then
+	echo 'Cosign signing workflow must stay confined to the reviewed blob commands' >&2
+	exit 1
+fi
+grep -Fq 'cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.image.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.image.tar"' "$workflow"
+grep -Fq 'cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.cdx.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.cdx.json"' "$workflow"
+grep -Fq 'cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.SHA256SUMS.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.SHA256SUMS"' "$workflow"
+grep -Fq -- '--certificate-identity https://github.com/nomyr-security/nomyr/.github/workflows/security-supply-chain.yml@refs/heads/main' "$workflow"
+if grep -Eq 'cosign (sign|verify)([[:space:]]|$)' "$workflow"; then
+	echo 'Cosign workflow must not add registry/image commands without a new applicability review' >&2
+	exit 1
+fi
 grep -Fq -- '--certificate-identity https://github.com/nomyr-security/nomyr/.github/workflows/security-supply-chain.yml@refs/heads/main' "$workflow"
 if grep -Fq -- '--certificate-identity-regexp' "$workflow"; then
 	echo 'keyless signature verification must require the exact trusted workflow identity' >&2

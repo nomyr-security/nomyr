@@ -32,6 +32,8 @@ jobs:
         run: sh tools/security/build-scanners.sh "$RUNNER_TEMP/scanner-tools"
       - name: Audit scanner binaries and preserve bounded Grype finding disposition
         run: sh tools/security/audit-scanner-binaries.sh "$RUNNER_TEMP/scanner-tools"
+      - name: Audit Cosign release binary without executing it
+        run: sh tools/security/audit-cosign-binary.sh "$RUNNER_TEMP/scanner-tools"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:

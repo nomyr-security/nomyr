@@ -6,9 +6,11 @@
 This is a source document for the planned Nomyr product threat model, seeded from
 specification §12.1. It records risks and verification work; it does not claim
 that planned product controls are implemented. The Phase 0 build and workflow
-risks are marked as current security work where applicable. Human owners have
-not been assigned. The listed accountable roles and issue links are routing
-targets, not named approvals.
+risks are marked as current security work where applicable. On 2026-10-23, the
+repository owner designated `@nomyr-ai` as the maintainer and decision-owner
+account; this does not independently verify a human or legal identity behind
+the account. Product-control roles remain unassigned unless specifically stated
+below. Issue links are routing targets, not approvals.
 
 | Threat | Planned product control | Verification requirement | Accountable role | Tracking |
 |---|---|---|---|---|
@@ -27,16 +29,18 @@ targets, not named approvals.
 | Stale policy or restored state | Versioned signed policy, expiry, reconciliation, and execution freeze | Restore cannot replay an old approved destructive plan | [Policy and execution maintainers (unassigned)](#accountable-roles) | Future restore and execution issues required |
 | Bypassed access gateway | Resource-side controls and alternate-path testing | Protected status is removed when uncontrolled access remains | [Runtime-access maintainers (unassigned)](#accountable-roles) | Future gateway security issue required |
 | Data loss or evidence alteration | Encrypted backups, retention, signed export manifests, and independent copies | Restore and integrity checks detect missing or changed evidence | [Storage maintainers (unassigned)](#accountable-roles) | Future resilience/security issue required |
-| Malicious contribution or compromised build dependency | Read-only untrusted PR workflows, pinned automation dependencies, secret/dependency scanning, isolated builds, and trusted-context attestations | Untrusted PR code receives no signing or write token; artifact provenance identifies the trusted workflow | [Repository security maintainers (unassigned)](#accountable-roles) | [#17](https://github.com/nomyr-security/nomyr/issues/17) |
+| Malicious contribution or compromised build dependency | Read-only untrusted PR workflows, pinned automation dependencies, secret/dependency scanning, isolated builds, and trusted-context attestations | Untrusted PR code receives no signing or write token; artifact provenance identifies the trusted workflow | [Repository security: `@nomyr-ai` (owner-designated account)](#accountable-roles) | [#17](https://github.com/nomyr-security/nomyr/issues/17) |
 | Runtime plane accidentally gains cross-plane authority | Separate binaries and permission identities with explicit dependency boundaries | Dependency/build checks show that experience and collection artifacts do not contain action or custody implementations | [Architecture maintainers (unassigned)](#accountable-roles) | [#17](https://github.com/nomyr-security/nomyr/issues/17) container boundaries; future architecture test issue required |
 
 ## Status and ownership
 
-Roles are intentionally unassigned until maintainers establish human accountability.
-No product control in this table should be read as implemented without matching
-source, tests, and an accepted issue. Track verification gaps as separate issues
-when a concrete phase and owner are known. Revisit this document as phase work
-adds control implementation and tests.
+Except for the repository-security account designation in the table, product
+control roles remain unassigned. The designation records an account, not a
+verified human identity or ownership assignment for external non-human
+identities. No product control in this table should be read as implemented
+without matching source, tests, and an accepted issue. Track verification gaps
+as separate issues when a concrete phase and accountable owner are established.
+Revisit this document as phase work adds control implementation and tests.
 
 ## Phase 0 artifact boundary
 
@@ -52,6 +56,10 @@ attestation account features must be verified in the repository settings and CI.
 
 ## Accountable roles
 
-Every role named in the table is an accountability placeholder, not an assigned
-person. The repository's [CODEOWNERS](../../.github/CODEOWNERS) routes review to
-`@nomyr-ai`; it does not establish human ownership of these product controls.
+The repository owner designated `@nomyr-ai` as the maintainer and decision-owner
+account on 2026-10-23. This does not independently establish the account's human
+or legal identity, nor does it assign the other product-control roles. The
+repository's [CODEOWNERS](../../.github/CODEOWNERS) routes review to that
+account; it does not establish human ownership of product controls or ownership
+of external non-human identities. Proposed ADR ratification remains separate
+and pending.
