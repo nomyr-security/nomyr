@@ -34,6 +34,7 @@ grep -Fq -- '--only-binary=:all: --requirement tools/security/pip-audit-requirem
 grep -Fq 'docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar' "$workflow"
 grep -Fq 'sbom:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json' "$workflow"
 grep -Fq 'cosign-release: v3.1.4' "$workflow"
+grep -Fq 'mise exec -- tools/bootstrap/check' "$workflow"
 if grep -Eq -- '--ignore-vuln|--exclude|--only-fixed|fail-on high|fail-on critical' "$workflow"; then
 	echo 'security scans must not suppress findings or weaken the medium threshold' >&2
 	exit 1

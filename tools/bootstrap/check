@@ -30,6 +30,41 @@ else
 	check_command buf buf --version
 	check_command golangci-lint golangci-lint --version
 	check_command govulncheck govulncheck -version
+
+	if command -v go >/dev/null 2>&1 && command -v golangci-lint >/dev/null 2>&1; then
+		lint_binary=$(command -v golangci-lint)
+		if expected_go=$(go version 2>&1); then
+			expected_go=$(printf '%s\n' "$expected_go" | awk '{print $3}')
+		else
+			printf 'unavailable: Go compiler version (%s)\n' "$expected_go"
+			failed=1
+			expected_go=
+		fi
+		if lint_build_info=$(go version -m "$lint_binary" 2>&1); then
+			lint_go=$(printf '%s\n' "$lint_build_info" | sed -n '1{s/.*: //;p;}')
+			if [ -z "$lint_go" ]; then
+				printf 'unverified: golangci-lint has no Go build metadata (%s)\n' "$lint_binary"
+				failed=1
+			elif [ "$lint_go" != "$expected_go" ]; then
+				printf 'mismatch: golangci-lint was built with %s; selected Go is %s\n' "$lint_go" "$expected_go"
+				failed=1
+			else
+				printf 'verified: golangci-lint built with selected Go (%s)\n' "$lint_go"
+			fi
+		else
+			printf 'unavailable: golangci-lint Go build metadata (%s)\n' "$lint_build_info"
+			failed=1
+		fi
+
+		if command -v govulncheck >/dev/null 2>&1; then
+			if vuln_output=$(govulncheck -mode=binary "$lint_binary" 2>&1); then
+				printf '%s\n' "$vuln_output"
+			else
+				printf '%s\n' "$vuln_output" >&2
+				failed=1
+			fi
+		fi
+	fi
 fi
 
 if [ "$failed" -ne 0 ]; then
