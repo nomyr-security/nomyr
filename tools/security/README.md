@@ -38,6 +38,25 @@ scanner-specific VEX records. This artifact
 is a CI tool input, not a product release. It is produced with read-only
 permissions and is not signed or published as a runtime artifact.
 
+## Hosted CodeQL coverage
+
+On 2026-10-23, the repository Code Scanning REST API reported GitHub default
+setup as `configured`, with the `default` query suite and a weekly schedule.
+The configured language identifiers are Actions, Go, JavaScript,
+JavaScript/TypeScript, Python, and TypeScript. The analyses endpoint also
+returned four successful CodeQL records with no errors for `refs/heads/main` at
+commit `5d6bc2ac69acfb7c4c694d9e3c789a60e32b189a`: Actions, Go,
+JavaScript/TypeScript, and Python. The repository deliberately avoids advanced
+`github/codeql-action/init`, `autobuild`, and `analyze` workflows while that
+setting is enabled. Run 39938927360 failed at SARIF upload with GitHub's
+explicit conflict message: advanced analyses cannot be processed while default
+setup is enabled. The redundant advanced job and schedule were removed rather
+than disabling hosted coverage or changing repository security settings. The
+workflow-boundary test fails if those advanced actions or the duplicate
+schedule return. The Scorecard workflow's `upload-sarif` step is separate and is
+not a CodeQL analysis setup. If the repository's Code Scanning mode changes,
+review hosted coverage before adding any advanced analysis workflow.
+
 ## Cosign blob-command boundary
 
 The workflow pins Cosign v3.1.4 and audits the official Linux/amd64 release
