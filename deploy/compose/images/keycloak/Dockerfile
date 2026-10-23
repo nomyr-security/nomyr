@@ -88,7 +88,8 @@ RUN apt-get update \
 COPY --from=build /opt/java-runtime /opt/java
 COPY --from=build /opt/keycloak /opt/keycloak
 
-RUN install -d --owner=1000 --group=1000 /opt/keycloak/data \
+RUN chown -R 1000:1000 /opt/keycloak/lib/quarkus \
+    && install -d --owner=1000 --group=1000 /opt/keycloak/data \
     && chown -R 1000:1000 /opt/keycloak/data
 
 ENV JAVA_HOME=/opt/java \

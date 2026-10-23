@@ -93,6 +93,17 @@ grep -q '^  temporal-data:' "$repo_root/deploy/compose/compose.yaml"
 grep -A20 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'GET /health/ready'
 grep -A20 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'grep -q.*HTTP/1.1 200'
 grep -q 'GET /health/ready' "$repo_root/tools/dev/stack"
+grep -q 'test -w /opt/keycloak/lib/quarkus' "$repo_root/tools/dev/stack"
+grep -q 'test ! -w /opt/keycloak/lib/lib/deployment' "$repo_root/tools/dev/stack"
+grep -q 'test ! -w /opt/keycloak/lib/lib/deployment/appmodel.dat' "$repo_root/tools/dev/stack"
+grep -q 'test ! -w /opt/keycloak/lib/lib/deployment/deployment-class-path.dat' "$repo_root/tools/dev/stack"
+grep -q 'test ! -w /opt/keycloak/bin/kc.sh' "$repo_root/tools/dev/stack"
+grep -q 'test -w /opt/keycloak/data' "$repo_root/tools/dev/stack"
+grep -q 'chown -R 1000:1000 /opt/keycloak/lib/quarkus' "$repo_root/deploy/compose/images/keycloak/Dockerfile"
+if grep -Eq 'chown -R .* /opt/keycloak(/lib)?([[:space:]]|$)' "$repo_root/deploy/compose/images/keycloak/Dockerfile"; then
+	echo 'Keycloak runtime must not make the full installation or lib tree writable' >&2
+	exit 1
+fi
 grep -A4 '^  openbao:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/openbao/Dockerfile'
 grep -A4 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/keycloak/Dockerfile'
 if grep -E '^    ports:' "$repo_root/deploy/compose/compose.yaml" | grep -v '127\.0\.0\.1:'; then

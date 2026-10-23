@@ -92,6 +92,7 @@ case "${1:-}" in
 		done
 		compose exec -T postgres pg_isready -U nomyr -d nomyr >/dev/null
 		compose exec -T temporal temporal operator cluster health --address 127.0.0.1:7233 >/dev/null
+		compose exec -T keycloak sh -ec 'test "$(id -u):$(id -g)" = "1000:1000"; test -w /opt/keycloak/lib/quarkus; test ! -w /opt/keycloak/lib/lib/deployment; test ! -w /opt/keycloak/lib/lib/deployment/appmodel.dat; test ! -w /opt/keycloak/lib/lib/deployment/deployment-class-path.dat; test ! -w /opt/keycloak/bin/kc.sh; test -w /opt/keycloak/data; probe=/opt/keycloak/lib/quarkus/.nomyr-write-probe-$$; : >"$probe"; rm "$probe"; probe=/opt/keycloak/data/.nomyr-write-probe-$$; : >"$probe"; rm "$probe"'
 		compose exec -T keycloak bash -ec 'exec 3<>/dev/tcp/127.0.0.1/9000; printf "GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n" >&3; grep -q "^HTTP/1.1 200" <&3'
 		printf '%s\n' 'Development service smoke checks passed.'
 		;;
