@@ -5,8 +5,11 @@ on:
     paths:
       - .github/workflows/dev-compose.yml
       - deploy/compose/compose.yaml
+      - deploy/compose/images/**
+      - tools/security/**
       - .devcontainer/**
       - docs/dev-image-vulnerabilities.md
+      - docs/local-development.md
       - tools/dev/stack
       - tools/dev/stack_test.sh
       - Makefile
@@ -15,8 +18,11 @@ on:
     paths:
       - .github/workflows/dev-compose.yml
       - deploy/compose/compose.yaml
+      - deploy/compose/images/**
+      - tools/security/**
       - .devcontainer/**
       - docs/dev-image-vulnerabilities.md
+      - docs/local-development.md
       - tools/dev/stack
       - tools/dev/stack_test.sh
       - Makefile
@@ -38,18 +44,36 @@ jobs:
         env:
           NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
         run: make dev-stack-config
-      - name: Install checksum-pinned Grype
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: 1.26.10
+          cache: false
+      - name: Install pinned govulncheck source tool
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/grype" "$RUNNER_TEMP/nomyr-image-scan"
-          archive="$RUNNER_TEMP/grype/grype_0.121.0_linux_amd64.tar.gz"
-          curl --fail --location --silent --show-error \
-            https://github.com/anchore/grype/releases/download/v0.121.0/grype_0.121.0_linux_amd64.tar.gz \
-            --output "$archive"
-          echo '64e07133d3486115de647a66581461dccf5c732748a0a3119077395565f15519  '"$archive" | sha256sum --check
-          tar -xzf "$archive" -C "$RUNNER_TEMP/grype" grype
-          "$RUNNER_TEMP/grype/grype" version | tee "$RUNNER_TEMP/nomyr-image-scan/grype-version.txt"
+          mkdir -p "$RUNNER_TEMP/nomyr-image-scan"
+          GOTOOLCHAIN=local go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+      - name: Build scanner binaries from verified source
+        shell: bash
+        run: |
+          set -o pipefail
+          tools/security/build-scanners.sh "$RUNNER_TEMP/nomyr-image-scan/scanner-tools" \
+            2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/scanner-build.log"
+      - name: Audit source-built scanner binaries and retain VEX evidence
+        if: always()
+        shell: bash
+        run: |
+          set -o pipefail
+          scanner_dir="$RUNNER_TEMP/nomyr-image-scan/scanner-tools"
+          if [ ! -x "$scanner_dir/bin/grype" ]; then
+            printf 'Source-built Grype binary is unavailable; image scans cannot run\n' \
+              > "$RUNNER_TEMP/nomyr-image-scan/scanner-audit-errors.txt"
+            exit 1
+          fi
+          tools/security/audit-scanner-binaries.sh "$scanner_dir" \
+            2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/scanner-audit.log"
       - name: Build development service images
         shell: bash
         env:
@@ -67,6 +91,34 @@ jobs:
             exit 1
           fi
           make dev-smoke
+      - name: Register QEMU for arm64 image builds
+        if: always()
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+        with:
+          image: docker.io/tonistiigi/binfmt@sha256:400a4873b838d1b89194d982c45e5fb3cda4593fbfd7e08a02e76b03b21166f0
+          platforms: arm64
+      - name: Build arm64 service images
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          report_dir="$RUNNER_TEMP/nomyr-image-scan/arm64"
+          mkdir -p "$report_dir"
+          build_status=0
+          for service in temporal openbao keycloak; do
+            dockerfile="deploy/compose/images/$service/Dockerfile"
+            archive="$report_dir/$service.oci.tar"
+            docker buildx build --platform linux/arm64 --pull --no-cache \
+              --file "$dockerfile" --tag "nomyr-dev/$service:scan-arm64" \
+              --output "type=oci,dest=$archive" . \
+              > "$report_dir/$service-build.log" 2>&1
+            result=$?
+            if [ "$result" -ne 0 ]; then
+              printf '%s arm64 image build failed with exit %s\n' "$service" "$result" >> "$report_dir/build-errors.txt"
+              build_status=1
+            fi
+          done
+          exit "$build_status"
       - name: Build devcontainer with current Ubuntu security updates
         if: always()
         shell: bash
@@ -84,8 +136,9 @@ jobs:
           set +e
           report_dir="$RUNNER_TEMP/nomyr-image-scan"
           mkdir -p "$report_dir/images"
-          if [ ! -x "$RUNNER_TEMP/grype/grype" ]; then
-            printf 'Pinned Grype installation did not complete; no image scans were possible\n' > "$report_dir/scan-errors.txt"
+          scanner_dir="$report_dir/scanner-tools/bin"
+          if [ ! -x "$scanner_dir/grype" ] || [ ! -x "$scanner_dir/syft" ]; then
+            printf 'Source-built scanner installation did not complete; no image scans were possible\n' > "$report_dir/scan-errors.txt"
             exit 1
           fi
           image_list="$RUNNER_TEMP/nomyr-image-refs.tsv"
@@ -103,11 +156,18 @@ jobs:
             gate=$3
             safe_name=$(printf '%s' "$image" | tr '/:@' '___')
             report="$report_dir/images/$safe_name.json"
+            sbom="$report_dir/images/$safe_name.cdx.json"
             printf '%s:%s\n' "$scheme" "$image" > "$report_dir/images/$safe_name.source"
+            "$scanner_dir/syft" "$scheme:$image" --output cyclonedx-json --file "$sbom"
+            syft_result=$?
+            if [ "$syft_result" -ne 0 ]; then
+              printf '%s: Syft failed with exit %s\n' "$image" "$syft_result" >> "$report_dir/scan-errors.txt"
+              scan_status=1
+            fi
             if [ "$gate" = high ]; then
-              "$RUNNER_TEMP/grype/grype" "$scheme:$image" --fail-on medium --output json --file "$report"
+              "$scanner_dir/grype" "$scheme:$image" --fail-on medium --output json --file "$report"
             else
-              "$RUNNER_TEMP/grype/grype" "$scheme:$image" --output json --file "$report"
+              "$scanner_dir/grype" "$scheme:$image" --output json --file "$report"
             fi
             result=$?
             if [ "$result" -eq 2 ]; then
@@ -115,6 +175,10 @@ jobs:
               scan_status=2
             elif [ "$result" -ne 0 ]; then
               printf '%s: scanner failed with exit %s\n' "$image" "$result" >> "$report_dir/scan-errors.txt"
+              scan_status=1
+            fi
+            if [ ! -s "$sbom" ]; then
+              printf '%s: complete Syft SBOM is missing\n' "$image" >> "$report_dir/scan-errors.txt"
               scan_status=1
             fi
             if [ -s "$report" ]; then
@@ -126,6 +190,15 @@ jobs:
             [ -n "$image" ] || continue
             scan_one "$image" "$scheme" high
           done < "$image_list"
+          for service in temporal openbao keycloak; do
+            arm64_archive="$report_dir/arm64/$service.oci.tar"
+            if [ -s "$arm64_archive" ]; then
+              scan_one "$arm64_archive" oci-archive high
+            else
+              printf '%s: arm64 OCI image archive is missing; scan not performed\n' "$service" >> "$report_dir/scan-errors.txt"
+              scan_status=1
+            fi
+          done
           base_image=$(sed -n 's/^FROM[[:space:]]\+//p' .devcontainer/Dockerfile | head -n 1)
           if [ -n "$base_image" ]; then
             scan_one "$base_image" registry report-only
@@ -134,6 +207,10 @@ jobs:
             scan_status=1
           fi
           scan_one nomyr-devcontainer:scan docker high
+          find "$report_dir/arm64" -type f -name '*.oci.tar' -print0 | while IFS= read -r -d '' archive; do
+            (cd "$(dirname "$archive")" && sha256sum "$(basename "$archive")") >> "$report_dir/arm64/OCI-SHA256SUMS"
+            rm -f "$archive"
+          done
           if [ "$config_status" -ne 0 ]; then
             exit 1
           fi

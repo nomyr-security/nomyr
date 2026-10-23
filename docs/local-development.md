@@ -79,7 +79,11 @@ integrations or Phase 1 product flows.
 
 The `development Compose smoke` GitHub Actions workflow builds and health-checks
 the local service images on a hosted Docker runner, then scans every Compose
-output and the patched devcontainer image with checksum-pinned Grype. Medium,
+output and the patched devcontainer image with Grype and Syft binaries built
+from verified source. It also builds and scans the service images for arm64;
+OCI archives are checksummed then removed before artifact upload. OpenBao is
+intentionally built headless for this Phase 0 stack, without its optional
+management browser UI. Medium,
 High, and Critical matches fail the job. Complete JSON reports are uploaded from the
 runner temporary directory even when scanning fails. It uses read-only
 repository permissions, stores generated credentials in the runner temporary

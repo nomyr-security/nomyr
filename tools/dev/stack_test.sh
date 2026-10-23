@@ -62,8 +62,12 @@ fi
 grep -q 'contents: read' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'persist-credentials: false' "$repo_root/.github/workflows/dev-compose.yml"
-grep -q 'anchore/grype/releases/download/v0.121.0/grype_0.121.0_linux_amd64.tar.gz' "$repo_root/.github/workflows/dev-compose.yml"
-grep -q '64e07133d3486115de647a66581461dccf5c732748a0a3119077395565f15519' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'tools/security/build-scanners.sh' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'tools/security/audit-scanner-binaries.sh' "$repo_root/.github/workflows/dev-compose.yml"
+if grep -q 'anchore/grype/releases/download' "$repo_root/.github/workflows/dev-compose.yml"; then
+	echo "workflow must build scanner tools from verified source" >&2
+	exit 1
+fi
 grep -q '"$scheme:$image"' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q -- '--fail-on medium' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' "$repo_root/.github/workflows/dev-compose.yml"
@@ -82,6 +86,16 @@ grep -q 'mise version | grep -F' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'nomyr-image-scan' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'nomyr-devcontainer:scan' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'docker compose.*build --pull --no-cache temporal openbao keycloak' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'deploy/compose/images/\*\*' "$repo_root/.github/workflows/dev-compose.yml"
+if grep -q 'pnpm audit\|openbao-ui-pnpm-audit' "$repo_root/.github/workflows/dev-compose.yml"; then
+	echo "headless OpenBao workflow must not build or audit the optional UI" >&2
+	exit 1
+fi
+grep -q 'docker buildx build --platform linux/arm64' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'oci-archive high' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'sha256sum.*basename.*archive' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'rm -f.*archive' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'if: always()' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'runner.temp' "$repo_root/.github/workflows/dev-compose.yml"
 if "$repo_root/tools/dev/stack" invalid >/dev/null 2>&1; then
