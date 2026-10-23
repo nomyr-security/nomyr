@@ -172,7 +172,7 @@ func seedCatalog(matrix, root string) (catalog, error) {
 	if err != nil {
 		return catalog{}, err
 	}
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 	var cat catalog
 	scanner := bufio.NewScanner(file)
 	section := ""
@@ -384,7 +384,7 @@ func validateLink(root, link string) error {
 	if err != nil {
 		return fmt.Errorf("cannot open %q: %w", match[1], err)
 	}
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 	wanted := 0
 	if _, err := fmt.Sscanf(match[2], "%d", &wanted); err != nil {
 		return err
