@@ -1,0 +1,231 @@
+name: Security and supply chain
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-supply-chain-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secrets:
+    name: Secret scanning
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install checksum-verified Gitleaks CLI
+        run: |
+          set -eu
+          curl -fsSLo "$RUNNER_TEMP/gitleaks.tgz" https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  '"$RUNNER_TEMP/gitleaks.tgz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/gitleaks.tgz" -C "$RUNNER_TEMP" gitleaks
+      - name: Scan current files and full Git history
+        run: |
+          "$RUNNER_TEMP/gitleaks" git --redact --exit-code 1 --log-opts='--all' .
+
+  dependency-review:
+    name: Dependency and license review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/dependency-review-action@05fe4576374b728f0c523d6a13d64c25081e0803 # v4.8.3
+        with:
+          fail-on-severity: moderate
+          license-check: true
+          deny-licenses: GPL-3.0-only, GPL-3.0-or-later, AGPL-3.0-only, AGPL-3.0-or-later, SSPL-1.0
+
+  images:
+    name: Build ${{ matrix.plane }} image and SBOM
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        plane: [experience, control-api, control-worker, collection, action]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.mod
+          cache: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        if: matrix.plane == 'experience'
+        with:
+          node-version: 22.23.4
+      - name: Export static web UI for the embedded CLI
+        if: matrix.plane == 'experience'
+        run: |
+          npm ci --ignore-scripts
+          npm run build
+          mkdir -p ../internal/webui/assets/generated
+          cp -R out/. ../internal/webui/assets/generated/
+        working-directory: web
+      - name: Build isolated plane binary
+        run: |
+          set -eu
+          mkdir -p .cache/security
+          case '${{ matrix.plane }}' in
+            experience) package=./cmd/nomyr ;;
+            control-api) package=./cmd/api ;;
+            control-worker) package=./cmd/worker ;;
+            collection) package=./cmd/collector ;;
+            action) package=./cmd/runner ;;
+          esac
+          CGO_ENABLED=0 go build -trimpath -buildvcs=false -o ".cache/security/nomyr-${{ matrix.plane }}" "$package"
+      - name: Build image and image SBOM
+        run: |
+          set -eu
+          image="nomyr-${{ matrix.plane }}:${GITHUB_SHA}"
+          dockerfile='containers/${{ matrix.plane }}/Dockerfile'
+          case '${{ matrix.plane }}' in
+            control-api) dockerfile='containers/control/Dockerfile' ;;
+          esac
+          docker buildx build --platform linux/amd64 --load \
+            --build-arg BINARY=".cache/security/nomyr-${{ matrix.plane }}" \
+            --tag "$image" --file "$dockerfile" .
+          if [ '${{ matrix.plane }}' = experience ]; then
+            mkdir -p "$RUNNER_TEMP/nomyr-config"
+            printf '%s\n' '{"enabled":false}' > "$RUNNER_TEMP/nomyr-config/telemetry.json"
+            chmod 755 "$RUNNER_TEMP/nomyr-config"
+            chmod 644 "$RUNNER_TEMP/nomyr-config/telemetry.json"
+            docker run --rm --entrypoint /nomyr \
+              --mount "type=bind,src=$RUNNER_TEMP/nomyr-config,dst=/tmp/nomyr-config,readonly" \
+              --env NOMYR_CONFIG_HOME=/tmp/nomyr-config "$image" version
+          else
+            docker run --rm "$image" > "$RUNNER_TEMP/process-output.json"
+            grep -q 'not-implemented' "$RUNNER_TEMP/process-output.json"
+          fi
+          docker save "$image" --output "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar"
+          curl -fsSLo "$RUNNER_TEMP/syft.tgz" https://github.com/anchore/syft/releases/download/v1.42.3/syft_1.42.3_linux_amd64.tar.gz
+          echo '0d6be741479eddd2c8644a288990c04f3df0d609bbc1599a005532a9dff63509  '"$RUNNER_TEMP/syft.tgz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/syft.tgz" -C "$RUNNER_TEMP" syft
+          "$RUNNER_TEMP/syft" "docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar" \
+            -o "cyclonedx-json=$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json"
+          cd "$RUNNER_TEMP"
+          sha256sum "nomyr-${{ matrix.plane }}.image.tar" "nomyr-${{ matrix.plane }}.cdx.json" > "nomyr-${{ matrix.plane }}.SHA256SUMS"
+      - name: Upload plane image and SBOM
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nomyr-${{ matrix.plane }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/nomyr-${{ matrix.plane }}.image.tar
+            ${{ runner.temp }}/nomyr-${{ matrix.plane }}.cdx.json
+            ${{ runner.temp }}/nomyr-${{ matrix.plane }}.SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+
+  container-definitions:
+    name: Container boundary checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Test container plane definitions
+        run: sh tools/security/test-container-definitions.sh
+      - name: Test security workflow trust boundaries
+        run: sh tools/security/test-workflow-boundaries.sh
+
+  attest:
+    name: Sign and attest trusted main artifacts
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: images
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+      attestations: write
+    strategy:
+      fail-fast: false
+      matrix:
+        plane: [experience, control-api, control-worker, collection, action]
+    steps:
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: nomyr-${{ matrix.plane }}-${{ github.sha }}
+          path: artifacts
+      - uses: sigstore/cosign-installer@d58896d6a1865668819e1d91763c7751a165e159 # v3.9.2
+      - name: Keyless sign image archive and SBOM
+        env:
+          COSIGN_YES: "true"
+        run: |
+          set -eu
+          cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.image.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.image.tar"
+          cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.cdx.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.cdx.json"
+          cosign sign-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.SHA256SUMS.sigstore.json" "artifacts/nomyr-${{ matrix.plane }}.SHA256SUMS"
+      - uses: actions/attest@fb72c3ec85719b3450a7942cbe045871deda8b95 # v3.1.0
+        with:
+          subject-path: artifacts/nomyr-${{ matrix.plane }}.image.tar
+      - uses: actions/attest@fb72c3ec85719b3450a7942cbe045871deda8b95 # v3.1.0
+        with:
+          subject-path: artifacts/nomyr-${{ matrix.plane }}.cdx.json
+      - uses: actions/attest@fb72c3ec85719b3450a7942cbe045871deda8b95 # v3.1.0
+        with:
+          subject-path: artifacts/nomyr-${{ matrix.plane }}.SHA256SUMS
+      - name: Verify provenance identity and rejection behavior
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          gh attestation verify "artifacts/nomyr-${{ matrix.plane }}.image.tar" \
+            --repo nomyr-security/nomyr \
+            --signer-workflow nomyr-security/nomyr/.github/workflows/security-supply-chain.yml \
+            --source-ref refs/heads/main
+          if gh attestation verify "artifacts/nomyr-${{ matrix.plane }}.image.tar" \
+            --repo nomyr-security/nomyr \
+            --signer-workflow nomyr-security/nomyr/.github/workflows/scorecard.yml; then
+            echo 'verification unexpectedly accepted an unrelated signer workflow' >&2
+            exit 1
+          fi
+      - name: Verify keyless image signature
+        run: |
+          cosign verify-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.image.sigstore.json" \
+            --certificate-identity-regexp '^https://github.com/nomyr-security/nomyr/.github/workflows/security-supply-chain.yml@refs/heads/main$' \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com "artifacts/nomyr-${{ matrix.plane }}.oci.tar"
+      - name: Upload signatures and attestations
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nomyr-${{ matrix.plane }}-signed-${{ github.sha }}
+          path: artifacts/*.sigstore.json
+          if-no-files-found: error
+          retention-days: 90
+
+  codeql:
+    name: CodeQL analysis
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: github/codeql-action/init@cee97f86b972a3ded3c58d04148362b193ddc518 # v4.38.3
+        with:
+          languages: go, javascript-typescript
+      - uses: github/codeql-action/autobuild@cee97f86b972a3ded3c58d04148362b193ddc518 # v4.38.3
+      - uses: github/codeql-action/analyze@cee97f86b972a3ded3c58d04148362b193ddc518 # v4.38.3
