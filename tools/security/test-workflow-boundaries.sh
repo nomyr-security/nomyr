@@ -14,7 +14,15 @@ for file in "$root"/.github/workflows/*.yml; do
 		echo "every action reference must use a full commit SHA: $file" >&2
 		exit 1
 	fi
+	if grep -Eq 'github/codeql-action/(init|autobuild|analyze)@' "$file"; then
+		echo "advanced CodeQL workflows conflict with the configured GitHub default setup: $file" >&2
+		exit 1
+	fi
 done
+if [ -e "$root/.github/workflows/codeql-schedule.yml" ]; then
+	echo 'remove the duplicate advanced CodeQL schedule while GitHub default setup is configured' >&2
+	exit 1
+fi
 
 grep -Fq "if: github.event_name == 'push' && github.ref == 'refs/heads/main'" "$workflow"
 grep -Fq 'id-token: write' "$workflow"
