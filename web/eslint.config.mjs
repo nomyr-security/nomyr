@@ -9,7 +9,7 @@ export default [
       parser: babelParser,
       parserOptions: {
         requireConfigFile: false,
-        babelOptions: {plugins: [["@babel/plugin-syntax-typescript", {isTSX: true}]]},
+        babelOptions: {plugins: ["@babel/plugin-syntax-typescript", "@babel/plugin-syntax-jsx"]},
       },
     },
     plugins: {"jsx-a11y": jsxA11y},
