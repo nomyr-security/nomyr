@@ -12,7 +12,81 @@
       "required": ["name", "version"],
       "properties": {
         "name": {"type": "string", "minLength": 1},
-        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "source_versions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "authentication_methods": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "permissions": {
+          "type": "object",
+          "properties": {
+            "read": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+            "write": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+            "credential_material": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+          },
+          "additionalProperties": false
+        },
+        "sensitive_fields": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "data_localization": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "full_sync": {"enum": ["supported", "partial", "unsupported", "unknown"]},
+        "delta_sync": {"enum": ["supported", "partial", "unsupported", "unknown"]},
+        "event_retention_seconds": {"type": "integer", "minimum": 0},
+        "evaluators": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "objects": {
+      "type": "object",
+      "propertyNames": {"minLength": 1},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "inventory": {"enum": ["supported", "partial", "unsupported", "unknown", "metadata_only"]},
+          "native_id": {"type": "string", "minLength": 1},
+          "secret_value_read": {"enum": ["supported", "partial", "unsupported", "unknown", "separately_authorized"]},
+          "sensitive_fields": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+        },
+        "additionalProperties": false
+      }
+    },
+    "activity": {
+      "type": "object",
+      "properties": {
+        "acquisition": {"type": "array", "items": {"enum": ["native_stream", "customer_store", "polling", "unknown"]}, "uniqueItems": true},
+        "completeness": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "actions": {
+      "type": "object",
+      "propertyNames": {"minLength": 1},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "support": {"enum": ["supported", "partial", "unsupported", "unknown"]},
+          "plan_required": {"type": "boolean"},
+          "idempotency": {"type": "string", "minLength": 1},
+          "strategy": {"type": "string", "minLength": 1},
+          "compensation": {"type": "string", "minLength": 1},
+          "verifies": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "effect": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "propagation_bounds": {
+      "type": "object",
+      "properties": {
+        "minimum_seconds": {"type": "integer", "minimum": 0},
+        "maximum_seconds": {"type": "integer", "minimum": 0},
+        "status": {"enum": ["known", "partial", "unknown", "not_applicable"]}
+      },
+      "additionalProperties": false
+    },
+    "negative_cases": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "security": {
+      "type": "object",
+      "properties": {
+        "collector_write_access": {"enum": ["prohibited", "allowed", "unknown"]},
+        "secret_export_to_control_plane": {"enum": ["prohibited", "allowed", "unknown"]}
       },
       "additionalProperties": false
     },

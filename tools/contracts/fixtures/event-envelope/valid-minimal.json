@@ -1,0 +1,17 @@
+{
+  "id": "evt-synthetic-001",
+  "type": "identity.discovered",
+  "version": "1",
+  "tenant_id": "tenant-synthetic",
+  "workspace_id": "workspace-synthetic",
+  "subject": {"type": "identity", "id": "identity-synthetic-001"},
+  "actor": {"type": "system", "id": "collector-synthetic"},
+  "correlation_id": "corr-synthetic-001",
+  "causation_id": "cause-synthetic-001",
+  "policy_version": "policy-synthetic-1",
+  "source_version": "source-synthetic-1",
+  "evidence_refs": ["evidence-synthetic-001"],
+  "occurred_at": "2026-01-01T00:00:00Z",
+  "recorded_at": "2026-01-01T00:00:01Z",
+  "data": {"status": "unknown"}
+}
