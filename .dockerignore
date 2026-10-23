@@ -1,0 +1,13 @@
+**
+!.cache/
+!.cache/security/
+!.cache/security/nomyr-experience
+!.cache/security/nomyr-control-api
+!.cache/security/nomyr-control-worker
+!.cache/security/nomyr-collection
+!.cache/security/nomyr-action
+!deploy/
+!deploy/compose/
+!deploy/compose/images/
+!deploy/compose/images/temporal/
+!deploy/compose/images/temporal/dependencies.patch

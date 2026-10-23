@@ -5,6 +5,7 @@ ARG TARGETARCH
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates=20260816ubuntu0.24.04.1 \
+        binutils \
         curl \
         libfontconfig1 \
         tar \
@@ -33,6 +34,7 @@ RUN set -eux; \
             /opt/corretto/bin/keytool -delete -keystore /opt/corretto/lib/security/cacerts -storepass changeit -alias "$alias"; \
         fi; \
     done; \
+    command -v objcopy >/dev/null || { echo 'objcopy is required by jlink --strip-debug' >&2; exit 1; }; \
     /opt/corretto/bin/jlink \
         --add-modules ALL-MODULE-PATH \
         --strip-debug \
