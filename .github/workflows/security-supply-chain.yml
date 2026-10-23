@@ -27,7 +27,7 @@ jobs:
       - name: Install checksum-verified Gitleaks CLI
         run: |
           set -eu
-          curl -fsSLo "$RUNNER_TEMP/gitleaks.tgz" https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          curl --proto '=https' --proto-redir '=https' -fsSLo "$RUNNER_TEMP/gitleaks.tgz" https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
           echo '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  '"$RUNNER_TEMP/gitleaks.tgz" | sha256sum --check
           tar -xzf "$RUNNER_TEMP/gitleaks.tgz" -C "$RUNNER_TEMP" gitleaks
       - name: Scan current files and full Git history
@@ -111,7 +111,7 @@ jobs:
             grep -q 'not-implemented' "$RUNNER_TEMP/process-output.json"
           fi
           docker save "$image" --output "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar"
-          curl -fsSLo "$RUNNER_TEMP/syft.tgz" https://github.com/anchore/syft/releases/download/v1.42.3/syft_1.42.3_linux_amd64.tar.gz
+          curl --proto '=https' --proto-redir '=https' -fsSLo "$RUNNER_TEMP/syft.tgz" https://github.com/anchore/syft/releases/download/v1.42.3/syft_1.42.3_linux_amd64.tar.gz
           echo '0d6be741479eddd2c8644a288990c04f3df0d609bbc1599a005532a9dff63509  '"$RUNNER_TEMP/syft.tgz" | sha256sum --check
           tar -xzf "$RUNNER_TEMP/syft.tgz" -C "$RUNNER_TEMP" syft
           "$RUNNER_TEMP/syft" "docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar" \
@@ -203,7 +203,7 @@ jobs:
         run: |
           cosign verify-blob --bundle "artifacts/nomyr-${{ matrix.plane }}.image.sigstore.json" \
             --certificate-identity-regexp '^https://github.com/nomyr-security/nomyr/.github/workflows/security-supply-chain.yml@refs/heads/main$' \
-            --certificate-oidc-issuer https://token.actions.githubusercontent.com "artifacts/nomyr-${{ matrix.plane }}.oci.tar"
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com "artifacts/nomyr-${{ matrix.plane }}.image.tar"
       - name: Upload signatures and attestations
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
