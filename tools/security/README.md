@@ -45,8 +45,10 @@ asset before use, without executing it. Its SHA-256 is pinned to the GitHub
 release asset digest (`424e2c97d0b45fd7a6b608a87f090f35633f4c23ece5f092d48bba11aaf4bbfa`),
 and the report checks Go build metadata and retains the raw govulncheck JSON,
 all finding IDs, and affected symbol evidence. The verified binary reports
-Go 1.27.3. The audit retains GO-2026-5932 and GO-2026-6225; it does not claim
-the binary is vulnerability-free.
+Go 1.27.3. The trusted signing job verifies the installer-provided executable
+against the same digest before invoking any signing command or requesting its
+OIDC-backed signing operation. The audit retains GO-2026-5932 and GO-2026-6225;
+it does not claim the binary is vulnerability-free.
 
 The GO-2026-5932 report identifies only `golang.org/x/crypto/openpgp` packages
 as affected, with no known fixed version. The exact binary's symbol listing has
@@ -55,15 +57,15 @@ credential helper and `ACRCredHelper.Get` are linked into the binary, so their
 absence is not asserted. The upstream v3.1.4 source calls
 `NewACRCredentialsHelper` only from `RegistryOptions.GetRegistryClientOpts`
 when the Kubernetes keychain is selected
-([registry.go](https://github.com/sigstore/cosign/blob/v3.1.4/cmd/cosign/cli/options/registry.go)).
+([registry.go](https://github.com/sigstore/cosign/blob/0e48502cf5ef34e2e60bbd3617aa19945712f705/cmd/cosign/cli/options/registry.go)).
 This workflow invokes only `cosign sign-blob` on local archive/SBOM/checksum
 files and `cosign verify-blob` on the local image archive. The corresponding
 upstream command implementations call blob signing and verification paths
 without registry options
-([signblob.go](https://github.com/sigstore/cosign/blob/v3.1.4/cmd/cosign/cli/signblob.go),
-[sign_blob.go](https://github.com/sigstore/cosign/blob/v3.1.4/cmd/cosign/cli/sign/sign_blob.go),
-[verify.go](https://github.com/sigstore/cosign/blob/v3.1.4/cmd/cosign/cli/verify.go),
-[verify_blob.go](https://github.com/sigstore/cosign/blob/v3.1.4/cmd/cosign/cli/verify/verify_blob.go)).
+([signblob.go](https://github.com/sigstore/cosign/blob/0e48502cf5ef34e2e60bbd3617aa19945712f705/cmd/cosign/cli/signblob.go),
+[sign_blob.go](https://github.com/sigstore/cosign/blob/0e48502cf5ef34e2e60bbd3617aa19945712f705/cmd/cosign/cli/sign/sign_blob.go),
+[verify.go](https://github.com/sigstore/cosign/blob/0e48502cf5ef34e2e60bbd3617aa19945712f705/cmd/cosign/cli/verify.go),
+[verify_blob.go](https://github.com/sigstore/cosign/blob/0e48502cf5ef34e2e60bbd3617aa19945712f705/cmd/cosign/cli/verify/verify_blob.go)).
 The not-applicable disposition is limited to these exact commands and reviewed
 v3.1.4 source; it is not a general exemption for Cosign or registry use. The
 boundary test fails if the workflow adds registry/image `sign` or `verify`

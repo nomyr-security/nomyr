@@ -83,6 +83,14 @@ grep -Fq 'sbom:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json' "$workflow"
 grep -Fq 'cosign-release: v3.1.4' "$workflow"
 grep -Fq 'COSIGN_VERSION=3.1.4' "$root/tools/security/scanners.env"
 grep -Fq 'COSIGN_LINUX_AMD64_SHA256=424e2c97d0b45fd7a6b608a87f090f35633f4c23ece5f092d48bba11aaf4bbfa' "$root/tools/security/scanners.env"
+grep -Fq "printf '%s  %s\\n' '424e2c97d0b45fd7a6b608a87f090f35633f4c23ece5f092d48bba11aaf4bbfa' \"\$(command -v cosign)\" | sha256sum --check -" "$workflow"
+cosign_install_line=$(grep -nF 'uses: sigstore/cosign-installer@' "$workflow" | cut -d: -f1)
+cosign_checksum_line=$(grep -nF "printf '%s  %s\\n' '424e2c97d0b45fd7a6b608a87f090f35633f4c23ece5f092d48bba11aaf4bbfa'" "$workflow" | cut -d: -f1)
+cosign_sign_line=$(grep -nF 'cosign sign-blob --bundle' "$workflow" | head -n1 | cut -d: -f1)
+if [ -z "$cosign_install_line" ] || [ -z "$cosign_checksum_line" ] || [ -z "$cosign_sign_line" ] || [ "$cosign_install_line" -ge "$cosign_checksum_line" ] || [ "$cosign_checksum_line" -ge "$cosign_sign_line" ]; then
+	echo 'installed Cosign bytes must match the audited release digest before signing' >&2
+	exit 1
+fi
 grep -Fq 'GO-2026-5932' "$root/tools/security/audit-cosign-binary.sh"
 grep -Fq 'GO-2026-6225' "$root/tools/security/audit-cosign-binary.sh"
 sign_blob_count=$(grep -Fc 'cosign sign-blob --bundle' "$workflow")
