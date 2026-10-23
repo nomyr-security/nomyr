@@ -29,9 +29,11 @@ grep -Fq 'publish_results: false' "$scorecard"
 grep -Fq 'publish_results: true' "$scorecard"
 grep -Fq 'npm audit --audit-level=moderate' "$workflow"
 grep -Fq 'pip-audit --strict --requirement tools/contracts/requirements.txt' "$workflow"
-grep -Fq 'pip install --disable-pip-version-check --require-hashes --only-binary=:all:' "$workflow"
+grep -Fq 'python -m pip install --disable-pip-version-check --require-hashes' "$workflow"
+grep -Fq -- '--only-binary=:all: --requirement tools/security/pip-audit-requirements.txt' "$workflow"
 grep -Fq 'docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar' "$workflow"
 grep -Fq 'sbom:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json' "$workflow"
+grep -Fq 'cosign-release: v3.1.4' "$workflow"
 if grep -Eq -- '--ignore-vuln|--exclude|--only-fixed|fail-on high|fail-on critical' "$workflow"; then
 	echo 'security scans must not suppress findings or weaken the medium threshold' >&2
 	exit 1
