@@ -16,7 +16,7 @@ Changes are proposed in PRs #58, #59, and #60 until merged and validated togethe
 | Vite | 8.3.5 | Explicit current stable pin, above the 8.3.3 fixes including [CVE-2026-112946](https://github.com/vitejs/vite/security/advisories/GHSA-rq7h-c2jc-7f22). |
 | Vitest | 5.0.5 | Updated from 4.1.12, including a safe version of the mocker for [CVE-2026-112949](https://github.com/vitest-dev/vitest/security/advisories/GHSA-qxg6-89mg-rqv8). The previously pinned 4.1.12 was also a patched release; this update does not establish previous exposure. |
 | Babel / jsdom / test utilities | Babel 8, jsdom 30, current compatible utilities | Updated and pinned direct dependencies; migrated explicit JSX syntax configuration following [Babel's migration guide](https://babeljs.io/docs/v8-migration). |
-| ESLint | 9.39.5 | Compatibility exception, not an all-clear: [ESLint 9 is end-of-life](https://eslint.org/version-support/), while eslint-plugin-jsx-a11y 6.10.2 declares support only through ESLint 9. Upstream [ESLint 10 support remains unresolved](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/1075). Retained without forced peer bypass or removal of accessibility rules; migration requires a separately validated equivalent gate. |
+| ESLint | 9.39.5 | Compatibility exception, not an all-clear: [ESLint 9 is end-of-life](https://eslint.org/version-support/), while eslint-plugin-jsx-a11y 6.10.2 declares support only through ESLint 9. Upstream [ESLint 10 support remains unresolved](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/1075). Retained without forced peer bypass or removal of accessibility rules; [#61](https://github.com/nomyr-security/nomyr/issues/61) tracks migration with a separately validated equivalent gate. |
 | Node.js types | 22.20.5 | Pinned to the runtime's major line rather than floating to types for a different Node runtime. |
 
 All direct web dependencies use explicit versions and the npm lockfile records
@@ -41,6 +41,16 @@ across 426 resolved dependencies, including development dependencies. This
 result is time-bound and limited to npm's advisory coverage; it does not cover
 Go modules, Python tools, image OS packages, or unknown vulnerabilities.
 
+## Verified Go checks
+
+Go modules were refreshed, including kin-openapi 0.152.0, oapi-codegen/runtime
+1.8.0, jsonpointer 1.0.2, pflag 1.0.10, and their resolved transitive graph.
+govulncheck was updated to 1.9.0. Module-level scans across all 17 Go package
+directories, plus `govulncheck -scan=package ./...` and
+`govulncheck -scan=symbol ./...`, reported no vulnerabilities. Combined
+`make test`, `make build`, and `git diff --check` passed after the Go/web refresh.
+These results do not certify unscanned provider integrations or image OS packages.
+
 ## Separate acceptance boundaries
 
 - Go direct and transitive modules require both reachability-aware and
@@ -52,10 +62,12 @@ Go modules, Python tools, image OS packages, or unknown vulnerabilities.
 - PR #60 owns scanner/action/container and Python contract-tool dependency
   updates, and ongoing security gates. Image SBOM generation alone is not a
   vulnerability scan, and an unrun scanner is not a clean result.
-- GitHub Dependency Review currently fails because the repository dependency
-  graph is unavailable. The SBOM API also returns 404. An empty Dependabot alert
-  list is therefore not evidence that the dependency inventory is complete.
-  Do not skip or downgrade the failing gate to claim a pass.
+- GitHub Dependency Review initially failed because the repository dependency
+  graph was unavailable. After the repository owner enabled it, the SBOM API
+  returned SPDX 2.3 with 456 packages and the previously failing review job
+  passed on rerun. This resolves the configuration blocker without skipping or
+  downgrading the gate. An empty alert list alone still does not establish a
+  complete inventory or replace independent ecosystem/image scans.
 - Trusted-main artifact signing, complete Compose health/teardown, and the
   final integrated security workflows need their own execution evidence.
 
