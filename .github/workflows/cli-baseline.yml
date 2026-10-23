@@ -17,6 +17,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+      - name: Verify Go-built lint tool
+        run: mise exec -- tools/bootstrap/check
       - name: Build CLI
         run: go build -o bin/nomyr ./cmd/nomyr
       - name: Lint CLI error constructors

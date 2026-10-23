@@ -31,6 +31,11 @@ checked-in `mise.toml` pins Go, Node.js, Buf, `golangci-lint`, and
 `govulncheck`; npm is the version bundled with the pinned Node.js release. Fork
 the repository, clone your fork, and create a branch for your change.
 
+`golangci-lint` is built from its pinned Go module source using the selected Go
+toolchain rather than downloaded as a prebuilt binary. `make check-dev` verifies
+that its embedded Go version matches the selected compiler and scans the lint
+binary with `govulncheck` before you rely on it.
+
 ```sh
 make bootstrap
 make check-dev
