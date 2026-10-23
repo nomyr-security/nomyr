@@ -56,7 +56,11 @@ jobs:
           name: nomyr-security-scanner-tools-${{ github.sha }}
           path: ${{ runner.temp }}/scanner-tools
       - name: Restore scanner executable permissions
-        run: chmod +x "$RUNNER_TEMP/scanner-tools/bin/"*
+        run: |
+          set -eu
+          cd "$RUNNER_TEMP/scanner-tools"
+          sha256sum --check scanner-build.SHA256SUMS
+          chmod +x bin/*
       - name: Scan current files and full Git history
         run: $RUNNER_TEMP/scanner-tools/bin/gitleaks git --redact --exit-code 1 --log-opts='--all' .
 
@@ -123,7 +127,11 @@ jobs:
           name: nomyr-security-scanner-tools-${{ github.sha }}
           path: ${{ runner.temp }}/scanner-tools
       - name: Restore scanner executable permissions
-        run: chmod +x "$RUNNER_TEMP/scanner-tools/bin/"*
+        run: |
+          set -eu
+          cd "$RUNNER_TEMP/scanner-tools"
+          sha256sum --check scanner-build.SHA256SUMS
+          chmod +x bin/*
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         if: matrix.plane == 'experience'
         with:

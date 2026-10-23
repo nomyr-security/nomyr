@@ -70,9 +70,10 @@ fi
 grep -Fq 'scanner-tools/bin/gitleaks' "$workflow"
 grep -Fq 'scanner-tools/bin/syft' "$workflow"
 grep -Fq 'scanner-tools/bin/grype' "$workflow"
-chmod_steps=$(grep -Fc 'run: chmod +x "$RUNNER_TEMP/scanner-tools/bin/"*' "$workflow")
-if [ "$chmod_steps" -ne 2 ]; then
-	echo 'artifact consumers must restore executable scanner modes after download' >&2
+checksum_steps=$(grep -Fc 'sha256sum --check scanner-build.SHA256SUMS' "$workflow")
+chmod_steps=$(grep -Fc 'chmod +x bin/*' "$workflow")
+if [ "$checksum_steps" -ne 2 ] || [ "$chmod_steps" -ne 2 ]; then
+	echo 'artifact consumers must verify scanner hashes before restoring executable modes' >&2
 	exit 1
 fi
 grep -Fq 'export DOCKER_HOST="unix://$RUNNER_TEMP/no-daemon.sock"' "$workflow"
