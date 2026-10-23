@@ -7,7 +7,7 @@ import (
 
 // Assets contains the static Next.js export after `make web-build`.
 //
-//go:embed assets
+//go:embed all:assets
 var assets embed.FS
 
 func Public() fs.FS {

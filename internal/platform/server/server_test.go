@@ -31,3 +31,20 @@ func TestMissingStaticRouteUsesFallback(t *testing.T) {
 		t.Fatalf("unexpected fallback response: %d %q", response.Code, response.Body.String())
 	}
 }
+
+func TestNextStaticAssetIsServedWithoutSPARewrite(t *testing.T) {
+	assets := fstest.MapFS{
+		"index.html":                   {Data: []byte("app shell")},
+		"_next/static/chunks/app.css": {Data: []byte("body { color: white; }")},
+	}
+	request := httptest.NewRequest(http.MethodGet, "/_next/static/chunks/app.css", nil)
+	response := httptest.NewRecorder()
+
+	Handler(fs.FS(assets), demo.Seed()).ServeHTTP(response, request)
+	if response.Code != http.StatusOK || response.Body.String() != "body { color: white; }" {
+		t.Fatalf("unexpected static asset response: %d %q", response.Code, response.Body.String())
+	}
+	if response.Header().Get("Content-Type") != "text/css; charset=utf-8" {
+		t.Fatalf("unexpected static asset content type: %q", response.Header().Get("Content-Type"))
+	}
+}
