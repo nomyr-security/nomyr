@@ -14,8 +14,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  scanner-tools:
+    name: Build and audit pinned scanner tools
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.10"
+          cache: false
+      - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+      - name: Build scanners from verified source
+        run: tools/security/build-scanners.sh "$RUNNER_TEMP/scanner-tools"
+      - name: Audit scanner binaries and preserve bounded Grype finding disposition
+        run: tools/security/audit-scanner-binaries.sh "$RUNNER_TEMP/scanner-tools"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: nomyr-security-scanner-tools-${{ github.sha }}
+          path: ${{ runner.temp }}/scanner-tools
+          if-no-files-found: warn
+          retention-days: 14
+
   secrets:
     name: Secret scanning
+    needs: scanner-tools
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,15 +51,12 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Install checksum-verified Gitleaks CLI
-        run: |
-          set -eu
-          curl --proto '=https' --proto-redir '=https' -fsSLo "$RUNNER_TEMP/gitleaks.tgz" https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
-          echo '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  '"$RUNNER_TEMP/gitleaks.tgz" | sha256sum --check
-          tar -xzf "$RUNNER_TEMP/gitleaks.tgz" -C "$RUNNER_TEMP" gitleaks
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: nomyr-security-scanner-tools-${{ github.sha }}
+          path: ${{ runner.temp }}/scanner-tools
       - name: Scan current files and full Git history
-        run: |
-          "$RUNNER_TEMP/gitleaks" git --redact --exit-code 1 --log-opts='--all' .
+        run: $RUNNER_TEMP/scanner-tools/bin/gitleaks git --redact --exit-code 1 --log-opts='--all' .
 
   dependency-review:
     name: Dependency and license review
@@ -78,6 +102,7 @@ jobs:
 
   images:
     name: Build ${{ matrix.plane }} image and SBOM
+    needs: scanner-tools
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -91,6 +116,10 @@ jobs:
         with:
           go-version: "1.26.10"
           cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: nomyr-security-scanner-tools-${{ github.sha }}
+          path: ${{ runner.temp }}/scanner-tools
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         if: matrix.plane == 'experience'
         with:
@@ -139,20 +168,15 @@ jobs:
             grep -q 'not-implemented' "$RUNNER_TEMP/process-output.json"
           fi
           docker save "$image" --output "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar"
-          curl --proto '=https' --proto-redir '=https' -fsSLo "$RUNNER_TEMP/syft.tgz" https://github.com/anchore/syft/releases/download/v1.55.0/syft_1.55.0_linux_amd64.tar.gz
-          echo 'bb65249542db5fedeeb4d3f9b018b75e7264dbfbbb10486f044581a92f90490d  '"$RUNNER_TEMP/syft.tgz" | sha256sum --check
-          tar -xzf "$RUNNER_TEMP/syft.tgz" -C "$RUNNER_TEMP" syft
-          "$RUNNER_TEMP/syft" "docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar" \
+          "$RUNNER_TEMP/scanner-tools/bin/syft" "docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar" \
             -o "cyclonedx-json=$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json"
-          curl --proto '=https' --proto-redir '=https' -fsSLo "$RUNNER_TEMP/grype.tgz" https://github.com/anchore/grype/releases/download/v0.121.0/grype_0.121.0_linux_amd64.tar.gz
-          echo '64e07133d3486115de647a66581461dccf5c732748a0a3119077395565f15519  '"$RUNNER_TEMP/grype.tgz" | sha256sum --check
-          tar -xzf "$RUNNER_TEMP/grype.tgz" -C "$RUNNER_TEMP" grype
+          export DOCKER_HOST="unix://$RUNNER_TEMP/no-daemon.sock"
           set +e
-          "$RUNNER_TEMP/grype" "docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar" \
+          "$RUNNER_TEMP/scanner-tools/bin/grype" "docker-archive:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image.tar" \
             --fail-on medium --output table --file "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image-vulnerabilities.txt"
           image_scan_status=$?
           cat "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.image-vulnerabilities.txt"
-          "$RUNNER_TEMP/grype" "sbom:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json" \
+          "$RUNNER_TEMP/scanner-tools/bin/grype" "sbom:$RUNNER_TEMP/nomyr-${{ matrix.plane }}.cdx.json" \
             --fail-on medium --output sarif --file "$RUNNER_TEMP/nomyr-${{ matrix.plane }}.sbom-vulnerabilities.sarif"
           sbom_scan_status=$?
           set -e
