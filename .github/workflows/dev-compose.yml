@@ -1,0 +1,50 @@
+name: development Compose smoke
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/dev-compose.yml
+      - deploy/compose/compose.yaml
+      - tools/dev/stack
+      - tools/dev/stack_test.sh
+      - Makefile
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/dev-compose.yml
+      - deploy/compose/compose.yaml
+      - tools/dev/stack
+      - tools/dev/stack_test.sh
+      - Makefile
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Compose service health
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Validate config and check service health
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: |
+          make dev-stack-config
+          make dev-smoke
+      - name: Always tear down containers, volumes, and temporary credentials
+        if: always()
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: |
+          set +e
+          if [ -f "$NOMYR_DEV_ENV_FILE" ]; then
+            tools/dev/stack reset
+            status=$?
+          else
+            status=0
+          fi
+          rm -f "$NOMYR_DEV_ENV_FILE"
+          exit "$status"

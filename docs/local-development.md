@@ -25,17 +25,18 @@ processes with Ctrl-C. `make dev-stack-down` stops and removes the containers
 while preserving local data and generated credentials.
 
 The services are PostgreSQL, ClickHouse, Temporal's local development server,
-NATS JetStream, MinIO, OpenBao dev mode, and Keycloak dev mode. The service
-images use explicit version tags. Local state is held in named Docker volumes.
+NATS JetStream, OpenBao dev mode, and Keycloak dev mode. Images use explicit
+version tags and registry digests. Local state is held in named Docker volumes.
 Temporal's standalone development server uses its own SQLite store; it does not
 store Nomyr product state. The current demo does not connect to PostgreSQL or
 any other Compose service.
 
-MinIO's Community Edition container repository is archived. This stack uses its
-last published upstream container tag (`RELEASE.2025-09-07T16-13-09Z`); the
-subsequent October source release fixed a security issue but did not publish a
-container image. Treat MinIO as disposable loopback-only development data, and
-do not use this stack for production or untrusted network access.
+Object storage is intentionally absent: the MinIO Community Edition container
+repository is archived and its available image is not safe to retain in this
+stack. No current Nomyr demo flow depends on object storage. Adding an object
+store requires selecting a maintained, compatible implementation and verifying
+its provenance and security before use. This is a development-environment gap,
+not an implemented Nomyr capability.
 The stack typically needs several GB of memory and several GB of free disk;
 image pulls and local volumes determine actual use.
 
@@ -45,7 +46,6 @@ image pulls and local volumes determine actual use.
 | ClickHouse HTTP/native | `127.0.0.1:8123`, `127.0.0.1:9000` |
 | Temporal gRPC/UI | `127.0.0.1:7233`, `127.0.0.1:8233` |
 | NATS / monitoring | `127.0.0.1:4222`, `127.0.0.1:8222` |
-| MinIO API/console | `127.0.0.1:9002`, `127.0.0.1:9001` |
 | OpenBao | `127.0.0.1:8200` |
 | Keycloak | `127.0.0.1:8081` |
 
@@ -71,3 +71,10 @@ their local health endpoints. Reset removes containers, volumes, and the
 generated credential file. It irreversibly deletes local stack data. The
 smoke check verifies service availability only; it does not exercise provider
 integrations or Phase 1 product flows.
+
+The `development Compose smoke` GitHub Actions workflow runs the same config
+and health checks on a hosted Docker runner for relevant pull requests. It uses
+read-only repository permissions, stores generated credentials in the runner's
+temporary directory, and always attempts to remove containers, volumes, and
+credentials. It validates image startup and service health; it is not a
+vulnerability scan or an end-to-end product test.

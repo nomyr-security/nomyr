@@ -37,7 +37,23 @@ else
 	file_mode=$(stat -c '%a' "$NOMYR_DEV_ENV_FILE")
 fi
 test "$file_mode" = 600
-test "$(wc -l <"$NOMYR_DEV_ENV_FILE" | tr -d ' ')" = 5
+test "$(wc -l <"$NOMYR_DEV_ENV_FILE" | tr -d ' ')" = 4
+if grep -q 'minio\|MINIO' "$repo_root/deploy/compose/compose.yaml" "$repo_root/tools/dev/stack"; then
+	echo "archived MinIO service unexpectedly remains in the dev stack" >&2
+	exit 1
+fi
+if grep -E '^    image:' "$repo_root/deploy/compose/compose.yaml" | grep -vE '@sha256:[0-9a-f]{64}$'; then
+	echo "development images must be pinned by registry digest" >&2
+	exit 1
+fi
+if grep -E '^    ports:' "$repo_root/deploy/compose/compose.yaml" | grep -v '127\.0\.0\.1:'; then
+	echo "development stack published a non-loopback port" >&2
+	exit 1
+fi
+grep -q 'contents: read' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'if: always()' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'runner.temp' "$repo_root/.github/workflows/dev-compose.yml"
 if "$repo_root/tools/dev/stack" invalid >/dev/null 2>&1; then
 	echo "unknown stack command unexpectedly succeeded" >&2
 	exit 1

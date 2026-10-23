@@ -15,7 +15,6 @@ ensure_env() {
 		{
 			printf 'NOMYR_DEV_POSTGRES_PASSWORD=%s\n' "$(openssl rand -hex 32)"
 			printf 'NOMYR_DEV_CLICKHOUSE_PASSWORD=%s\n' "$(openssl rand -hex 32)"
-			printf 'NOMYR_DEV_MINIO_PASSWORD=%s\n' "$(openssl rand -hex 32)"
 			printf 'NOMYR_DEV_OPENBAO_TOKEN=%s\n' "$(openssl rand -hex 32)"
 			printf 'NOMYR_DEV_KEYCLOAK_PASSWORD=%s\n' "$(openssl rand -hex 32)"
 		} >"$temp_file"
@@ -50,7 +49,6 @@ case "${1:-}" in
 		for endpoint in \
 			http://127.0.0.1:8123/ping \
 			http://127.0.0.1:8222/healthz \
-			http://127.0.0.1:9002/minio/health/ready \
 			http://127.0.0.1:8200/v1/sys/health \
 			http://127.0.0.1:8081/health/ready; do
 			curl --fail --silent --show-error "$endpoint" >/dev/null
