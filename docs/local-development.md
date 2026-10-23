@@ -25,8 +25,10 @@ processes with Ctrl-C. `make dev-stack-down` stops and removes the containers
 while preserving local data and generated credentials.
 
 The services are PostgreSQL, ClickHouse, Temporal's local development server,
-NATS JetStream, OpenBao dev mode, and Keycloak dev mode. Images use explicit
-version tags and registry digests. Local state is held in named Docker volumes.
+NATS JetStream, OpenBao dev mode, and Keycloak dev mode. PostgreSQL, ClickHouse,
+and NATS use explicit version tags and registry digests. Temporal, OpenBao, and
+Keycloak are built from the pinned upstream sources in `deploy/compose/images/`
+with repository-root build context. Local state is held in named Docker volumes.
 Temporal's standalone development server uses its default ephemeral SQLite
 store; it does not store Nomyr product state. The current demo does not connect
 to PostgreSQL or any other Compose service.
@@ -72,9 +74,11 @@ generated credential file. It irreversibly deletes local stack data. The
 smoke check verifies service availability only; it does not exercise provider
 integrations or Phase 1 product flows.
 
-The `development Compose smoke` GitHub Actions workflow runs the same config
-and health checks on a hosted Docker runner for relevant pull requests. It uses
-read-only repository permissions, stores generated credentials in the runner's
-temporary directory, and always attempts to remove containers, volumes, and
-credentials. It validates image startup and service health; it is not a
-vulnerability scan or an end-to-end product test.
+The `development Compose smoke` GitHub Actions workflow builds and health-checks
+the local service images on a hosted Docker runner, then scans every Compose
+output and the patched devcontainer image with checksum-pinned Grype. Critical
+and High matches fail the job. Complete JSON reports are uploaded from the
+runner temporary directory even when scanning fails. It uses read-only
+repository permissions, stores generated credentials in the runner temporary
+directory, and always attempts teardown. This is an image-scan and availability
+check, not an end-to-end product test.

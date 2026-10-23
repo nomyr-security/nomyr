@@ -42,10 +42,13 @@ if grep -q 'minio\|MINIO' "$repo_root/deploy/compose/compose.yaml" "$repo_root/t
 	echo "archived MinIO service unexpectedly remains in the dev stack" >&2
 	exit 1
 fi
-if grep -E '^    image:' "$repo_root/deploy/compose/compose.yaml" | grep -vE '@sha256:[0-9a-f]{64}$'; then
+if grep -E '^    image:' "$repo_root/deploy/compose/compose.yaml" | grep -vE '(@sha256:[0-9a-f]{64}|nomyr-dev/(temporal|openbao|keycloak):scan)$'; then
 	echo "development images must be pinned by registry digest" >&2
 	exit 1
 fi
+grep -A4 '^  temporal:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/temporal/Dockerfile'
+grep -A4 '^  openbao:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/openbao/Dockerfile'
+grep -A4 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/keycloak/Dockerfile'
 if grep -E '^    ports:' "$repo_root/deploy/compose/compose.yaml" | grep -v '127\.0\.0\.1:'; then
 	echo "development stack published a non-loopback port" >&2
 	exit 1
@@ -55,9 +58,14 @@ grep -q 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' "$repo_root/
 grep -q 'persist-credentials: false' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'anchore/grype/releases/download/v0.121.0/grype_0.121.0_linux_amd64.tar.gz' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q '64e07133d3486115de647a66581461dccf5c732748a0a3119077395565f15519' "$repo_root/.github/workflows/dev-compose.yml"
-grep -q 'registry:$image' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q '"$scheme:$image"' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q -- '--fail-on medium' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' "$repo_root/.github/workflows/dev-compose.yml"
-grep -q 'mcr.microsoft.com/devcontainers/base:ubuntu-24.04@sha256:' "$repo_root/.devcontainer/devcontainer.json"
+grep -q 'mcr.microsoft.com/devcontainers/base:ubuntu-24.04@sha256:' "$repo_root/.devcontainer/Dockerfile"
+grep -q 'apt-get upgrade --yes' "$repo_root/.devcontainer/Dockerfile"
+grep -q 'nomyr-image-scan' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'nomyr-devcontainer:scan' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'docker compose.*build --pull --no-cache temporal openbao keycloak' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'if: always()' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'runner.temp' "$repo_root/.github/workflows/dev-compose.yml"
 if "$repo_root/tools/dev/stack" invalid >/dev/null 2>&1; then

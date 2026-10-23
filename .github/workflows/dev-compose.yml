@@ -5,6 +5,8 @@ on:
     paths:
       - .github/workflows/dev-compose.yml
       - deploy/compose/compose.yaml
+      - .devcontainer/**
+      - docs/dev-image-vulnerabilities.md
       - tools/dev/stack
       - tools/dev/stack_test.sh
       - Makefile
@@ -13,6 +15,8 @@ on:
     paths:
       - .github/workflows/dev-compose.yml
       - deploy/compose/compose.yaml
+      - .devcontainer/**
+      - docs/dev-image-vulnerabilities.md
       - tools/dev/stack
       - tools/dev/stack_test.sh
       - Makefile
@@ -30,59 +34,106 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Validate config and check service health
+      - name: Generate isolated development credentials
         env:
           NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
-        run: |
-          make dev-stack-config
-          make dev-smoke
+        run: make dev-stack-config
       - name: Install checksum-pinned Grype
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/grype" reports/image-scan
+          mkdir -p "$RUNNER_TEMP/grype" "$RUNNER_TEMP/nomyr-image-scan"
           archive="$RUNNER_TEMP/grype/grype_0.121.0_linux_amd64.tar.gz"
           curl --fail --location --silent --show-error \
             https://github.com/anchore/grype/releases/download/v0.121.0/grype_0.121.0_linux_amd64.tar.gz \
             --output "$archive"
           echo '64e07133d3486115de647a66581461dccf5c732748a0a3119077395565f15519  '"$archive" | sha256sum --check
           tar -xzf "$archive" -C "$RUNNER_TEMP/grype" grype
-          "$RUNNER_TEMP/grype/grype" version | tee reports/image-scan/grype-version.txt
-      - name: Scan Compose and devcontainer images from public registries
+          "$RUNNER_TEMP/grype/grype" version | tee "$RUNNER_TEMP/nomyr-image-scan/grype-version.txt"
+      - name: Build development service images
+        shell: bash
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: |
+          set -o pipefail
+          docker compose --env-file "$NOMYR_DEV_ENV_FILE" -f deploy/compose/compose.yaml build --pull --no-cache temporal openbao keycloak \
+            2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/compose-build.log"
+      - name: Check service health
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: |
+          if [ ! -f "$NOMYR_DEV_ENV_FILE" ]; then
+            echo 'Generated development credentials are unavailable' >&2
+            exit 1
+          fi
+          make dev-smoke
+      - name: Build devcontainer with current Ubuntu security updates
+        if: always()
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/nomyr-image-scan"
+          docker build --pull --no-cache --file .devcontainer/Dockerfile --tag nomyr-devcontainer:scan .devcontainer \
+            2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/devcontainer-build.log"
+      - name: Scan Compose outputs and devcontainer images
+        if: always()
         shell: bash
         env:
           NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
         run: |
           set +e
-          report_dir=reports/image-scan
+          report_dir="$RUNNER_TEMP/nomyr-image-scan"
           mkdir -p "$report_dir/images"
-          image_list="$RUNNER_TEMP/nomyr-image-refs.txt"
-          docker compose --env-file "$NOMYR_DEV_ENV_FILE" -f deploy/compose/compose.yaml config --images > "$image_list"
+          if [ ! -x "$RUNNER_TEMP/grype/grype" ]; then
+            printf 'Pinned Grype installation did not complete; no image scans were possible\n' > "$report_dir/scan-errors.txt"
+            exit 1
+          fi
+          image_list="$RUNNER_TEMP/nomyr-image-refs.tsv"
+          docker compose --env-file "$NOMYR_DEV_ENV_FILE" -f deploy/compose/compose.yaml config --format json > "$RUNNER_TEMP/compose-config.json"
           config_status=$?
           if [ "$config_status" -ne 0 ]; then
             printf 'Compose image inventory failed (exit %s)\n' "$config_status" | tee "$report_dir/scan-errors.txt"
+          else
+            jq -r '.services | to_entries[] | [.value.image, (if .value.build then "docker" else "registry" end)] | @tsv' "$RUNNER_TEMP/compose-config.json" > "$image_list"
           fi
-          jq -r '.image' .devcontainer/devcontainer.json >> "$image_list"
           scan_status=0
-          while IFS= read -r image; do
-            [ -n "$image" ] || continue
+          scan_one() {
+            image=$1
+            scheme=$2
+            gate=$3
             safe_name=$(printf '%s' "$image" | tr '/:@' '___')
             report="$report_dir/images/$safe_name.json"
-            printf '%s\n' "$image" > "$report_dir/images/$safe_name.source"
-            "$RUNNER_TEMP/grype/grype" "registry:$image" --fail-on high --output json --file "$report"
+            printf '%s:%s\n' "$scheme" "$image" > "$report_dir/images/$safe_name.source"
+            if [ "$gate" = high ]; then
+              "$RUNNER_TEMP/grype/grype" "$scheme:$image" --fail-on medium --output json --file "$report"
+            else
+              "$RUNNER_TEMP/grype/grype" "$scheme:$image" --output json --file "$report"
+            fi
             result=$?
             if [ "$result" -eq 2 ]; then
-              printf '%s: High/Critical vulnerability threshold exceeded\n' "$image" >> "$report_dir/scan-summary.txt"
+              printf '%s: Medium-or-higher vulnerability threshold exceeded\n' "$image" >> "$report_dir/scan-summary.txt"
               scan_status=2
             elif [ "$result" -ne 0 ]; then
               printf '%s: scanner failed with exit %s\n' "$image" "$result" >> "$report_dir/scan-errors.txt"
               scan_status=1
             fi
             if [ -s "$report" ]; then
-              jq -r --arg image "$image" '[.matches[] | select(.vulnerability.severity == "Critical" or .vulnerability.severity == "High")] | "\($image): \(length) High/Critical matches; complete findings in JSON report"' "$report" >> "$report_dir/scan-summary.txt"
+              jq -r --arg image "$image" '[.matches[] | select(.vulnerability.severity == "Critical" or .vulnerability.severity == "High" or .vulnerability.severity == "Medium")] | "\($image): \(length) Medium-or-higher matches; complete findings in JSON report"' "$report" >> "$report_dir/scan-summary.txt"
               jq -r --arg image "$image" '.matches[] | [.vulnerability.severity, (.vulnerability.fix.state // "unknown"), (.vulnerability.fix.versions // [] | join(",")), .vulnerability.id, .artifact.name, .artifact.version] | @tsv' "$report" | sort -u >> "$report_dir/findings.tsv"
             fi
+          }
+          while IFS="$(printf '\t')" read -r image scheme; do
+            [ -n "$image" ] || continue
+            scan_one "$image" "$scheme" high
           done < "$image_list"
+          base_image=$(sed -n 's/^FROM[[:space:]]\+//p' .devcontainer/Dockerfile | head -n 1)
+          if [ -n "$base_image" ]; then
+            scan_one "$base_image" registry report-only
+          else
+            printf 'Could not resolve devcontainer Dockerfile FROM image\n' >> "$report_dir/scan-errors.txt"
+            scan_status=1
+          fi
+          scan_one nomyr-devcontainer:scan docker high
           if [ "$config_status" -ne 0 ]; then
             exit 1
           fi
@@ -92,7 +143,7 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.0
         with:
           name: dev-image-grype-${{ github.run_id }}-${{ github.run_attempt }}
-          path: reports/image-scan/
+          path: ${{ runner.temp }}/nomyr-image-scan/
           if-no-files-found: warn
           retention-days: 14
       - name: Always tear down containers, volumes, and temporary credentials

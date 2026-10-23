@@ -32,7 +32,11 @@ services:
       start_period: 15s
 
   temporal:
-    image: temporalio/temporal:1.9.1@sha256:ad4c82c97bd12b417d1ea942610dbcd511afb250c4d5ed26c694009533df447e
+    image: nomyr-dev/temporal:scan
+    build:
+      context: ../..
+      dockerfile: deploy/compose/images/temporal/Dockerfile
+      pull: true
     command: ["server", "start-dev", "--ip", "0.0.0.0"]
     ports: ["127.0.0.1:7233:7233", "127.0.0.1:8233:8233"]
     healthcheck:
@@ -54,7 +58,11 @@ services:
       retries: 20
 
   openbao:
-    image: openbao/openbao:2.6.4@sha256:cf2340fc9a22cb9358ca0defd1f39b65673836bd23fe2bb8984a07e11fe13ef4
+    image: nomyr-dev/openbao:scan
+    build:
+      context: ../..
+      dockerfile: deploy/compose/images/openbao/Dockerfile
+      pull: true
     command: ["server", "-dev", "-dev-listen-address=0.0.0.0:8200", "-dev-root-token-id=${NOMYR_DEV_OPENBAO_TOKEN}"]
     ports: ["127.0.0.1:8200:8200"]
     logging:
@@ -66,7 +74,11 @@ services:
       retries: 20
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.8.1@sha256:79c623a22abacf3fe6c00a5fb30f5b7843d717b234033b80995891c06116d244
+    image: nomyr-dev/keycloak:scan
+    build:
+      context: ../..
+      dockerfile: deploy/compose/images/keycloak/Dockerfile
+      pull: true
     command: ["start-dev", "--http-host=0.0.0.0"]
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: nomyr
