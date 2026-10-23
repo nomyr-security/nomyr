@@ -51,6 +51,22 @@ directories, plus `govulncheck -scan=package ./...` and
 `make test`, `make build`, and `git diff --check` passed after the Go/web refresh.
 These results do not certify unscanned provider integrations or image OS packages.
 
+## Developer-tool binary finding
+
+The latest upstream golangci-lint 2.15.0 prebuilt binary used Go 1.27.0.
+An independent `govulncheck -mode=binary` scan found 13 standard-library
+findings, including GO-2026-6809 / CVE-2026-111943. A current tool version
+therefore did not mean its embedded compiler runtime was patched.
+
+The mise pin now selects the Go-source backend for the same linter release,
+with automatic toolchain switching disabled, so it builds using pinned Go
+1.26.10. The bootstrap checker verifies the embedded compiler version;
+tests reject the old vulnerable build and mismatched/unverifiable tools.
+The CLI baseline also checks development tool provenance. Independent
+post-rebuild `go version -m` confirmed Go 1.26.10 and binary-mode govulncheck
+reported no vulnerabilities. Buf 1.75.0 was built with Go 1.27.3 and the
+source-built govulncheck 1.9.0 used Go 1.26.10 when inspected.
+
 ## Separate acceptance boundaries
 
 - Go direct and transitive modules require both reachability-aware and
