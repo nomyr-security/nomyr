@@ -56,7 +56,7 @@ jobs:
           mkdir -p "$scanner_bin"
           (cd tools/security/govulncheck && GOTOOLCHAIN=local go build -mod=readonly -o "$scanner_bin/govulncheck" golang.org/x/vuln/cmd/govulncheck)
           "$scanner_bin/govulncheck" -version | grep -F 'govulncheck@v1.9.0'
-          go version -m "$scanner_bin/govulncheck" | grep -F 'golang.org/x/vuln v1.9.0'
+          go version -m "$scanner_bin/govulncheck" | grep -E '^[[:space:]]+mod[[:space:]]+golang.org/x/vuln[[:space:]]+v1\.9\.0([[:space:]]|$)'
           echo "$scanner_bin" >> "$GITHUB_PATH"
       - name: Build scanner binaries from verified source
         shell: bash
