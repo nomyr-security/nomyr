@@ -106,6 +106,15 @@ if grep -Eq 'chown -R .* /opt/keycloak(/lib)?([[:space:]]|$)' "$repo_root/deploy
 fi
 grep -A4 '^  openbao:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/openbao/Dockerfile'
 grep -A4 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/keycloak/Dockerfile'
+grep -Fq '${NOMYR_DEV_OPENBAO_TOKEN:?run make dev-stack-up}' "$repo_root/deploy/compose/compose.yaml"
+clickhouse_config=$(sed -n '/^  clickhouse:/,/^  temporal:/p' "$repo_root/deploy/compose/compose.yaml")
+clickhouse_healthcheck=$(printf '%s\n' "$clickhouse_config" | sed -n '/^    healthcheck:/,$p')
+printf '%s\n' "$clickhouse_healthcheck" | grep -Fq 'test: ["CMD", "wget", "--spider", "--no-check-certificate", "-T", "1", "-q", "http://127.0.0.1:8123/ping"]'
+if printf '%s\n' "$clickhouse_healthcheck" | grep -q -- '--password'; then
+	echo 'ClickHouse healthcheck must not expose credentials in argv' >&2
+	exit 1
+fi
+grep -Fq "dpkg-query -W -f='ca-certificates version \${Version}\\n' ca-certificates;" "$repo_root/deploy/compose/images/openbao/Dockerfile"
 if grep -E '^    ports:' "$repo_root/deploy/compose/compose.yaml" | grep -v '127\.0\.0\.1:'; then
 	echo "development stack published a non-loopback port" >&2
 	exit 1
@@ -141,6 +150,8 @@ grep -q '/usr/local/share/mise/provenance.txt' "$repo_root/.devcontainer/Dockerf
 grep -q 'install -D -m 0755 /tmp/mise/bin/mise /usr/local/bin/mise' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'mise version | grep -F' "$repo_root/.devcontainer/Dockerfile"
 grep -q '^USER vscode$' "$repo_root/.devcontainer/Dockerfile"
+grep -Fq 'RUN test -w "$HOME" \' "$repo_root/.devcontainer/Dockerfile"
+grep -Fq '    && command -v mise \' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'nomyr-image-scan' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'nomyr-devcontainer:scan' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'go build -mod=readonly.*golang.org/x/vuln/cmd/govulncheck' "$repo_root/.github/workflows/dev-compose.yml"

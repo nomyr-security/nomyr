@@ -25,7 +25,7 @@ services:
     ports: ["127.0.0.1:8123:8123", "127.0.0.1:9000:9000"]
     volumes: [clickhouse-data:/var/lib/clickhouse]
     healthcheck:
-      test: ["CMD", "clickhouse-client", "--user", "nomyr", "--password", "${NOMYR_DEV_CLICKHOUSE_PASSWORD}", "--query", "SELECT 1"]
+      test: ["CMD", "wget", "--spider", "--no-check-certificate", "-T", "1", "-q", "http://127.0.0.1:8123/ping"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -64,7 +64,7 @@ services:
       context: ../..
       dockerfile: deploy/compose/images/openbao/Dockerfile
       pull: true
-    command: ["server", "-dev", "-dev-listen-address=0.0.0.0:8200", "-dev-root-token-id=${NOMYR_DEV_OPENBAO_TOKEN}"]
+    command: ["server", "-dev", "-dev-listen-address=0.0.0.0:8200", "-dev-root-token-id=${NOMYR_DEV_OPENBAO_TOKEN:?run make dev-stack-up}"]
     ports: ["127.0.0.1:8200:8200"]
     logging:
       driver: none

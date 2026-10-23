@@ -33,3 +33,7 @@ LABEL org.opencontainers.image.mise.version="${MISE_VERSION}" \
       org.opencontainers.image.mise.source="https://github.com/jdx/mise/releases/tag/v${MISE_VERSION}"
 
 USER vscode
+
+RUN test -w "$HOME" \
+    && command -v mise \
+    && mise version | grep -F "$MISE_VERSION"

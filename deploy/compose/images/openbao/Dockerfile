@@ -12,7 +12,7 @@ RUN set -eux; \
     if openssl crl2pkcs7 -nocrl -certfile /etc/ssl/certs/ca-certificates.crt \
       | openssl pkcs7 -print_certs -noout \
       | grep -Eq 'CN = emSign (Root CA - C1|ECC Root CA - C3|ECC Root CA - G3)(,|$)'; then exit 1; fi; \
-    dpkg-query -W -f='ca-certificates version ${Version}\n'; \
+    dpkg-query -W -f='ca-certificates version ${Version}\n' ca-certificates; \
     sha256sum /etc/ssl/certs/ca-certificates.crt; \
     rm -rf /var/lib/apt/lists/*
 
