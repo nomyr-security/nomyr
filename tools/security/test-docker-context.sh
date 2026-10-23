@@ -17,7 +17,7 @@ write_marker() {
 	printf 'synthetic context-boundary marker\n' > "$context/$path"
 }
 
-for path in .dev.env .env .env.local .env.production .git/config docs/README.md docs/spec/private.md docs/plan/private.md docs/phases/private.md docs/adr/private.md .cache/bootstrap/private.bin .cache/security/nomyr-unexpected web/node_modules/private.js web/.next/private.js web/out/private.js node_modules/private.js; do
+for path in .dev.env .env .env.local .env.production .git/config docs/README.md docs/spec/private.md docs/plan/private.md docs/phases/private.md docs/adr/private.md .cache/bootstrap/private.bin .cache/security/nomyr-unexpected deploy/private.env deploy/compose/private.env deploy/compose/images/keycloak/README.md deploy/compose/images/temporal/README.md web/node_modules/private.js web/.next/private.js web/out/private.js node_modules/private.js; do
 	write_marker "$path"
 done
 
@@ -35,7 +35,7 @@ EOF
 
 docker buildx build --file "$temporary/Dockerfile" --output "type=local,dest=$output" "$context"
 
-for path in .dev.env .env .env.local .env.production .git/config docs/README.md docs/spec/private.md docs/plan/private.md docs/phases/private.md docs/adr/private.md .cache/bootstrap/private.bin .cache/security/nomyr-unexpected web/node_modules/private.js web/.next/private.js web/out/private.js node_modules/private.js; do
+for path in .dev.env .env .env.local .env.production .git/config docs/README.md docs/spec/private.md docs/plan/private.md docs/phases/private.md docs/adr/private.md .cache/bootstrap/private.bin .cache/security/nomyr-unexpected deploy/private.env deploy/compose/private.env deploy/compose/images/keycloak/README.md deploy/compose/images/temporal/README.md web/node_modules/private.js web/.next/private.js web/out/private.js node_modules/private.js; do
 	if [ -e "$output/$path" ]; then
 		echo "ignored Docker context path was exported: $path" >&2
 		exit 1
