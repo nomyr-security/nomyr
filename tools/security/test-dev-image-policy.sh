@@ -106,9 +106,24 @@ else
 	test "$?" = 2
 fi
 cat >"$report" <<'JSON'
+{"descriptor":{"version":"0.121.0"},"matches":[{"artifact":{"name":"pkg","version":"1"},"vulnerability":{"id":"CVE-CRITICAL","severity":"Critical"}}]}
+JSON
+if run_validator high 0 0 >/dev/null 2>&1; then
+	echo 'Critical finding passed the development gate when Grype returned success' >&2
+	exit 1
+else
+	test "$?" = 2
+fi
+cat >"$report" <<'JSON'
 {"descriptor":{"version":"0.121.0"},"matches":[{"artifact":{"name":"pkg","version":"1"},"vulnerability":{"id":"CVE-MEDIUM","severity":"Medium"}}]}
 JSON
 run_validator high 0 0
+if run_validator high 2 0 >/dev/null 2>&1; then
+	echo 'validator accepted Grype threshold-exceeded status' >&2
+	exit 1
+else
+	test "$?" = 2
+fi
 if run_validator high 1 0 >/dev/null 2>&1; then
 	echo 'validator accepted a Grype operational error' >&2
 	exit 1
