@@ -59,7 +59,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          tools/security/build-scanners.sh "$RUNNER_TEMP/nomyr-image-scan/scanner-tools" \
+          sh tools/security/build-scanners.sh "$RUNNER_TEMP/nomyr-image-scan/scanner-tools" \
             2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/scanner-build.log"
       - name: Audit source-built scanner binaries and retain VEX evidence
         if: always()
@@ -72,7 +72,7 @@ jobs:
               > "$RUNNER_TEMP/nomyr-image-scan/scanner-audit-errors.txt"
             exit 1
           fi
-          tools/security/audit-scanner-binaries.sh "$scanner_dir" \
+          sh tools/security/audit-scanner-binaries.sh "$scanner_dir" \
             2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/scanner-audit.log"
       - name: Build development service images
         shell: bash
