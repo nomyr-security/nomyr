@@ -37,8 +37,9 @@ services:
       context: ../..
       dockerfile: deploy/compose/images/temporal/Dockerfile
       pull: true
-    command: ["server", "start-dev", "--ip", "0.0.0.0"]
+    command: ["server", "start-dev", "--ip", "0.0.0.0", "--db-filename", "/home/temporal/data/temporal.db"]
     ports: ["127.0.0.1:7233:7233", "127.0.0.1:8233:8233"]
+    volumes: [temporal-data:/home/temporal/data]
     healthcheck:
       test: ["CMD", "temporal", "operator", "cluster", "health", "--address", "127.0.0.1:7233"]
       interval: 5s
@@ -96,5 +97,6 @@ services:
 volumes:
   postgres-data:
   clickhouse-data:
+  temporal-data:
   nats-data:
   keycloak-data:

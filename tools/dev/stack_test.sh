@@ -47,6 +47,9 @@ if grep -E '^    image:' "$repo_root/deploy/compose/compose.yaml" | grep -vE '(@
 	exit 1
 fi
 grep -A4 '^  temporal:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/temporal/Dockerfile'
+grep -q -- '--db-filename' "$repo_root/deploy/compose/compose.yaml"
+grep -q 'temporal-data:/home/temporal/data' "$repo_root/deploy/compose/compose.yaml"
+grep -q '^  temporal-data:' "$repo_root/deploy/compose/compose.yaml"
 grep -A4 '^  openbao:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/openbao/Dockerfile'
 grep -A4 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/keycloak/Dockerfile'
 if grep -E '^    ports:' "$repo_root/deploy/compose/compose.yaml" | grep -v '127\.0\.0\.1:'; then
@@ -63,6 +66,16 @@ grep -q -- '--fail-on medium' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'mcr.microsoft.com/devcontainers/base:ubuntu-24.04@sha256:' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'apt-get upgrade --yes' "$repo_root/.devcontainer/Dockerfile"
+if grep -q '"features"' "$repo_root/.devcontainer/devcontainer.json"; then
+	echo "devcontainer must not reference an unverified Feature" >&2
+	exit 1
+fi
+grep -q 'MISE_VERSION=2026.10.17' "$repo_root/.devcontainer/Dockerfile"
+grep -q '17565e268c5542d8ce944321e17af81e0b741b65af4aa7e8e010ee77376a4aa3' "$repo_root/.devcontainer/Dockerfile"
+grep -q 'cac510e51793ad45e65fe92305bdbe4309c9c60b5907badbc7eba111738ab08f' "$repo_root/.devcontainer/Dockerfile"
+grep -q '/usr/local/share/mise/provenance.txt' "$repo_root/.devcontainer/Dockerfile"
+grep -q 'install -D -m 0755 /tmp/mise/bin/mise /usr/local/bin/mise' "$repo_root/.devcontainer/Dockerfile"
+grep -q 'mise version | grep -F' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'nomyr-image-scan' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'nomyr-devcontainer:scan' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'docker compose.*build --pull --no-cache temporal openbao keycloak' "$repo_root/.github/workflows/dev-compose.yml"

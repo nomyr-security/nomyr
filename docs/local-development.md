@@ -29,9 +29,10 @@ NATS JetStream, OpenBao dev mode, and Keycloak dev mode. PostgreSQL, ClickHouse,
 and NATS use explicit version tags and registry digests. Temporal, OpenBao, and
 Keycloak are built from the pinned upstream sources in `deploy/compose/images/`
 with repository-root build context. Local state is held in named Docker volumes.
-Temporal's standalone development server uses its default ephemeral SQLite
-store; it does not store Nomyr product state. The current demo does not connect
-to PostgreSQL or any other Compose service.
+Temporal's standalone development server stores its local development database
+in the named `temporal-data` volume using the explicit `--db-filename` path; it
+does not store Nomyr product state. The current demo does not connect to
+PostgreSQL or any other Compose service.
 
 Object storage is intentionally absent: the MinIO Community Edition container
 repository is archived and its available image is not safe to retain in this
@@ -76,8 +77,8 @@ integrations or Phase 1 product flows.
 
 The `development Compose smoke` GitHub Actions workflow builds and health-checks
 the local service images on a hosted Docker runner, then scans every Compose
-output and the patched devcontainer image with checksum-pinned Grype. Critical
-and High matches fail the job. Complete JSON reports are uploaded from the
+output and the patched devcontainer image with checksum-pinned Grype. Medium,
+High, and Critical matches fail the job. Complete JSON reports are uploaded from the
 runner temporary directory even when scanning fails. It uses read-only
 repository permissions, stores generated credentials in the runner temporary
 directory, and always attempts teardown. This is an image-scan and availability

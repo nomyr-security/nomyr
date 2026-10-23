@@ -3,9 +3,6 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "features": {
-    "ghcr.io/devcontainers/features/mise:1": {}
-  },
   "postCreateCommand": "make bootstrap",
   "customizations": {
     "vscode": {
