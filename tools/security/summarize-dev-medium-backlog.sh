@@ -36,6 +36,21 @@ for report in "$report_dir"/*.json; do
 		exit 1
 	fi
 	image_ref=$(cat "$source_file")
+	image_id=
+	case "$image_ref" in
+		docker:*)
+			image_id_file=${report%.json}.image-id
+			if [ ! -s "$image_id_file" ]; then
+				echo "missing immutable Docker image ID for $image_ref" >&2
+				exit 1
+			fi
+			image_id=$(cat "$image_id_file")
+			if ! printf '%s\n' "$image_id" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
+				echo "invalid immutable Docker image ID for $image_ref" >&2
+				exit 1
+			fi
+			;;
+	esac
 	case "$image_ref" in
 		registry:mcr.microsoft.com/devcontainers/base:*) continue ;;
 		oci-archive:*)
@@ -47,6 +62,10 @@ for report in "$report_dir"/*.json; do
 				echo "missing retained archive checksum for $image_ref" >&2
 				exit 1
 			fi
+			if ! printf '%s\n' "$checksum" | grep -Eq '^[0-9a-f]{64}$'; then
+				echo "invalid retained archive checksum for $image_ref" >&2
+				exit 1
+			fi
 			image_ref="oci-archive:linux/arm64/$service@sha256:$checksum"
 			;;
 	esac
@@ -54,9 +73,10 @@ for report in "$report_dir"/*.json; do
 	case "$image_ref" in
 		oci-archive:linux/arm64/*) platform=linux/arm64 ;;
 	esac
-	jq -c --arg image_ref "$image_ref" --arg platform "$platform" '
+	jq -c --arg image_ref "$image_ref" --arg image_id "$image_id" --arg platform "$platform" '
 		{
 			image_ref: $image_ref,
+			image_id: (if $image_id == "" then null else $image_id end),
 			platform: $platform,
 			severity_matches: {
 				Critical: ([.matches[]? | select(.vulnerability.severity == "Critical")] | length),

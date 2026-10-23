@@ -35,7 +35,18 @@ compose_logs_redacted() {
 	compose logs --no-color --timestamps 2>&1 | while IFS= read -r log_line; do
 		while IFS='=' read -r _ secret; do
 			if [ -n "$secret" ]; then
-				log_line=$(printf '%s\n' "$log_line" | sed "s/$secret/[REDACTED]/g")
+				log_line=$(printf '%s\n' "$log_line" | NOMYR_REDACT_SECRET="$secret" awk '
+					{
+						secret = ENVIRON["NOMYR_REDACT_SECRET"]
+						remaining = $0
+						redacted = ""
+						while ((position = index(remaining, secret)) > 0) {
+							redacted = redacted substr(remaining, 1, position - 1) "[REDACTED]"
+							remaining = substr(remaining, position + length(secret))
+						}
+						print redacted remaining
+					}
+				')
 			fi
 		done <"$env_file"
 		printf '%s\n' "$log_line" >&2

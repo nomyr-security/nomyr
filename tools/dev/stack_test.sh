@@ -48,6 +48,15 @@ else
 fi
 test "$file_mode" = 600
 test "$(wc -l <"$NOMYR_DEV_ENV_FILE" | tr -d ' ')" = 4
+replacement_env_file="$temp_root/replacement.env"
+while IFS='=' read -r key value; do
+	if [ "$key" = NOMYR_DEV_POSTGRES_PASSWORD ]; then
+		value='literal[0-9]&$\\value'
+	fi
+	printf '%s=%s\n' "$key" "$value"
+done <"$NOMYR_DEV_ENV_FILE" >"$replacement_env_file"
+mv "$replacement_env_file" "$NOMYR_DEV_ENV_FILE"
+chmod 600 "$NOMYR_DEV_ENV_FILE"
 export NOMYR_TEST_LOG_SECRET
 NOMYR_TEST_LOG_SECRET=$(sed -n 's/^NOMYR_DEV_POSTGRES_PASSWORD=//p' "$NOMYR_DEV_ENV_FILE")
 export NOMYR_TEST_COMPOSE_FAIL=1
@@ -59,7 +68,11 @@ else
 fi
 test "$compose_status" = 17
 grep -q 'container exited (1)' "$temp_root/compose-diagnostics.log"
-grep -q 'keycloak startup password=\[REDACTED\]' "$temp_root/compose-diagnostics.log"
+grep -Fq 'keycloak startup password=[REDACTED]' "$temp_root/compose-diagnostics.log"
+if ! grep -Fq 'literal[0-9]&$\\value' "$NOMYR_DEV_ENV_FILE"; then
+	echo 'Compose test did not exercise regex-sensitive secret characters' >&2
+	exit 1
+fi
 if grep -Fq "$NOMYR_TEST_LOG_SECRET" "$temp_root/compose-diagnostics.log"; then
 	echo 'Compose diagnostics leaked a generated secret' >&2
 	exit 1
@@ -135,7 +148,7 @@ fi
 grep -q 'docker buildx build --platform linux/arm64' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'oci-archive high' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'sha256sum.*basename.*archive' "$repo_root/.github/workflows/dev-compose.yml"
-grep -q 'rm -f.*archive' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'find.*-name.*\.oci\.tar.*-delete' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea' "$repo_root/.github/workflows/dev-compose.yml"
