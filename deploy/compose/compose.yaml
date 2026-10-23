@@ -1,0 +1,104 @@
+name: nomyr-dev
+services:
+  postgres:
+    image: postgres:18.1-alpine
+    environment:
+      POSTGRES_USER: nomyr
+      POSTGRES_PASSWORD: ${NOMYR_DEV_POSTGRES_PASSWORD:?run make dev-stack-up}
+      POSTGRES_DB: nomyr
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: [postgres-data:/var/lib/postgresql]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nomyr -d nomyr"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.12.2.8-alpine
+    environment:
+      CLICKHOUSE_DB: nomyr
+      CLICKHOUSE_USER: nomyr
+      CLICKHOUSE_PASSWORD: ${NOMYR_DEV_CLICKHOUSE_PASSWORD:?run make dev-stack-up}
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+    ports: ["127.0.0.1:8123:8123", "127.0.0.1:9000:9000"]
+    volumes: [clickhouse-data:/var/lib/clickhouse]
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "--user", "nomyr", "--password", "${NOMYR_DEV_CLICKHOUSE_PASSWORD}", "--query", "SELECT 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  temporal:
+    image: temporalio/temporal:1.4.1
+    command: ["server", "start-dev", "--ip", "0.0.0.0", "--db-filename", "/var/lib/temporal/temporal.db"]
+    ports: ["127.0.0.1:7233:7233", "127.0.0.1:8233:8233"]
+    volumes: [temporal-data:/var/lib/temporal]
+    healthcheck:
+      test: ["CMD", "temporal", "operator", "cluster", "health", "--address", "127.0.0.1:7233"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  nats:
+    image: nats:2.12.3-alpine
+    command: ["--jetstream", "--store_dir", "/data", "--http_port", "8222"]
+    ports: ["127.0.0.1:4222:4222", "127.0.0.1:8222:8222"]
+    volumes: [nats-data:/data]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8222/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  minio:
+    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: nomyr
+      MINIO_ROOT_PASSWORD: ${NOMYR_DEV_MINIO_PASSWORD:?run make dev-stack-up}
+    ports: ["127.0.0.1:9002:9000", "127.0.0.1:9001:9001"]
+    volumes: [minio-data:/data]
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  openbao:
+    image: openbao/openbao:2.4.3
+    command: ["server", "-dev", "-dev-listen-address=0.0.0.0:8200", "-dev-root-token-id=${NOMYR_DEV_OPENBAO_TOKEN}"]
+    ports: ["127.0.0.1:8200:8200"]
+    healthcheck:
+      test: ["CMD", "bao", "status", "-address=http://127.0.0.1:8200"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.2
+    command: ["start-dev", "--http-host=0.0.0.0"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: nomyr
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${NOMYR_DEV_KEYCLOAK_PASSWORD:?run make dev-stack-up}
+      KC_HEALTH_ENABLED: "true"
+    ports: ["127.0.0.1:8081:8080"]
+    volumes: [keycloak-data:/opt/keycloak/data]
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/9000'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+volumes:
+  postgres-data:
+  clickhouse-data:
+  temporal-data:
+  nats-data:
+  minio-data:
+  keycloak-data:

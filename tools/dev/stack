@@ -1,0 +1,66 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
+compose_file="$repo_root/deploy/compose/compose.yaml"
+env_file=${NOMYR_DEV_ENV_FILE:-"$repo_root/.dev.env"}
+cd "$repo_root"
+
+ensure_env() {
+	if [ ! -f "$env_file" ]; then
+		command -v openssl >/dev/null 2>&1 || { echo "openssl is required to generate local credentials" >&2; exit 1; }
+		umask 077
+		temp_file="$env_file.tmp.$$"
+		trap 'rm -f "$temp_file"' EXIT HUP INT TERM
+		{
+			printf 'NOMYR_DEV_POSTGRES_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+			printf 'NOMYR_DEV_CLICKHOUSE_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+			printf 'NOMYR_DEV_MINIO_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+			printf 'NOMYR_DEV_OPENBAO_TOKEN=%s\n' "$(openssl rand -hex 32)"
+			printf 'NOMYR_DEV_KEYCLOAK_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+		} >"$temp_file"
+		mv "$temp_file" "$env_file"
+		trap - EXIT HUP INT TERM
+	fi
+}
+
+compose() {
+	docker compose --env-file "$env_file" -f "$compose_file" "$@"
+}
+
+case "${1:-}" in
+	up)
+		ensure_env
+		compose up -d --wait
+		;;
+	down)
+		if [ -f "$env_file" ]; then compose down; else docker compose -f "$compose_file" down; fi
+		;;
+	config)
+		ensure_env
+		compose config --quiet
+		;;
+	reset)
+		if [ -f "$env_file" ]; then compose down --volumes --remove-orphans; else docker compose -f "$compose_file" down --volumes --remove-orphans; fi
+		rm -f "$env_file"
+		;;
+	smoke)
+		ensure_env
+		compose up -d --wait
+		for endpoint in \
+			http://127.0.0.1:8123/ping \
+			http://127.0.0.1:8222/healthz \
+			http://127.0.0.1:9002/minio/health/ready \
+			http://127.0.0.1:8200/v1/sys/health \
+			http://127.0.0.1:8081/health/ready; do
+			curl --fail --silent --show-error "$endpoint" >/dev/null
+		done
+		compose exec -T postgres pg_isready -U nomyr -d nomyr >/dev/null
+		compose exec -T temporal temporal operator cluster health --address 127.0.0.1:7233 >/dev/null
+		printf '%s\n' 'Development service smoke checks passed.'
+		;;
+	*)
+		echo "usage: $0 {up|down|reset|config|smoke}" >&2
+		exit 2
+		;;
+esac

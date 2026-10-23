@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
+cd "$repo_root"
+"$repo_root/tools/dev/stack" up
+telemetry_config=$(mktemp -d "${TMPDIR:-/tmp}/nomyr-dev-config.XXXXXX")
+printf '{"enabled":false}\n' >"$telemetry_config/telemetry.json"
+export NOMYR_CONFIG_HOME="$telemetry_config"
+go run ./cmd/nomyr demo --listen 127.0.0.1:8080 &
+go_pid=$!
+(cd web && npm run dev -- --hostname 127.0.0.1 --port 3000) &
+web_pid=$!
+cleanup() {
+	kill "$go_pid" "$web_pid" 2>/dev/null || true
+	rm -rf "$telemetry_config"
+}
+trap cleanup EXIT HUP INT TERM
+wait "$go_pid" "$web_pid"
