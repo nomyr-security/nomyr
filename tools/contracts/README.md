@@ -15,3 +15,7 @@ lint and breaking checks against `main`, and JSON Schema draft 2020-12 checks.
 JSON Schema fixtures include both accepted examples and intentionally malformed
 documents. Fixtures are synthetic and contain no customer data or reusable
 credentials.
+
+CI uses Go 1.27.3 only for contract tooling because Vacuum v0.35.0 requires
+that version. The product toolchain in `mise.toml` remains Go 1.26.10. The
+contract workflow checks generated outputs with its pinned toolchain.
