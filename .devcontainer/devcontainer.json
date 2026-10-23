@@ -1,8 +1,7 @@
 {
   "name": "Nomyr contributor environment",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
-  "features": {
-    "ghcr.io/devcontainers/features/mise:1": {}
+  "build": {
+    "dockerfile": "Dockerfile"
   },
   "postCreateCommand": "make bootstrap",
   "customizations": {

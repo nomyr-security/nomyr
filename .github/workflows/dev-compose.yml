@@ -1,0 +1,289 @@
+name: development Compose smoke
+
+on:
+  pull_request:
+    paths:
+      - .dockerignore
+      - .github/workflows/dev-compose.yml
+      - deploy/compose/compose.yaml
+      - deploy/compose/images/**
+      - tools/security/**
+      - .devcontainer/**
+      - docs/dev-image-vulnerabilities.md
+      - docs/local-development.md
+      - tools/dev/stack
+      - tools/dev/stack_test.sh
+      - Makefile
+  push:
+    branches: [main]
+    paths:
+      - .dockerignore
+      - .github/workflows/dev-compose.yml
+      - deploy/compose/compose.yaml
+      - deploy/compose/images/**
+      - tools/security/**
+      - .devcontainer/**
+      - docs/dev-image-vulnerabilities.md
+      - docs/local-development.md
+      - tools/dev/stack
+      - tools/dev/stack_test.sh
+      - Makefile
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Compose service health
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up pinned Buildx OCI exporter
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+        with:
+          driver-opts: image=docker.io/moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea
+      - name: Verify root Docker context boundary
+        run: sh tools/security/test-docker-context.sh
+      - name: Generate isolated development credentials
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: make dev-stack-config
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: 1.26.10
+          cache: false
+      - name: Build locked govulncheck tool
+        shell: bash
+        run: |
+          set -euo pipefail
+          scanner_bin="$RUNNER_TEMP/nomyr-image-scan/bin"
+          mkdir -p "$scanner_bin"
+          (cd tools/security/govulncheck && GOTOOLCHAIN=local go build -mod=readonly -o "$scanner_bin/govulncheck" golang.org/x/vuln/cmd/govulncheck)
+          "$scanner_bin/govulncheck" -version | grep -F 'govulncheck@v1.9.0'
+          go version -m "$scanner_bin/govulncheck" | grep -E '^[[:space:]]+mod[[:space:]]+golang.org/x/vuln[[:space:]]+v1\.9\.0([[:space:]]|$)'
+          echo "$scanner_bin" >> "$GITHUB_PATH"
+      - name: Build scanner binaries from verified source
+        shell: bash
+        run: |
+          set -o pipefail
+          sh tools/security/build-scanners.sh "$RUNNER_TEMP/nomyr-image-scan/scanner-tools" \
+            2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/scanner-build.log"
+      - name: Audit source-built scanner binaries and retain VEX evidence
+        if: always()
+        shell: bash
+        run: |
+          set -o pipefail
+          scanner_dir="$RUNNER_TEMP/nomyr-image-scan/scanner-tools"
+          if [ ! -x "$scanner_dir/bin/grype" ]; then
+            printf 'Source-built Grype binary is unavailable; image scans cannot run\n' \
+              > "$RUNNER_TEMP/nomyr-image-scan/scanner-audit-errors.txt"
+            exit 1
+          fi
+          sh tools/security/audit-scanner-binaries.sh "$scanner_dir" \
+            2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/scanner-audit.log"
+      - name: Build development service images
+        shell: bash
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: |
+          set +e
+          set -o pipefail
+          report_dir="$RUNNER_TEMP/nomyr-image-scan"
+          build_status=0
+          for service in temporal openbao keycloak; do
+            log="$report_dir/$service-compose-build.log"
+            docker compose --env-file "$NOMYR_DEV_ENV_FILE" -f deploy/compose/compose.yaml build --pull --no-cache "$service" \
+              2>&1 | tee "$log"
+            result=$?
+            if [ "$result" -ne 0 ]; then
+              printf '%s Compose image build failed with exit %s\n' "$service" "$result" >> "$report_dir/compose-build-errors.txt"
+              build_status=1
+            fi
+          done
+          exit "$build_status"
+      - name: Check service health
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: |
+          if [ ! -f "$NOMYR_DEV_ENV_FILE" ]; then
+            echo 'Generated development credentials are unavailable' >&2
+            exit 1
+          fi
+          make dev-smoke
+      - name: Register QEMU for arm64 image builds
+        if: always()
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+        with:
+          image: docker.io/tonistiigi/binfmt@sha256:400a4873b838d1b89194d982c45e5fb3cda4593fbfd7e08a02e76b03b21166f0
+          platforms: arm64
+      - name: Build arm64 service images
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          report_dir="$RUNNER_TEMP/nomyr-image-scan/arm64"
+          mkdir -p "$report_dir"
+          build_status=0
+          for service in temporal openbao keycloak; do
+            dockerfile="deploy/compose/images/$service/Dockerfile"
+            archive="$report_dir/$service.oci.tar"
+            docker buildx build --platform linux/arm64 --pull --no-cache \
+              --file "$dockerfile" --tag "nomyr-dev/$service:scan-arm64" \
+              --output "type=oci,dest=$archive" . \
+              > "$report_dir/$service-build.log" 2>&1
+            result=$?
+            if [ "$result" -ne 0 ]; then
+              printf '%s arm64 image build failed with exit %s\n' "$service" "$result" >> "$report_dir/build-errors.txt"
+              build_status=1
+            fi
+          done
+          exit "$build_status"
+      - name: Build devcontainer with current Ubuntu security updates
+        if: always()
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/nomyr-image-scan"
+          docker build --pull --no-cache --file .devcontainer/Dockerfile --tag nomyr-devcontainer:scan .devcontainer \
+            2>&1 | tee "$RUNNER_TEMP/nomyr-image-scan/devcontainer-build.log"
+      - name: Scan Compose outputs and devcontainer images
+        if: always()
+        shell: bash
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: |
+          set +e
+          report_dir="$RUNNER_TEMP/nomyr-image-scan"
+          mkdir -p "$report_dir/images"
+          scanner_dir="$report_dir/scanner-tools/bin"
+          if [ ! -x "$scanner_dir/grype" ] || [ ! -x "$scanner_dir/syft" ]; then
+            printf 'Source-built scanner installation did not complete; no image scans were possible\n' > "$report_dir/scan-errors.txt"
+            exit 1
+          fi
+          image_list="$RUNNER_TEMP/nomyr-image-refs.tsv"
+          docker compose --env-file "$NOMYR_DEV_ENV_FILE" -f deploy/compose/compose.yaml config --format json > "$RUNNER_TEMP/compose-config.json"
+          config_status=$?
+          if [ "$config_status" -ne 0 ]; then
+            printf 'Compose image inventory failed (exit %s)\n' "$config_status" | tee "$report_dir/scan-errors.txt"
+          else
+            jq -r '.services | to_entries[] | [.value.image, (if .value.build then "docker" else "registry" end)] | @tsv' "$RUNNER_TEMP/compose-config.json" > "$image_list"
+          fi
+          scan_status=0
+          scan_one() {
+            image=$1
+            scheme=$2
+            gate=$3
+            safe_name=$(printf '%s' "$image" | tr '/:@' '___')
+            report="$report_dir/images/$safe_name.json"
+            sbom="$report_dir/images/$safe_name.cdx.json"
+            if [ "$scheme" = docker ] && ! docker image inspect "$image" >/dev/null 2>&1; then
+              printf '%s: local image is unavailable; check the Compose build failure logs; Syft and Grype skipped\n' "$image" >> "$report_dir/scan-errors.txt"
+              scan_status=1
+              return 0
+            fi
+            printf '%s:%s\n' "$scheme" "$image" > "$report_dir/images/$safe_name.source"
+            if [ "$scheme" = docker ]; then
+              image_id=$(docker image inspect --format '{{.Id}}' "$image")
+              if ! printf '%s\n' "$image_id" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
+                printf '%s: Docker returned an invalid image ID; immutable scan identity is unavailable\n' "$image" >> "$report_dir/scan-errors.txt"
+                scan_status=1
+                return 0
+              fi
+              printf '%s\n' "$image_id" > "$report_dir/images/$safe_name.image-id"
+            fi
+            "$scanner_dir/syft" "$scheme:$image" --output cyclonedx-json --file "$sbom"
+            syft_result=$?
+            if [ "$syft_result" -ne 0 ]; then
+              printf '%s: Syft failed with exit %s\n' "$image" "$syft_result" >> "$report_dir/scan-errors.txt"
+              scan_status=1
+            fi
+            if [ "$gate" = high ]; then
+              "$scanner_dir/grype" "$scheme:$image" --fail-on high --output json --file "$report"
+            else
+              "$scanner_dir/grype" "$scheme:$image" --output json --file "$report"
+            fi
+            result=$?
+            if sh tools/security/validate-dev-image-scan.sh \
+              "$image" "$gate" "$result" "$syft_result" "$report" "$sbom" \
+              "$report_dir/scan-summary.txt" "$report_dir/findings.tsv"; then
+              :
+            else
+              validation_status=$?
+              if [ "$validation_status" -eq 2 ]; then
+                scan_status=2
+              else
+                scan_status=1
+                printf '%s: scan report validation failed (exit %s)\n' "$image" "$validation_status" >> "$report_dir/scan-errors.txt"
+              fi
+            fi
+          }
+          while IFS="$(printf '\t')" read -r image scheme; do
+            [ -n "$image" ] || continue
+            scan_one "$image" "$scheme" high
+          done < "$image_list"
+          for service in temporal openbao keycloak; do
+            arm64_archive="$report_dir/arm64/$service.oci.tar"
+            if [ -s "$arm64_archive" ]; then
+              scan_one "$arm64_archive" oci-archive high
+            else
+              printf '%s: arm64 OCI image archive is missing; scan not performed\n' "$service" >> "$report_dir/scan-errors.txt"
+              scan_status=1
+            fi
+          done
+          base_image=$(sed -n 's/^FROM[[:space:]]\+//p' .devcontainer/Dockerfile | head -n 1)
+          if [ -n "$base_image" ]; then
+            scan_one "$base_image" registry report-only
+          else
+            printf 'Could not resolve devcontainer Dockerfile FROM image\n' >> "$report_dir/scan-errors.txt"
+            scan_status=1
+          fi
+          scan_one nomyr-devcontainer:scan docker high
+          set -o pipefail
+          find "$report_dir/arm64" -type f -name '*.oci.tar' -print0 | while IFS= read -r -d '' archive; do
+            (cd "$(dirname "$archive")" && sha256sum "$(basename "$archive")") >> "$report_dir/arm64/OCI-SHA256SUMS"
+          done
+          checksum_status=$?
+          if [ "$checksum_status" -ne 0 ]; then
+            printf 'Could not checksum completed arm64 OCI archives\n' >> "$report_dir/scan-errors.txt"
+            scan_status=1
+          fi
+          if ! sh tools/security/summarize-dev-medium-backlog.sh \
+            "$report_dir/images" "$report_dir/dev-medium-backlog.json" \
+            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"; then
+            printf 'Development Medium backlog inventory generation failed\n' >> "$report_dir/scan-errors.txt"
+            scan_status=1
+          fi
+          if ! find "$report_dir/arm64" -type f -name '*.oci.tar' -delete; then
+            printf 'Could not remove arm64 OCI archives after checksum retention\n' >> "$report_dir/scan-errors.txt"
+            scan_status=1
+          fi
+          if [ "$config_status" -ne 0 ]; then
+            exit 1
+          fi
+          exit "$scan_status"
+      - name: Upload complete Grype reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.0
+        with:
+          name: dev-image-grype-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/nomyr-image-scan/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Always tear down containers, volumes, and temporary credentials
+        if: always()
+        env:
+          NOMYR_DEV_ENV_FILE: ${{ runner.temp }}/nomyr-dev-compose.env
+        run: |
+          set +e
+          if [ -f "$NOMYR_DEV_ENV_FILE" ]; then
+            tools/dev/stack reset
+            status=$?
+          else
+            status=0
+          fi
+          rm -f "$NOMYR_DEV_ENV_FILE"
+          exit "$status"

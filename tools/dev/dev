@@ -1,0 +1,46 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
+cd "$repo_root"
+"$repo_root/tools/dev/stack" up
+telemetry_config=$(mktemp -d "${TMPDIR:-/tmp}/nomyr-dev-config.XXXXXX")
+printf '{"enabled":false}\n' >"$telemetry_config/telemetry.json"
+export NOMYR_CONFIG_HOME="$telemetry_config"
+run_service() {
+	status_file=$1
+	shift
+	"$@" &
+	child_pid=$!
+	trap 'kill "$child_pid" 2>/dev/null || true' HUP INT TERM
+	if wait "$child_pid"; then
+		status=0
+	else
+		status=$?
+	fi
+	printf '%s\n' "$status" >"$status_file"
+}
+go_status="$telemetry_config/go.status"
+web_status="$telemetry_config/web.status"
+run_service "$go_status" go run ./cmd/nomyr demo --listen 127.0.0.1:8080 &
+go_pid=$!
+run_service "$web_status" sh -c 'cd "$1"; shift; exec "$@"' sh "$repo_root/web" npm run dev -- --hostname 127.0.0.1 --port 3000 &
+web_pid=$!
+cleanup() {
+	kill "$go_pid" "$web_pid" 2>/dev/null || true
+	wait "$go_pid" "$web_pid" 2>/dev/null || true
+	rm -rf "$telemetry_config"
+}
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+while [ ! -f "$go_status" ] && [ ! -f "$web_status" ]; do
+	sleep 1
+done
+if [ -f "$go_status" ]; then
+	status=$(cat "$go_status")
+else
+	status=$(cat "$web_status")
+fi
+exit "$status"

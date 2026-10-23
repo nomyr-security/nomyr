@@ -132,3 +132,4 @@ fi
 
 echo 'workflow actions are SHA-pinned and write-capable jobs are trust-gated'
 sh "$root/tools/security/test-scanner-audit.sh"
+sh "$root/tools/security/test-dev-image-policy.sh"

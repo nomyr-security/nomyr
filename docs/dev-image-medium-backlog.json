@@ -1,0 +1,5626 @@
+{
+  "scope": "development-only",
+  "owner": "@nomyr-ai",
+  "evidence_url": "https://github.com/nomyr-security/nomyr/actions/runs/39943959839",
+  "generated_utc_date": "2026-10-23",
+  "scanner": {
+    "name": "Grype",
+    "version": "0.121.0"
+  },
+  "vulnerability_database": {
+    "schema_version": "v6.1.10",
+    "built_utc": "2026-10-23T06:30:15Z",
+    "source_with_checksum": "https://grype.anchore.io/databases/v6/vulnerability-db_v6.1.10_2026-10-23T00:30:52Z_1792737015.tar.zst?checksum=sha256%3A6e78c0f757fe96976b37b138e54e83fd75f2ad1f6c5feae2ecb008cefa8fcc0f"
+  },
+  "scanned_images": [
+    {
+      "image_ref": "docker:nomyr-dev/keycloak:scan",
+      "platform": "linux/amd64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 69,
+        "Low": 7,
+        "Negligible": 2,
+        "Unknown": 0
+      }
+    },
+    {
+      "image_ref": "docker:nomyr-dev/openbao:scan",
+      "platform": "linux/amd64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 0,
+        "Low": 0,
+        "Negligible": 0,
+        "Unknown": 0
+      }
+    },
+    {
+      "image_ref": "docker:nomyr-dev/temporal:scan",
+      "platform": "linux/amd64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 0,
+        "Low": 0,
+        "Negligible": 0,
+        "Unknown": 0
+      }
+    },
+    {
+      "image_ref": "docker:nomyr-devcontainer:scan",
+      "platform": "linux/amd64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 458,
+        "Low": 114,
+        "Negligible": 12,
+        "Unknown": 0
+      }
+    },
+    {
+      "image_ref": "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0",
+      "platform": "linux/arm64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 69,
+        "Low": 7,
+        "Negligible": 2,
+        "Unknown": 0
+      }
+    },
+    {
+      "image_ref": "oci-archive:linux/arm64/openbao@sha256:2b05ad308e109bab8ceb2b93e28ef0f0fd0e66fb65c7595ab7c0869635a98942",
+      "platform": "linux/arm64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 0,
+        "Low": 0,
+        "Negligible": 0,
+        "Unknown": 0
+      }
+    },
+    {
+      "image_ref": "oci-archive:linux/arm64/temporal@sha256:4b596d877617f4050440e8aa26080fc70c2b8f5d79705e121fad29d581c61378",
+      "platform": "linux/arm64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 0,
+        "Low": 0,
+        "Negligible": 0,
+        "Unknown": 0
+      }
+    },
+    {
+      "image_ref": "registry:clickhouse/clickhouse-server:26.9.25.15-alpine@sha256:8b4b5974d01981dfbbf8c056395853ff8713a79a4c108868419fa2df18ce9f70",
+      "platform": "linux/amd64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 3,
+        "Low": 0,
+        "Negligible": 0,
+        "Unknown": 0
+      }
+    },
+    {
+      "image_ref": "registry:nats:2.15.1-alpine@sha256:7ae34c25dfd6fe2e01c6483eabef20d796690fdcac6c4d94ca780a6cf9877fde",
+      "platform": "linux/amd64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 3,
+        "Low": 0,
+        "Negligible": 0,
+        "Unknown": 1
+      }
+    },
+    {
+      "image_ref": "registry:postgres:18.6-alpine@sha256:898c60cb390d1085bc97bdd6a1ae968757421df394b071848b52b1c09c89d6a5",
+      "platform": "linux/amd64",
+      "severity_matches": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 4,
+        "Low": 0,
+        "Negligible": 0,
+        "Unknown": 0
+      }
+    }
+  ],
+  "blocking_threshold": "High and Critical",
+  "nonblocking_severity": "Medium (retained and reviewed; not automatically accepted in future scans)",
+  "medium_package_match_count": 606,
+  "unique_medium_advisory_count": 127,
+  "findings": [
+    {
+      "id": "CVE-2021-31879",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "wget",
+          "version": "1.21.4-1ubuntu4.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/wget@1.21.4-1ubuntu4.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2024-10041",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libpam-modules",
+          "version": "1.5.3-5ubuntu5.7",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpam-modules@1.5.3-5ubuntu5.7?arch=amd64&distro=ubuntu-24.04&upstream=pam",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libpam-modules",
+          "version": "1.5.3-5ubuntu5.7",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpam-modules@1.5.3-5ubuntu5.7?arch=arm64&distro=ubuntu-24.04&upstream=pam",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libpam-modules-bin",
+          "version": "1.5.3-5ubuntu5.7",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpam-modules-bin@1.5.3-5ubuntu5.7?arch=amd64&distro=ubuntu-24.04&upstream=pam",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libpam-modules-bin",
+          "version": "1.5.3-5ubuntu5.7",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpam-modules-bin@1.5.3-5ubuntu5.7?arch=arm64&distro=ubuntu-24.04&upstream=pam",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libpam-runtime",
+          "version": "1.5.3-5ubuntu5.7",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpam-runtime@1.5.3-5ubuntu5.7?arch=all&distro=ubuntu-24.04&upstream=pam",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libpam0g",
+          "version": "1.5.3-5ubuntu5.7",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpam0g@1.5.3-5ubuntu5.7?arch=amd64&distro=ubuntu-24.04&upstream=pam",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libpam0g",
+          "version": "1.5.3-5ubuntu5.7",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpam0g@1.5.3-5ubuntu5.7?arch=arm64&distro=ubuntu-24.04&upstream=pam",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2024-52005",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "git",
+          "version": "1:2.43.0-1ubuntu7.4",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/git@1%3A2.43.0-1ubuntu7.4?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "git-man",
+          "version": "1:2.43.0-1ubuntu7.4",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/git-man@1%3A2.43.0-1ubuntu7.4?arch=all&distro=ubuntu-24.04&upstream=git",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-1149",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-11495",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-60876",
+      "severity": "Medium",
+      "image_refs": [
+        "registry:clickhouse/clickhouse-server:26.9.25.15-alpine@sha256:8b4b5974d01981dfbbf8c056395853ff8713a79a4c108868419fa2df18ce9f70",
+        "registry:nats:2.15.1-alpine@sha256:7ae34c25dfd6fe2e01c6483eabef20d796690fdcac6c4d94ca780a6cf9877fde",
+        "registry:postgres:18.6-alpine@sha256:898c60cb390d1085bc97bdd6a1ae968757421df394b071848b52b1c09c89d6a5"
+      ],
+      "packages": [
+        {
+          "name": "busybox",
+          "version": "1.37.0-r20",
+          "type": "apk",
+          "purl": "pkg:apk/alpine/busybox@1.37.0-r20?arch=x86_64&distro=alpine-3.22.7",
+          "fix_state": "",
+          "fix_versions": []
+        },
+        {
+          "name": "busybox",
+          "version": "1.37.0-r31",
+          "type": "apk",
+          "purl": "pkg:apk/alpine/busybox@1.37.0-r31?arch=x86_64&distro=alpine-3.24.3",
+          "fix_state": "",
+          "fix_versions": []
+        },
+        {
+          "name": "busybox-binsh",
+          "version": "1.37.0-r20",
+          "type": "apk",
+          "purl": "pkg:apk/alpine/busybox-binsh@1.37.0-r20?arch=x86_64&distro=alpine-3.22.7&upstream=busybox",
+          "fix_state": "",
+          "fix_versions": []
+        },
+        {
+          "name": "busybox-binsh",
+          "version": "1.37.0-r31",
+          "type": "apk",
+          "purl": "pkg:apk/alpine/busybox-binsh@1.37.0-r31?arch=x86_64&distro=alpine-3.24.3&upstream=busybox",
+          "fix_state": "",
+          "fix_versions": []
+        },
+        {
+          "name": "ssl_client",
+          "version": "1.37.0-r20",
+          "type": "apk",
+          "purl": "pkg:apk/alpine/ssl_client@1.37.0-r20?arch=x86_64&distro=alpine-3.22.7&upstream=busybox",
+          "fix_state": "",
+          "fix_versions": []
+        },
+        {
+          "name": "ssl_client",
+          "version": "1.37.0-r31",
+          "type": "apk",
+          "purl": "pkg:apk/alpine/ssl_client@1.37.0-r31?arch=x86_64&distro=alpine-3.24.3&upstream=busybox",
+          "fix_state": "",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-66382",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libexpat1",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1@2.6.1-2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libexpat1",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1@2.6.1-2ubuntu0.6?arch=arm64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libexpat1-dev",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1-dev@2.6.1-2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-69644",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-69645",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-69646",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-69647",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-69648",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-69651",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2025-69652",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-102010",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "cpp",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/cpp@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "cpp-13",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/cpp-13@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-13",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "cpp-13-x86-64-linux-gnu",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/cpp-13-x86-64-linux-gnu@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-13",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "cpp-x86-64-linux-gnu",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/cpp-x86-64-linux-gnu@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "g++",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/g%2B%2B@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "g++-13",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/g%2B%2B-13@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-13",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "g++-13-x86-64-linux-gnu",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/g%2B%2B-13-x86-64-linux-gnu@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-13",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "g++-x86-64-linux-gnu",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/g%2B%2B-x86-64-linux-gnu@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "gcc",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/gcc@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "gcc-13",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/gcc-13@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "gcc-13-base",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/gcc-13-base@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-13",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "gcc-13-x86-64-linux-gnu",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/gcc-13-x86-64-linux-gnu@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-13",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "gcc-x86-64-linux-gnu",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/gcc-x86-64-linux-gnu@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgcc-13-dev",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgcc-13-dev@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-13",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libstdc++-13-dev",
+          "version": "13.3.0-6ubuntu2~24.04.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libstdc%2B%2B-13-dev@13.3.0-6ubuntu2~24.04.1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-13",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-102473",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "dash",
+          "version": "0.5.12-6ubuntu5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/dash@0.5.12-6ubuntu5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "dash",
+          "version": "0.5.12-6ubuntu5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/dash@0.5.12-6ubuntu5?arch=arm64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-102474",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "dash",
+          "version": "0.5.12-6ubuntu5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/dash@0.5.12-6ubuntu5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "dash",
+          "version": "0.5.12-6ubuntu5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/dash@0.5.12-6ubuntu5?arch=arm64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-102633",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libexpat1",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1@2.6.1-2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libexpat1",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1@2.6.1-2ubuntu0.6?arch=arm64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libexpat1-dev",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1-dev@2.6.1-2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-103111",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libpcre2-16-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-16-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-32-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-32-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=arm64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-dev",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-dev@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-posix3",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-posix3@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-107161",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "libsasl2-2",
+          "version": "2.1.28+dfsg1-5ubuntu3.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsasl2-2@2.1.28%2Bdfsg1-5ubuntu3.1?arch=amd64&distro=ubuntu-24.04&upstream=cyrus-sasl2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsasl2-modules-db",
+          "version": "2.1.28+dfsg1-5ubuntu3.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsasl2-modules-db@2.1.28%2Bdfsg1-5ubuntu3.1?arch=amd64&distro=ubuntu-24.04&upstream=cyrus-sasl2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-107708",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "libgssapi-krb5-2",
+          "version": "1.20.1-6ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgssapi-krb5-2@1.20.1-6ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=krb5",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libk5crypto3",
+          "version": "1.20.1-6ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libk5crypto3@1.20.1-6ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=krb5",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libkrb5-3",
+          "version": "1.20.1-6ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libkrb5-3@1.20.1-6ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=krb5",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libkrb5support0",
+          "version": "1.20.1-6ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libkrb5support0@1.20.1-6ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=krb5",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-107778",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "libgssapi-krb5-2",
+          "version": "1.20.1-6ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgssapi-krb5-2@1.20.1-6ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=krb5",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libk5crypto3",
+          "version": "1.20.1-6ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libk5crypto3@1.20.1-6ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=krb5",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libkrb5-3",
+          "version": "1.20.1-6ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libkrb5-3@1.20.1-6ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=krb5",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libkrb5support0",
+          "version": "1.20.1-6ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libkrb5support0@1.20.1-6ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=krb5",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-110923",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "openssh-client",
+          "version": "1:9.6p1-3ubuntu13.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/openssh-client@1%3A9.6p1-3ubuntu13.20?arch=amd64&distro=ubuntu-24.04&upstream=openssh",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-110924",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "openssh-client",
+          "version": "1:9.6p1-3ubuntu13.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/openssh-client@1%3A9.6p1-3ubuntu13.20?arch=amd64&distro=ubuntu-24.04&upstream=openssh",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-110925",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "openssh-client",
+          "version": "1:9.6p1-3ubuntu13.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/openssh-client@1%3A9.6p1-3ubuntu13.20?arch=amd64&distro=ubuntu-24.04&upstream=openssh",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-110926",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "openssh-client",
+          "version": "1:9.6p1-3ubuntu13.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/openssh-client@1%3A9.6p1-3ubuntu13.20?arch=amd64&distro=ubuntu-24.04&upstream=openssh",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-110927",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "openssh-client",
+          "version": "1:9.6p1-3ubuntu13.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/openssh-client@1%3A9.6p1-3ubuntu13.20?arch=amd64&distro=ubuntu-24.04&upstream=openssh",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-15003",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-18374",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-dev-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-dev-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6-dev",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6-dev@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "locales",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/locales@2.39-0ubuntu8.9?arch=all&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-18477",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "tar",
+          "version": "1.35+dfsg-3ubuntu0.4",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/tar@1.35%2Bdfsg-3ubuntu0.4?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "tar",
+          "version": "1.35+dfsg-3ubuntu0.4",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/tar@1.35%2Bdfsg-3ubuntu0.4?arch=arm64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-18508",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "tar",
+          "version": "1.35+dfsg-3ubuntu0.4",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/tar@1.35%2Bdfsg-3ubuntu0.4?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "tar",
+          "version": "1.35+dfsg-3ubuntu0.4",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/tar@1.35%2Bdfsg-3ubuntu0.4?arch=arm64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-18739",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "libpopt0",
+          "version": "1.19+dfsg-1build1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpopt0@1.19%2Bdfsg-1build1?arch=amd64&distro=ubuntu-24.04&upstream=popt",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-18743",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "libpopt0",
+          "version": "1.19+dfsg-1build1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpopt0@1.19%2Bdfsg-1build1?arch=amd64&distro=ubuntu-24.04&upstream=popt",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-18839",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "libpopt0",
+          "version": "1.19+dfsg-1build1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpopt0@1.19%2Bdfsg-1build1?arch=amd64&distro=ubuntu-24.04&upstream=popt",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-19548",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-3441",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-3442",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-40612",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-41256",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-41257",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-43894",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-43895",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-43896",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-44777",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-4647",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-47770",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-49839",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-51400",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "vim-common",
+          "version": "2:9.1.0016-1ubuntu7.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/vim-common@2%3A9.1.0016-1ubuntu7.20?arch=all&distro=ubuntu-24.04&upstream=vim",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "vim-tiny",
+          "version": "2:9.1.0016-1ubuntu7.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/vim-tiny@2%3A9.1.0016-1ubuntu7.20?arch=amd64&distro=ubuntu-24.04&upstream=vim",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-51401",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "vim-common",
+          "version": "2:9.1.0016-1ubuntu7.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/vim-common@2%3A9.1.0016-1ubuntu7.20?arch=all&distro=ubuntu-24.04&upstream=vim",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "vim-tiny",
+          "version": "2:9.1.0016-1ubuntu7.20",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/vim-tiny@2%3A9.1.0016-1ubuntu7.20?arch=amd64&distro=ubuntu-24.04&upstream=vim",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53783",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53784",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53785",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53786",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53788",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53789",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53790",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53791",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53792",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53793",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53794",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53795",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53796",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53797",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53798",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53799",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53800",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53801",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53802",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-53803",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-54369",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libacl1",
+          "version": "2.3.2-1build1.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libacl1@2.3.2-1build1.1?arch=amd64&distro=ubuntu-24.04&upstream=acl",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libacl1",
+          "version": "2.3.2-1build1.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libacl1@2.3.2-1build1.1?arch=arm64&distro=ubuntu-24.04&upstream=acl",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-54370",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libacl1",
+          "version": "2.3.2-1build1.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libacl1@2.3.2-1build1.1?arch=amd64&distro=ubuntu-24.04&upstream=acl",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        },
+        {
+          "name": "libacl1",
+          "version": "2.3.2-1build1.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libacl1@2.3.2-1build1.1?arch=arm64&distro=ubuntu-24.04&upstream=acl",
+          "fix_state": "wont-fix",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-54679",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "jq",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/jq@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libjq1",
+          "version": "1.7.1-3ubuntu0.24.04.2",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libjq1@1.7.1-3ubuntu0.24.04.2?arch=amd64&distro=ubuntu-24.04&upstream=jq",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-67693",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=amd64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=arm64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-6844",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-6845",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-6846",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70452",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70453",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70454",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70455",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70456",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70457",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70458",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70459",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70460",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70461",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70462",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70463",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-70464",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "rsync",
+          "version": "3.2.7-1ubuntu1.5",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/rsync@3.2.7-1ubuntu1.5?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-76642",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "bsdextrautils",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdextrautils@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "bsdutils",
+          "version": "1:2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdutils@1%3A2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux%402.39.3-9ubuntu6.6",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "bsdutils",
+          "version": "1:2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdutils@1%3A2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux%402.39.3-9ubuntu6.6",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libblkid1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libblkid1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libmount1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libmount1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libmount1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libmount1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsmartcols1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsmartcols1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libuuid1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libuuid1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "mount",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/mount@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "mount",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/mount@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "util-linux",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/util-linux@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "util-linux",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/util-linux@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-77214",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libexpat1",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1@2.6.1-2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libexpat1",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1@2.6.1-2ubuntu0.6?arch=arm64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libexpat1-dev",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1-dev@2.6.1-2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-78408",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "bsdextrautils",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdextrautils@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "bsdutils",
+          "version": "1:2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdutils@1%3A2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux%402.39.3-9ubuntu6.6",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "bsdutils",
+          "version": "1:2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdutils@1%3A2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux%402.39.3-9ubuntu6.6",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libblkid1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libblkid1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libmount1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libmount1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libmount1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libmount1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsmartcols1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsmartcols1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libuuid1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libuuid1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "mount",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/mount@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "mount",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/mount@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "util-linux",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/util-linux@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "util-linux",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/util-linux@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-78409",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "bsdextrautils",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdextrautils@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "bsdutils",
+          "version": "1:2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdutils@1%3A2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux%402.39.3-9ubuntu6.6",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "bsdutils",
+          "version": "1:2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdutils@1%3A2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux%402.39.3-9ubuntu6.6",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libblkid1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libblkid1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libmount1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libmount1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libmount1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libmount1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsmartcols1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsmartcols1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libuuid1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libuuid1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "mount",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/mount@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "mount",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/mount@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "util-linux",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/util-linux@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "util-linux",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/util-linux@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-78410",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "bsdextrautils",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdextrautils@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "bsdutils",
+          "version": "1:2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdutils@1%3A2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux%402.39.3-9ubuntu6.6",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "bsdutils",
+          "version": "1:2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/bsdutils@1%3A2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux%402.39.3-9ubuntu6.6",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libblkid1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libblkid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libblkid1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libmount1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libmount1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libmount1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libmount1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsmartcols1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsmartcols1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsmartcols1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libuuid1@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libuuid1",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libuuid1@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "mount",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/mount@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "mount",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/mount@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04&upstream=util-linux",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "util-linux",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/util-linux@2.39.3-9ubuntu6.6?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "util-linux",
+          "version": "2.39.3-9ubuntu6.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/util-linux@2.39.3-9ubuntu6.6?arch=arm64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-82560",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libperl5.38t64",
+          "version": "5.38.2-3.2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libperl5.38t64@5.38.2-3.2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=perl",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "perl",
+          "version": "5.38.2-3.2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/perl@5.38.2-3.2ubuntu0.6?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "perl-base",
+          "version": "5.38.2-3.2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/perl-base@5.38.2-3.2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=perl",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "perl-base",
+          "version": "5.38.2-3.2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/perl-base@5.38.2-3.2ubuntu0.6?arch=arm64&distro=ubuntu-24.04&upstream=perl",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "perl-modules-5.38",
+          "version": "5.38.2-3.2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/perl-modules-5.38@5.38.2-3.2ubuntu0.6?arch=all&distro=ubuntu-24.04&upstream=perl",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-85091",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "zlib1g",
+          "version": "1:1.3.dfsg-3.1ubuntu2.3",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/zlib1g@1%3A1.3.dfsg-3.1ubuntu2.3?arch=amd64&distro=ubuntu-24.04&upstream=zlib",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "zlib1g",
+          "version": "1:1.3.dfsg-3.1ubuntu2.3",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/zlib1g@1%3A1.3.dfsg-3.1ubuntu2.3?arch=arm64&distro=ubuntu-24.04&upstream=zlib",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "zlib1g-dev",
+          "version": "1:1.3.dfsg-3.1ubuntu2.3",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/zlib1g-dev@1%3A1.3.dfsg-3.1ubuntu2.3?arch=amd64&distro=ubuntu-24.04&upstream=zlib",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-86145",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libpcre2-16-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-16-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-32-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-32-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=arm64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-dev",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-dev@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-posix3",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-posix3@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-8674",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-dev-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-dev-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6-dev",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6-dev@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "locales",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/locales@2.39-0ubuntu8.9?arch=all&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-86805",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-dev-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-dev-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6-dev",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6-dev@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "locales",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/locales@2.39-0ubuntu8.9?arch=all&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-88647",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=amd64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=arm64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-88648",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=amd64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=arm64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-89092",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-dev-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-dev-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6-dev",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6-dev@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "locales",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/locales@2.39-0ubuntu8.9?arch=all&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-89156",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libpcre2-16-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-16-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-32-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-32-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=arm64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-dev",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-dev@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-posix3",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-posix3@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-89157",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libpcre2-16-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-16-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-32-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-32-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=arm64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-dev",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-dev@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-posix3",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-posix3@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-89158",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libpcre2-16-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-16-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-32-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-32-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=arm64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-dev",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-dev@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-posix3",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-posix3@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-89160",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libpcre2-16-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-16-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-32-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-32-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=arm64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-dev",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-dev@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-posix3",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-posix3@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-89161",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libpcre2-16-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-16-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-32-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-32-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-8-0",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-8-0@10.42-4ubuntu2.1?arch=arm64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-dev",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-dev@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libpcre2-posix3",
+          "version": "10.42-4ubuntu2.1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libpcre2-posix3@10.42-4ubuntu2.1?arch=amd64&distro=ubuntu-24.04&upstream=pcre2",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-90801",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-90802",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-90803",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-90804",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-90828",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-90829",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-90830",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-90831",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-91779",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-91780",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-91781",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-91782",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "binutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-common",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-common@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "binutils-x86-64-linux-gnu",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/binutils-x86-64-linux-gnu@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libbinutils",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libbinutils@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf-nobfd0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf-nobfd0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libctf0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libctf0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgprofng0",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgprofng0@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libsframe1",
+          "version": "2.42-4ubuntu2.10",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libsframe1@2.42-4ubuntu2.10?arch=amd64&distro=ubuntu-24.04&upstream=binutils",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-93990",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libexpat1",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1@2.6.1-2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libexpat1",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1@2.6.1-2ubuntu0.6?arch=arm64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libexpat1-dev",
+          "version": "2.6.1-2ubuntu0.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libexpat1-dev@2.6.1-2ubuntu0.6?arch=amd64&distro=ubuntu-24.04&upstream=expat",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-95184",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=amd64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=arm64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-95209",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=amd64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=arm64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-95210",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=amd64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libgnutls30t64",
+          "version": "3.8.3-1.1ubuntu3.6",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libgnutls30t64@3.8.3-1.1ubuntu3.6?arch=arm64&distro=ubuntu-24.04&upstream=gnutls28",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-95619",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-devcontainer:scan"
+      ],
+      "packages": [
+        {
+          "name": "cpp",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/cpp@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "cpp-x86-64-linux-gnu",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/cpp-x86-64-linux-gnu@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "g++",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/g%2B%2B@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "g++-x86-64-linux-gnu",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/g%2B%2B-x86-64-linux-gnu@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "gcc",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/gcc@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "gcc-x86-64-linux-gnu",
+          "version": "4:13.2.0-7ubuntu1",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/gcc-x86-64-linux-gnu@4%3A13.2.0-7ubuntu1?arch=amd64&distro=ubuntu-24.04&upstream=gcc-defaults%401.214ubuntu1",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-95818",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-dev-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-dev-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6-dev",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6-dev@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "locales",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/locales@2.39-0ubuntu8.9?arch=all&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-97399",
+      "severity": "Medium",
+      "image_refs": [
+        "docker:nomyr-dev/keycloak:scan",
+        "docker:nomyr-devcontainer:scan",
+        "oci-archive:linux/arm64/keycloak@sha256:fcd57b3b382589f0b30d57bbb3d0395a72b9e1a31c92bdc18fa30f08728589e0"
+      ],
+      "packages": [
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-bin@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc-dev-bin",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc-dev-bin@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6@2.39-0ubuntu8.9?arch=arm64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "libc6-dev",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/libc6-dev@2.39-0ubuntu8.9?arch=amd64&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        },
+        {
+          "name": "locales",
+          "version": "2.39-0ubuntu8.9",
+          "type": "deb",
+          "purl": "pkg:deb/ubuntu/locales@2.39-0ubuntu8.9?arch=all&distro=ubuntu-24.04&upstream=glibc",
+          "fix_state": "not-fixed",
+          "fix_versions": []
+        }
+      ]
+    },
+    {
+      "id": "GHSA-mjcv-p78q-w5fw",
+      "severity": "Medium",
+      "image_refs": [
+        "registry:postgres:18.6-alpine@sha256:898c60cb390d1085bc97bdd6a1ae968757421df394b071848b52b1c09c89d6a5"
+      ],
+      "packages": [
+        {
+          "name": "github.com/moby/sys/user",
+          "version": "v0.1.0",
+          "type": "go-module",
+          "purl": "pkg:golang/github.com/moby/sys/user@v0.1.0",
+          "fix_state": "fixed",
+          "fix_versions": [
+            "0.4.1"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+name: nomyr-dev
+services:
+  postgres:
+    image: postgres:18.6-alpine@sha256:898c60cb390d1085bc97bdd6a1ae968757421df394b071848b52b1c09c89d6a5
+    environment:
+      POSTGRES_USER: nomyr
+      POSTGRES_PASSWORD: ${NOMYR_DEV_POSTGRES_PASSWORD:?run make dev-stack-up}
+      POSTGRES_DB: nomyr
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: [postgres-data:/var/lib/postgresql]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nomyr -d nomyr"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:26.9.25.15-alpine@sha256:8b4b5974d01981dfbbf8c056395853ff8713a79a4c108868419fa2df18ce9f70
+    environment:
+      CLICKHOUSE_DB: nomyr
+      CLICKHOUSE_USER: nomyr
+      CLICKHOUSE_PASSWORD: ${NOMYR_DEV_CLICKHOUSE_PASSWORD:?run make dev-stack-up}
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+    ports: ["127.0.0.1:8123:8123", "127.0.0.1:9000:9000"]
+    volumes: [clickhouse-data:/var/lib/clickhouse]
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--no-check-certificate", "-T", "1", "-q", "http://127.0.0.1:8123/ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  temporal:
+    image: nomyr-dev/temporal:scan
+    build:
+      context: ../..
+      dockerfile: deploy/compose/images/temporal/Dockerfile
+      pull: true
+    command: ["server", "start-dev", "--ip", "0.0.0.0", "--db-filename", "/home/temporal/data/temporal.db"]
+    ports: ["127.0.0.1:7233:7233", "127.0.0.1:8233:8233"]
+    volumes: [temporal-data:/home/temporal/data]
+    healthcheck:
+      test: ["CMD", "temporal", "operator", "cluster", "health", "--address", "127.0.0.1:7233"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  nats:
+    image: nats:2.15.1-alpine@sha256:7ae34c25dfd6fe2e01c6483eabef20d796690fdcac6c4d94ca780a6cf9877fde
+    command: ["--jetstream", "--store_dir", "/data", "--http_port", "8222"]
+    ports: ["127.0.0.1:4222:4222", "127.0.0.1:8222:8222"]
+    volumes: [nats-data:/data]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8222/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  openbao:
+    image: nomyr-dev/openbao:scan
+    build:
+      context: ../..
+      dockerfile: deploy/compose/images/openbao/Dockerfile
+      pull: true
+    command: ["server", "-dev", "-dev-listen-address=0.0.0.0:8200", "-dev-root-token-id=${NOMYR_DEV_OPENBAO_TOKEN:?run make dev-stack-up}"]
+    ports: ["127.0.0.1:8200:8200"]
+    logging:
+      driver: none
+    healthcheck:
+      test: ["CMD", "bao", "status", "-address=http://127.0.0.1:8200"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  keycloak:
+    image: nomyr-dev/keycloak:scan
+    build:
+      context: ../..
+      dockerfile: deploy/compose/images/keycloak/Dockerfile
+      pull: true
+    command: ["start-dev", "--http-host=0.0.0.0"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: nomyr
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${NOMYR_DEV_KEYCLOAK_PASSWORD:?run make dev-stack-up}
+      KC_HEALTH_ENABLED: "true"
+    ports: ["127.0.0.1:8081:8080"]
+    volumes: [keycloak-data:/opt/keycloak/data]
+    healthcheck:
+      test: ["CMD", "bash", "-ec", "exec 3<>/dev/tcp/127.0.0.1/9000; printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3; grep -q '^HTTP/1.1 200' <&3"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+volumes:
+  postgres-data:
+  clickhouse-data:
+  temporal-data:
+  nats-data:
+  keycloak-data:

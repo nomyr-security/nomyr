@@ -2,7 +2,7 @@ export GOCACHE ?= $(CURDIR)/.cache/go-build
 export GOMODCACHE ?= $(CURDIR)/.cache/go-mod
 export GOPATH ?= $(CURDIR)/.cache/go-path
 
-.PHONY: bootstrap check-dev build web-install web-build test test-fast test-bootstrap quality test-race lint vuln contracts-lint fuzz fmt clean
+.PHONY: bootstrap check-dev build web-install web-build test test-fast test-bootstrap quality test-race lint vuln contracts-lint fuzz fmt clean dev dev-stack-up dev-stack-down dev-stack-reset dev-smoke dev-stack-config dev-stack-test
 
 bootstrap:
 	tools/bootstrap/bootstrap
@@ -19,6 +19,27 @@ build: web-build
 
 web-install:
 	cd web && npm ci
+
+dev:
+	tools/dev/dev
+
+dev-stack-up:
+	tools/dev/stack up
+
+dev-stack-down:
+	tools/dev/stack down
+
+dev-stack-reset:
+	tools/dev/stack reset
+
+dev-smoke:
+	tools/dev/stack smoke
+
+dev-stack-config:
+	tools/dev/stack config
+
+dev-stack-test:
+	sh tools/dev/stack_test.sh
 
 web-build:
 	cd web && npm run build

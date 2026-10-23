@@ -1,0 +1,103 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
+compose_file="$repo_root/deploy/compose/compose.yaml"
+env_file=${NOMYR_DEV_ENV_FILE:-"$repo_root/.dev.env"}
+cd "$repo_root"
+
+ensure_env() {
+	if [ ! -f "$env_file" ]; then
+		command -v openssl >/dev/null 2>&1 || { echo "openssl is required to generate local credentials" >&2; exit 1; }
+		umask 077
+		temp_file="$env_file.tmp.$$"
+		trap 'rm -f "$temp_file"' EXIT HUP INT TERM
+		{
+			printf 'NOMYR_DEV_POSTGRES_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+			printf 'NOMYR_DEV_CLICKHOUSE_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+			printf 'NOMYR_DEV_OPENBAO_TOKEN=%s\n' "$(openssl rand -hex 32)"
+			printf 'NOMYR_DEV_KEYCLOAK_PASSWORD=%s\n' "$(openssl rand -hex 32)"
+		} >"$temp_file"
+		mv "$temp_file" "$env_file"
+		trap - EXIT HUP INT TERM
+	fi
+}
+
+compose() {
+	docker compose --env-file "$env_file" -f "$compose_file" "$@"
+}
+
+compose_logs_redacted() {
+	if [ ! -f "$env_file" ]; then
+		compose logs --no-color --timestamps >&2 || true
+		return
+	fi
+	compose logs --no-color --timestamps 2>&1 | while IFS= read -r log_line; do
+		while IFS='=' read -r _ secret; do
+			if [ -n "$secret" ]; then
+				log_line=$(printf '%s\n' "$log_line" | NOMYR_REDACT_SECRET="$secret" awk '
+					{
+						secret = ENVIRON["NOMYR_REDACT_SECRET"]
+						remaining = $0
+						redacted = ""
+						while ((position = index(remaining, secret)) > 0) {
+							redacted = redacted substr(remaining, 1, position - 1) "[REDACTED]"
+							remaining = substr(remaining, position + length(secret))
+						}
+						print redacted remaining
+					}
+				')
+			fi
+		done <"$env_file"
+		printf '%s\n' "$log_line" >&2
+	done
+}
+
+compose_up_wait() {
+	if compose up -d --wait; then
+		return 0
+	else
+		status=$?
+	fi
+	compose ps --all >&2 || true
+	compose_logs_redacted
+	return "$status"
+}
+
+case "${1:-}" in
+	up)
+		ensure_env
+		compose_up_wait
+		;;
+	down)
+		if [ -f "$env_file" ]; then compose down; else docker compose -f "$compose_file" down; fi
+		;;
+	config)
+		ensure_env
+		compose config --quiet
+		;;
+	reset)
+		if [ -f "$env_file" ]; then compose down --volumes --remove-orphans; else docker compose -f "$compose_file" down --volumes --remove-orphans; fi
+		rm -f "$env_file"
+		;;
+	smoke)
+		ensure_env
+		compose_up_wait
+		for endpoint in \
+			http://127.0.0.1:8123/ping \
+			http://127.0.0.1:8222/healthz \
+			http://127.0.0.1:8200/v1/sys/health; do
+			printf 'Checking %s\n' "$endpoint"
+			curl --fail --silent --show-error "$endpoint" >/dev/null
+		done
+		compose exec -T postgres pg_isready -U nomyr -d nomyr >/dev/null
+		compose exec -T temporal temporal operator cluster health --address 127.0.0.1:7233 >/dev/null
+		compose exec -T keycloak sh -ec 'test "$(id -u):$(id -g)" = "1000:1000"; test -w /opt/keycloak/lib/quarkus; test ! -w /opt/keycloak/lib/lib/deployment; test ! -w /opt/keycloak/lib/lib/deployment/appmodel.dat; test ! -w /opt/keycloak/lib/lib/deployment/deployment-class-path.dat; test ! -w /opt/keycloak/bin/kc.sh; test -w /opt/keycloak/data; probe=/opt/keycloak/lib/quarkus/.nomyr-write-probe-$$; : >"$probe"; rm "$probe"; probe=/opt/keycloak/data/.nomyr-write-probe-$$; : >"$probe"; rm "$probe"'
+		compose exec -T keycloak bash -ec 'exec 3<>/dev/tcp/127.0.0.1/9000; printf "GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n" >&3; grep -q "^HTTP/1.1 200" <&3'
+		printf '%s\n' 'Development service smoke checks passed.'
+		;;
+	*)
+		echo "usage: $0 {up|down|reset|config|smoke}" >&2
+		exit 2
+		;;
+esac

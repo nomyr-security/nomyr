@@ -152,6 +152,11 @@ or TLS. The repository is under active development, and capabilities are added
 with their contracts, tests, and security boundaries rather than claimed ahead
 of implementation.
 
+Contributors can run `make bootstrap` followed by `make dev` for the local,
+development-only service stack and Next.js development server. See the
+[local development guide](docs/local-development.md) for service limits,
+generated credentials, health checks, and reset instructions.
+
 Useful commands:
 
 ```sh
