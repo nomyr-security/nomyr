@@ -142,5 +142,7 @@ reproduction information privately with the maintainers.
 
 ## Community
 
-Be respectful, specific, and constructive. Review ideas and code on their
-merits, make room for different experience levels, and help others contribute.
+Follow the [Code of Conduct](CODE_OF_CONDUCT.md). For governance and decision
+processes, see [GOVERNANCE.md](GOVERNANCE.md), [MAINTAINERS.md](MAINTAINERS.md),
+and the [ADR](docs/adr/README.md) and [RFC](docs/rfcs/README.md) process. Support
+availability and channels are described in [SUPPORT.md](SUPPORT.md).
