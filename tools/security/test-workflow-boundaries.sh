@@ -34,6 +34,8 @@ grep -Fq -- '--only-binary=:all: --requirement tools/security/pip-audit-requirem
 grep -Fq 'name: Build and audit pinned scanner tools' "$workflow"
 grep -Fq 'tools/security/build-scanners.sh' "$workflow"
 grep -Fq 'tools/security/audit-scanner-binaries.sh' "$workflow"
+grep -Fq 'run: sh tools/security/build-scanners.sh' "$workflow"
+grep -Fq 'run: sh tools/security/audit-scanner-binaries.sh' "$workflow"
 grep -Fq 'tools/security/test-scanner-audit.sh' "$root/tools/security/test-workflow-boundaries.sh"
 grep -Fq "go build -tags 'exclude_graphdriver_btrfs'" "$root/tools/security/build-scanners.sh"
 grep -Fq "CGO_ENABLED=0 go list -tags 'exclude_graphdriver_btrfs' -deps" "$root/tools/security/build-scanners.sh"
