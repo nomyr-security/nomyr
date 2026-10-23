@@ -13,6 +13,16 @@ export NOMYR_DEV_ENV_FILE="$temp_root/.dev.env"
 cat >"$temp_root/docker" <<'MOCK'
 #!/bin/sh
 printf '%s\n' "$*" >>"$NOMYR_DOCKER_CALLS"
+case "$*" in
+	*' up -d --wait'*)
+		if [ "${NOMYR_TEST_COMPOSE_FAIL:-}" = 1 ]; then
+			echo 'simulated compose startup failure' >&2
+			exit 17
+		fi
+		;;
+	*' ps --all'*) echo 'container exited (1)' ;;
+	*' logs --no-color --timestamps'*) printf 'keycloak startup password=%s\n' "$NOMYR_TEST_LOG_SECRET" ;;
+esac
 MOCK
 cat >"$temp_root/go" <<'MOCK'
 #!/bin/sh
@@ -38,6 +48,23 @@ else
 fi
 test "$file_mode" = 600
 test "$(wc -l <"$NOMYR_DEV_ENV_FILE" | tr -d ' ')" = 4
+export NOMYR_TEST_LOG_SECRET
+NOMYR_TEST_LOG_SECRET=$(sed -n 's/^NOMYR_DEV_POSTGRES_PASSWORD=//p' "$NOMYR_DEV_ENV_FILE")
+export NOMYR_TEST_COMPOSE_FAIL=1
+if "$repo_root/tools/dev/stack" smoke >"$temp_root/compose-diagnostics.log" 2>&1; then
+	echo 'development smoke unexpectedly succeeded after Compose failure' >&2
+	exit 1
+else
+	compose_status=$?
+fi
+test "$compose_status" = 17
+grep -q 'container exited (1)' "$temp_root/compose-diagnostics.log"
+grep -q 'keycloak startup password=\[REDACTED\]' "$temp_root/compose-diagnostics.log"
+if grep -Fq "$NOMYR_TEST_LOG_SECRET" "$temp_root/compose-diagnostics.log"; then
+	echo 'Compose diagnostics leaked a generated secret' >&2
+	exit 1
+fi
+unset NOMYR_TEST_COMPOSE_FAIL
 if grep -q 'minio\|MINIO' "$repo_root/deploy/compose/compose.yaml" "$repo_root/tools/dev/stack"; then
 	echo "archived MinIO service unexpectedly remains in the dev stack" >&2
 	exit 1
@@ -69,7 +96,13 @@ if grep -q 'anchore/grype/releases/download' "$repo_root/.github/workflows/dev-c
 	exit 1
 fi
 grep -q '"$scheme:$image"' "$repo_root/.github/workflows/dev-compose.yml"
-grep -q -- '--fail-on medium' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q -- '--fail-on high' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q -- '--fail-on medium' "$repo_root/.github/workflows/security-supply-chain.yml"
+grep -q 'issues/67' "$repo_root/docs/dev-image-vulnerabilities.md"
+grep -q 'High/Critical' "$repo_root/docs/dev-image-vulnerabilities.md"
+grep -q 'CVE-2025-60876' "$repo_root/docs/dev-image-vulnerabilities.md"
+grep -q 'GHSA-mjcv-p78q-w5fw' "$repo_root/docs/dev-image-vulnerabilities.md"
+grep -q 'summarize-dev-medium-backlog.sh' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'mcr.microsoft.com/devcontainers/base:ubuntu-24.04@sha256:' "$repo_root/.devcontainer/Dockerfile"
 grep -q 'apt-get upgrade --yes' "$repo_root/.devcontainer/Dockerfile"

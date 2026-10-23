@@ -193,13 +193,13 @@ jobs:
               scan_status=1
             fi
             if [ "$gate" = high ]; then
-              "$scanner_dir/grype" "$scheme:$image" --fail-on medium --output json --file "$report"
+              "$scanner_dir/grype" "$scheme:$image" --fail-on high --output json --file "$report"
             else
               "$scanner_dir/grype" "$scheme:$image" --output json --file "$report"
             fi
             result=$?
             if [ "$result" -eq 2 ]; then
-              printf '%s: Medium-or-higher vulnerability threshold exceeded\n' "$image" >> "$report_dir/scan-summary.txt"
+              printf '%s: High-or-higher vulnerability threshold exceeded\n' "$image" >> "$report_dir/scan-summary.txt"
               scan_status=2
             elif [ "$result" -ne 0 ]; then
               printf '%s: scanner failed with exit %s\n' "$image" "$result" >> "$report_dir/scan-errors.txt"
@@ -235,6 +235,12 @@ jobs:
             scan_status=1
           fi
           scan_one nomyr-devcontainer:scan docker high
+          if ! sh tools/security/summarize-dev-medium-backlog.sh \
+            "$report_dir/images" "$report_dir/dev-medium-backlog.json" \
+            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"; then
+            printf 'Development Medium backlog inventory generation failed\n' >> "$report_dir/scan-errors.txt"
+            scan_status=1
+          fi
           find "$report_dir/arm64" -type f -name '*.oci.tar' -print0 | while IFS= read -r -d '' archive; do
             (cd "$(dirname "$archive")" && sha256sum "$(basename "$archive")") >> "$report_dir/arm64/OCI-SHA256SUMS"
             rm -f "$archive"
