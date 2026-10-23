@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+if ! command -v mise >/dev/null 2>&1; then
+	printf '%s\n' 'mise is required. Install mise using its official instructions, then rerun make bootstrap.' >&2
+	exit 1
+fi
+
+mise install
+mise exec -- npm --prefix web ci

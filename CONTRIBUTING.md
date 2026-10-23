@@ -26,15 +26,28 @@ to act without guessing:
 
 ## Set up development
 
-Install Go at the version specified in `go.mod` and Node.js 22 with npm. Fork
+Install [mise](https://mise.jdx.dev/) using its official instructions. The
+checked-in `mise.toml` pins Go, Node.js, Buf, `golangci-lint`, and
+`govulncheck`; npm is the version bundled with the pinned Node.js release. Fork
 the repository, clone your fork, and create a branch for your change.
 
 ```sh
-make web-install
+make bootstrap
+make check-dev
 make test-fast
+make test
 make build
 ./bin/nomyr demo
 ```
+
+`make bootstrap` explicitly installs the versions in `mise.toml` and runs
+`npm ci` for the web workspace. It does not install mise or modify global tool
+settings. `make check-dev` reports missing development tools and points to the
+bootstrap command. `make test-fast` runs Go tests and the web typecheck without
+containers; `make test` adds Go race tests, lint, and vulnerability checks.
+Run a focused Go fuzz target with
+`make fuzz PACKAGE=./path/to/package FOCUS=FuzzTarget` and optionally set
+`FUZZTIME=60s`. Only checked-in fuzz targets are runnable.
 
 The demo uses synthetic data and binds to loopback. Do not expose it publicly
 or connect it to production credentials.
