@@ -8,8 +8,8 @@ their named owner accepts them. Planned work and unresolved evidence remain expl
 
 | ADR | Topic | Status | Decision owner | Acceptance or validation still required |
 |---|---|---|---|---|
-| [0001](../adr/0001-backend-language-go.md) | Backend language | Proposed | Project owner; confirmation pending | Complete the Temporal, OPA, ledger, and connector enumeration spikes listed in the ADR and record results. |
-| [0002](../adr/0002-durable-execution-temporal.md) | Durable execution | Accepted (project owner, 2026-09-19) | Project owner | Track Phase 5 deployment and restore considerations; Temporal is not required for Phases 1–4. |
+| 0001 (local design record; not published) | Backend language | Proposed | Project owner; confirmation pending | Complete the Temporal, OPA, ledger, and connector enumeration spikes and record results. |
+| 0002 (local design record; not published) | Durable execution | Accepted (project owner, 2026-09-19) | Project owner | Track Phase 5 deployment and restore considerations; Temporal is not required for Phases 1–4. |
 | [0003](../adr/0003-monorepo-and-module-boundaries.md) | Monorepo and module boundaries | Proposed | Project owner; acceptance pending | Implement and test forbidden-import matrix and artifact boundaries. |
 | [0004](../adr/0004-license-model.md) | License model | Proposed | Project owner; legal review as needed | Confirm public license promise and complete pinned dependency reviews; do not infer compatibility from process boundaries. |
 | [0005](../adr/0005-tenant-isolation.md) | Tenant isolation | Proposed | Project owner; acceptance pending | Design review and cross-tenant negative tests for API, jobs, aggregates, and caches. |
@@ -19,7 +19,7 @@ their named owner accepts them. Planned work and unresolved evidence remain expl
 | [0009](../adr/0009-event-bus-and-outbox.md) | Event bus and outbox | Proposed | Project owner; acceptance pending | Relay/consumer prototype, crash/retry and duplicate tests, tenant routing review. |
 | [0010](../adr/0010-connector-transport.md) | Connector transport | Proposed | Project owner; acceptance pending | Interoperability and compatibility spike; boundary tests for identity, sanitization, and credential exclusion. |
 | [0011](../adr/0011-signing-key-purposes.md) | Signing-key purposes | Proposed | Project owner; acceptance pending | Cryptographic and key-lifecycle review; negative verification tests. |
-| [0012](../adr/0012-single-binary-embedded-ui-and-lite-mode.md) | Embedded UI and lite mode | Proposed | Project owner; acceptance pending | Static identity-route, cold-start, and embedded-PostgreSQL platform spikes; no lite capability is implied implemented. |
+| 0012 (local design record; not published) | Embedded UI and lite mode | Proposed | Project owner; acceptance pending | Static identity-route, cold-start, and embedded-PostgreSQL platform spikes; no lite capability is implied implemented. |
 
 Issue #18 is the evidence workstream for closing the remaining Phase 0 architecture validation
 gaps and supporting final ratification under issue #2. Foundational design and interface work
