@@ -15,6 +15,12 @@ for scanner in syft gitleaks grype; do
 		echo "missing scanner binary or build-time package graph for $scanner" >&2
 		exit 1
 	fi
+	go version -m "$binary" > "$out/reports/$scanner.buildinfo.txt"
+	if ! sed -n '1s/.*: //p' "$out/reports/$scanner.buildinfo.txt" | grep -Fxq "go$GO_VERSION"; then
+		echo "$scanner was not built with the patched Go $GO_VERSION runtime" >&2
+		cat "$out/reports/$scanner.buildinfo.txt" >&2
+		exit 1
+	fi
 	set +e
 	govulncheck -json -mode=binary "$binary" > "$out/reports/$scanner.govulncheck.json"
 	status=$?
@@ -79,19 +85,20 @@ Raw govulncheck JSON, every finding ID, source graph captured during the matchin
 Syft: v$SYFT_VERSION commit $SYFT_COMMIT module checksum $SYFT_SUM binary SHA-256 $syft_binary_sha.
 Gitleaks: v$GITLEAKS_VERSION commit $GITLEAKS_COMMIT module checksum $GITLEAKS_SUM binary SHA-256 $gitleaks_binary_sha; transitive dependency patch is tools/security/patches/gitleaks-transitive-security-updates.patch.
 Grype: v$GRYPE_VERSION commit $GRYPE_COMMIT module checksum $GRYPE_SUM binary SHA-256 $grype_binary_sha; Docker module $DOCKER_MODULE_VERSION commit $DOCKER_MODULE_COMMIT checksum $DOCKER_MODULE_SUM.
-GO-2026-5932 (golang.org/x/crypto/openpgp) is retained in Syft, Gitleaks, and Grype raw reports. Its affected OpenPGP package is absent from each exact build-time package graph and binary symbol listing.
-GO-2026-4883 (CVE-2026-33997 / GHSA-pxq6-2prw-chj9), GO-2026-4887 (CVE-2026-34040 / GHSA-x744-4wpc-v9h2), GO-2026-5617 (CVE-2026-42306 / GHSA-rg2x-37c3-w2rh), GO-2026-5668 (CVE-2026-41568 / GHSA-vp62-88p7-qqf5), and GO-2026-5746 (CVE-2026-41567 / GHSA-x86f-5xw2-fm2r) are retained in Grype raw reports. Their advisory-affected Docker daemon packages are absent from Grype's exact build-time package graph and binary symbols; the Docker client package remains present.
+GO-2026-5932 (golang.org/x/crypto/openpgp) is retained in Syft, Gitleaks, and Grype raw reports. Its reviewed affected package list names openpgp, packet, armor, clearsign, and errors (all symbols); these packages are absent from each exact build-time package graph and binary symbol listing.
+GO-2026-4883 (CVE-2026-33997 / GHSA-pxq6-2prw-chj9) and GO-2026-4887 (CVE-2026-34040 / GHSA-x744-4wpc-v9h2) are retained in Grype raw reports. The Go database marks them unreviewed and module-wide; govulncheck traces name daemon methods, but the exact Grype graph and binary symbols contain no Docker daemon packages.
+GO-2026-5617 (CVE-2026-42306 / GHSA-rg2x-37c3-w2rh) specifically affects github.com/docker/docker/daemon: Daemon.openContainerFS. GO-2026-5668 (CVE-2026-41568 / GHSA-vp62-88p7-qqf5) specifically affects that daemon package's Daemon.openContainerFS and Daemon.createIfNotExists. GO-2026-5746 (CVE-2026-41567 / GHSA-x86f-5xw2-fm2r) specifically affects that daemon package's Daemon.containerExtractToDir. The official Go records describe these as daemon-owned code, not intended for use as a library. The daemon package and symbols are absent from Grype's exact build graph and binary; the Docker client package remains present and is not the daemon.
 Official Go records: https://pkg.go.dev/vuln/GO-2026-5932 https://pkg.go.dev/vuln/GO-2026-4883 https://pkg.go.dev/vuln/GO-2026-4887 https://pkg.go.dev/vuln/GO-2026-5617 https://pkg.go.dev/vuln/GO-2026-5668 https://pkg.go.dev/vuln/GO-2026-5746
-The Go records are unreviewed/module-wide and govulncheck traces alone do not establish reachability. These source-bound dispositions are valid only for the listed scanner source identities and while all exact-ID, package-graph, and symbol checks pass. Accountable human owner remains unassigned.
+GO-2026-4883/-4887 remain unreviewed/module-wide upstream; the GO-2026-5617/-5668/-5746 records identify exact daemon packages and symbols; GO-2026-5932 identifies exact OpenPGP package paths and all symbols. These source-bound dispositions are valid only for the listed scanner source identities and while all exact-ID, package-graph, and symbol checks pass. Accountable human owner remains unassigned.
 EOF
 
 for scanner in syft gitleaks grype; do
 	case "$scanner" in
-		syft) version=$SYFT_VERSION; commit=$SYFT_COMMIT; checksum=$SYFT_SUM; binary_sha=$syft_binary_sha ;;
-		gitleaks) version=$GITLEAKS_VERSION; commit=$GITLEAKS_COMMIT; checksum=$GITLEAKS_SUM; binary_sha=$gitleaks_binary_sha ;;
-		grype) version=$GRYPE_VERSION; commit=$GRYPE_COMMIT; checksum=$GRYPE_SUM; binary_sha=$grype_binary_sha ;;
+		syft) version=$SYFT_VERSION; commit=$SYFT_COMMIT; checksum=$SYFT_SUM; binary_sha=$syft_binary_sha; module=github.com/anchore/syft ;;
+		gitleaks) version=$GITLEAKS_VERSION; commit=$GITLEAKS_COMMIT; checksum=$GITLEAKS_SUM; binary_sha=$gitleaks_binary_sha; module=github.com/zricethezav/gitleaks/v8 ;;
+		grype) version=$GRYPE_VERSION; commit=$GRYPE_COMMIT; checksum=$GRYPE_SUM; binary_sha=$grype_binary_sha; module=github.com/anchore/grype ;;
 	esac
-	product="pkg:golang/$scanner@$version"
+	product="pkg:golang/$module@$version"
 	statements=$(jq -Rsc \
 		--arg product "$product" \
 		--arg commit "$commit" \

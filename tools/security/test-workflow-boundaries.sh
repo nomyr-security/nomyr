@@ -57,6 +57,10 @@ grep -Fq 'GO-2026-5668' "$root/tools/security/audit-scanner-binaries.sh"
 grep -Fq 'GO-2026-5746' "$root/tools/security/audit-scanner-binaries.sh"
 grep -Fq 'GO-2026-5932' "$root/tools/security/audit-scanner-binaries.sh"
 grep -Fq 'jq -s -r' "$root/tools/security/audit-scanner-binaries.sh"
+grep -Fq 'go version -m "$binary"' "$root/tools/security/audit-scanner-binaries.sh"
+grep -Fq 'module=github.com/anchore/syft' "$root/tools/security/audit-scanner-binaries.sh"
+grep -Fq 'module=github.com/anchore/grype' "$root/tools/security/audit-scanner-binaries.sh"
+grep -Fq 'module=github.com/zricethezav/gitleaks/v8' "$root/tools/security/audit-scanner-binaries.sh"
 if grep -Eq 'linked_findings|has\("function"\)|go list -deps' "$root/tools/security/audit-scanner-binaries.sh"; then
 	echo 'scanner audit must not filter module-wide findings or recompute a mismatched source graph' >&2
 	exit 1
