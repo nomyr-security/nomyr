@@ -13,3 +13,11 @@ func TestErrorContractIncludesRequiredFields(t *testing.T) {
 		}
 	}
 }
+
+func TestErrorHelpersUseRegisteredCodes(t *testing.T) {
+	for _, appError := range []*Error{NotImplemented("login"), InvalidArgument("bad input"), OperationFailed("scaffold")} {
+		if !IsRegisteredCode(appError.Code) {
+			t.Errorf("error code %q is not registered", appError.Code)
+		}
+	}
+}

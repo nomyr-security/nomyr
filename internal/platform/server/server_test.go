@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"io/fs"
 	"net/http"
 	"net/http/httptest"
@@ -21,6 +22,23 @@ func TestHealthEndpoint(t *testing.T) {
 	}
 }
 
+func TestDemoEstateEndpointUsesWatermarkedFixture(t *testing.T) {
+	assets := fstest.MapFS{"fallback.html": {Data: []byte("fallback")}}
+	request := httptest.NewRequest(http.MethodGet, "/api/v1/demo-estate", nil)
+	response := httptest.NewRecorder()
+	Handler(fs.FS(assets), demo.Seed()).ServeHTTP(response, request)
+	if response.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", response.Code)
+	}
+	var estate demo.Estate
+	if err := json.Unmarshal(response.Body.Bytes(), &estate); err != nil {
+		t.Fatalf("invalid demo estate response: %v", err)
+	}
+	if estate.Watermark != "demo data" || len(estate.Identities) == 0 {
+		t.Fatalf("demo fixture missing watermark or records: %#v", estate)
+	}
+}
+
 func TestMissingStaticRouteUsesFallback(t *testing.T) {
 	assets := fstest.MapFS{"fallback.html": {Data: []byte("fallback")}}
 	request := httptest.NewRequest(http.MethodGet, "/identities/demo-service-account", nil)
@@ -34,7 +52,7 @@ func TestMissingStaticRouteUsesFallback(t *testing.T) {
 
 func TestNextStaticAssetIsServedWithoutSPARewrite(t *testing.T) {
 	assets := fstest.MapFS{
-		"index.html":                   {Data: []byte("app shell")},
+		"index.html":                  {Data: []byte("app shell")},
 		"_next/static/chunks/app.css": {Data: []byte("body { color: white; }")},
 	}
 	request := httptest.NewRequest(http.MethodGet, "/_next/static/chunks/app.css", nil)

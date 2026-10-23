@@ -1,0 +1,37 @@
+name: CLI baseline
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+      - name: Verify Go-built lint tool
+        run: mise exec -- tools/bootstrap/check
+      - name: Build CLI
+        run: go build -o bin/nomyr ./cmd/nomyr
+      - name: Lint CLI error constructors
+        run: go run ./tools/errlint
+      - name: Measure cold start and binary size
+        run: |
+          go run ./tools/clibaseline bin/nomyr > cli-baseline.json
+          echo "### CLI baseline" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat cli-baseline.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cli-baseline
+          path: cli-baseline.json
+          retention-days: 30
