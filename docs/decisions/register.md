@@ -8,7 +8,7 @@ their named owner accepts them. Planned work and unresolved evidence remain expl
 
 | ADR | Topic | Status | Decision owner | Acceptance or validation still required |
 |---|---|---|---|---|
-| 0001 (local design record; not published) | Backend language | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Complete the Temporal, OPA, ledger, and connector enumeration spikes and record results. |
+| [0001](../adr/0001-backend-language.md) | Backend language | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Review partial spike evidence; connector enumeration and hosted/runtime/platform gaps remain open. |
 | 0002 (local design record; not published) | Durable execution | Accepted (project owner, 2026-09-19) | Project owner | Track Phase 5 deployment and restore considerations; Temporal is not required for Phases 1–4. |
 | [0003](../adr/0003-monorepo-and-module-boundaries.md) | Monorepo and module boundaries | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Implement and test forbidden-import matrix and artifact boundaries. |
 | [0004](../adr/0004-license-model.md) | License model | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Confirm public license promise and complete pinned dependency reviews; do not infer compatibility from process boundaries. |
@@ -19,7 +19,7 @@ their named owner accepts them. Planned work and unresolved evidence remain expl
 | [0009](../adr/0009-event-bus-and-outbox.md) | Event bus and outbox | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Relay/consumer prototype, crash/retry and duplicate tests, tenant routing review. |
 | [0010](../adr/0010-connector-transport.md) | Connector transport | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Interoperability and compatibility spike; boundary tests for identity, sanitization, and credential exclusion. |
 | [0011](../adr/0011-signing-key-purposes.md) | Signing-key purposes | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Cryptographic and key-lifecycle review; negative verification tests. |
-| 0012 (local design record; not published) | Embedded UI and lite mode | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Static identity-route, cold-start, and embedded-PostgreSQL platform spikes; no lite capability is implied implemented. |
+| [0012](../adr/0012-single-binary-embedded-ui-and-lite-mode.md) | Embedded UI and lite mode | Proposed | `@nomyr-ai` (owner-designated account; acceptance pending) | Static identity route exists; cold-start measurement and embedded-PostgreSQL platform matrix remain open. No lite capability is implied implemented. |
 
 Issue #18 is the evidence workstream for closing the remaining Phase 0 architecture validation
 gaps and supporting final ratification under issue #2. Foundational design and interface work
@@ -30,13 +30,13 @@ that dependency does not change their proposed status or count as owner acceptan
 
 | Seed / validation area | Current state | Evidence needed | Owner / tracking |
 |---|---|---|---|
-| Temporal Go worker, saga, and reconcile-before-retry (ADR-0001/0002) | Unknown; planned spike | Record workflow replay, retry, timeout reconciliation, and failure outcomes. | Issue #18; owner to assign |
-| Embedded OPA bundle signing and verification (ADR-0001/0008) | Unknown; planned spike | Record policy evaluation, signature verification, and failure behavior. | Issue #18; owner to assign |
-| `pgx` bitemporal assertion write path (ADR-0001/0006) | Unknown; planned spike | Record schema, temporal semantics, transaction behavior, and measured results. | Issue #18; owner to assign |
-| AWS, Entra, and Kubernetes enumeration through connector contract (ADR-0001/0010) | Unknown; planned spike | Sanitized synthetic or authorized test evidence, capability/coverage gaps, and transport results. | Issue #18; owner to assign |
-| Embedded UI identity detail route and SPA fallback (ADR-0012) | Unknown; planned spike | Static export behavior for `/identities/[id]` and as-of query parameters. | Issue #18; owner to assign |
-| `nomyr demo` cold-start budget (ADR-0012) | Unknown; target not measured here | Reproducible measurement on the agreed standard CI runner. | Issue #18; owner to assign |
-| Embedded PostgreSQL platform behavior (ADR-0012) | Unknown; planned spike | macOS/Linux/Windows × arm64/amd64 results, including offline and external-URL paths. | Issue #18; owner to assign |
+| Temporal Go worker, saga, and reconcile-before-retry (ADR-0001/0002) | Partial; isolated SDK workflow test | Server persistence, worker failover, and deployment evidence remain required. See [spike evidence](../spikes/phase-0-architecture.md). | Issue #18; owner to assign |
+| Embedded OPA bundle signing and verification (ADR-0001/0008) | Partial; trusted, tampered, and untrusted-key cases in the isolated Go SDK test | Policy lifecycle, key rotation, authorization integration, and runtime status behavior remain open. See [spike evidence](../spikes/phase-0-architecture.md). | Issue #18; owner to assign |
+| `pgx` bitemporal assertion write path (ADR-0001/0006) | Test authored; runtime evidence requires explicit disposable PostgreSQL URL | Run against PostgreSQL; retention, correction, tenancy, performance, and schema review remain open. See [spike evidence](../spikes/phase-0-architecture.md). | Issue #18; owner to assign |
+| AWS, Entra, and Kubernetes enumeration through connector contract (ADR-0001/0010) | Blocked by current contract: `Describe` only | Define enumeration contract and sanitized fixture schema before provider-specific adapters or claims. See [spike evidence](../spikes/phase-0-architecture.md). | Issue #18; owner to assign |
+| Embedded UI identity detail route and SPA fallback (ADR-0012) | Source baseline exists for one static identity route and as-of query display | Build/export and Go-embed runtime behavior still requires execution evidence; no dynamic retrieval or authorization. See [spike evidence](../spikes/phase-0-architecture.md). | Issue #18; owner to assign |
+| `nomyr demo` cold-start budget (ADR-0012) | Unknown; not measured | Agree a runner and repeated measurement method; no budget has been established. See [spike evidence](../spikes/phase-0-architecture.md). | Issue #18; owner to assign |
+| Embedded PostgreSQL platform behavior (ADR-0012) | Unknown; no distribution selected or run | Maintained distribution, provenance, offline and external-URL behavior, and macOS/Linux/Windows × arm64/amd64 native evidence remain required. See [spike evidence](../spikes/phase-0-architecture.md). | Issue #18; owner to assign |
 | Provider API permissions and edition limits | Unknown | Per-provider operation-to-permission/edition matrix and unsupported cases. | Owner and issue to assign |
 | Source event retention | Unknown | Retention limits by provider and resulting coverage gaps. | Owner and issue to assign |
 | Effective-permission semantics and coverage | Unknown | Provider-specific semantics, evaluation limits, and explicit partial/unknown outcomes. | Owner and issue to assign |
