@@ -12,10 +12,15 @@ permissions:
 jobs:
   docs-required:
     name: docs-required
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+      - name: Install pinned FFmpeg for VHS captures
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes ffmpeg=7:6.1.1-3ubuntu5
+          ffmpeg -version
       - name: Install documentation dependencies
         run: |
           make docs-install

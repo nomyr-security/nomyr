@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"sort"
 	"strings"
 )
@@ -204,7 +205,7 @@ func compactCommandHelp(content string) string {
 }
 
 func commandHelp(root string, args ...string) (output []byte, err error) {
-	command := exec.Command("go", append([]string{"run", "./cmd/nomyr"}, args...)...)
+	command := exec.Command(goExecutable(), append([]string{"run", "./cmd/nomyr"}, args...)...)
 	command.Dir = root
 	configHome, err := os.MkdirTemp("", "nomyr-docgen-config-")
 	if err != nil {
@@ -224,6 +225,10 @@ func commandHelp(root string, args ...string) (output []byte, err error) {
 		return nil, fmt.Errorf("nomyr %s help failed: %s", strings.Join(args, " "), strings.TrimSpace(string(output)))
 	}
 	return output, nil
+}
+
+func goExecutable() string {
+	return filepath.Join(runtime.GOROOT(), "bin", "go")
 }
 
 func safeCommandEnvironment(environment []string, configHome string) []string {

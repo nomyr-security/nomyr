@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -94,5 +96,18 @@ func TestSafeCommandEnvironmentRejectsInheritedPathAndConfigHome(t *testing.T) {
 	}
 	if pathCount != 1 || configCount != 1 {
 		t.Fatalf("expected one constrained PATH and telemetry config home, got PATH=%d config=%d", pathCount, configCount)
+	}
+}
+
+func TestGoExecutableUsesInstalledToolchainPath(t *testing.T) {
+	path := goExecutable()
+	if !filepath.IsAbs(path) {
+		t.Fatalf("Go executable path is not absolute: %s", path)
+	}
+	if filepath.Dir(filepath.Dir(path)) != runtime.GOROOT() {
+		t.Fatalf("Go executable does not resolve within GOROOT: %s", path)
+	}
+	if info, err := os.Stat(path); err != nil || !info.Mode().IsRegular() {
+		t.Fatalf("Go executable is not present at the toolchain path: %s, %v", path, err)
 	}
 }
