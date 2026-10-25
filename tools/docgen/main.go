@@ -218,12 +218,22 @@ func commandHelp(root string, args ...string) (output []byte, err error) {
 	if err := os.WriteFile(filepath.Join(configHome, "telemetry.json"), []byte("{\"enabled\":false}\n"), 0o600); err != nil {
 		return nil, err
 	}
-	command.Env = append(os.Environ(), "NOMYR_CONFIG_HOME="+configHome)
+	command.Env = safeCommandEnvironment(os.Environ(), configHome)
 	output, err = command.CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("nomyr %s help failed: %s", strings.Join(args, " "), strings.TrimSpace(string(output)))
 	}
 	return output, nil
+}
+
+func safeCommandEnvironment(environment []string, configHome string) []string {
+	filtered := make([]string, 0, len(environment)+2)
+	for _, variable := range environment {
+		if !strings.HasPrefix(variable, "PATH=") && !strings.HasPrefix(variable, "NOMYR_CONFIG_HOME=") {
+			filtered = append(filtered, variable)
+		}
+	}
+	return append(filtered, "PATH=/usr/bin:/bin", "NOMYR_CONFIG_HOME="+configHome)
 }
 
 func readPublic(root, path string) ([]byte, error) {

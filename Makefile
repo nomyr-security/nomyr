@@ -55,7 +55,7 @@ docs-check:
 docs-build: docs-gen
 	cd docs-site && npm run build
 
-docs-test: docs-gen web-build
+docs-test: docs-build web-build
 	sh tools/docs/browser-test.sh
 
 docs-quickstart:

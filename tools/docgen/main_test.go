@@ -68,3 +68,31 @@ func TestReadPublicRejectsPrivatePlanningAndTelemetrySources(t *testing.T) {
 		t.Fatalf("allowlisted public source rejected unexpectedly: %v", err)
 	}
 }
+
+func TestSafeCommandEnvironmentRejectsInheritedPathAndConfigHome(t *testing.T) {
+	environment := safeCommandEnvironment([]string{
+		"HOME=/tmp/home",
+		"PATH=/tmp/untrusted-bin",
+		"NOMYR_CONFIG_HOME=/tmp/old-config",
+		"GOPROXY=https://proxy.golang.org,direct",
+	}, "/tmp/disabled-telemetry-config")
+	pathCount := 0
+	configCount := 0
+	for _, variable := range environment {
+		if strings.HasPrefix(variable, "PATH=") {
+			pathCount++
+			if variable != "PATH=/usr/bin:/bin" {
+				t.Errorf("unexpected child PATH: %s", variable)
+			}
+		}
+		if strings.HasPrefix(variable, "NOMYR_CONFIG_HOME=") {
+			configCount++
+			if variable != "NOMYR_CONFIG_HOME=/tmp/disabled-telemetry-config" {
+				t.Errorf("unexpected child config home: %s", variable)
+			}
+		}
+	}
+	if pathCount != 1 || configCount != 1 {
+		t.Fatalf("expected one constrained PATH and telemetry config home, got PATH=%d config=%d", pathCount, configCount)
+	}
+}

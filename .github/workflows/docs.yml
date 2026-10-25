@@ -20,31 +20,35 @@ jobs:
         run: |
           make docs-install
           cd docs-site
-          npx playwright install --with-deps chromium
+          ./node_modules/.bin/playwright install --with-deps chromium
       - name: Install pinned quality tools
         run: |
-          go install github.com/vale-cli/vale/v3/cmd/vale@v3.25.1
-          curl -fsSL https://github.com/lycheeverse/lychee/releases/download/lychee-v0.24.2/lychee-x86_64-unknown-linux-gnu.tar.gz -o "$RUNNER_TEMP/lychee.tar.gz"
-          curl -fsSL https://github.com/lycheeverse/lychee/releases/download/lychee-v0.24.2/lychee-x86_64-unknown-linux-gnu.tar.gz.sha256 -o "$RUNNER_TEMP/lychee.sha256"
-          (cd "$RUNNER_TEMP" && sha256sum -c lychee.sha256)
-          tar -xzf "$RUNNER_TEMP/lychee.tar.gz" -C "$RUNNER_TEMP"
+          curl --fail --show-error --silent --location --proto '=https' --proto-redir '=https' --tlsv1.2 https://github.com/lycheeverse/lychee/releases/download/lychee-v0.24.2/lychee-x86_64-unknown-linux-gnu.tar.gz -o "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu.tar.gz"
+          printf '%s  %s\n' '1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a' "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu.tar.gz" -C "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu" >> "$GITHUB_PATH"
-          curl -fsSL https://github.com/errata-ai/vale/releases/download/v3.25.1/vale_3.25.1_Linux_64-bit.tar.gz -o "$RUNNER_TEMP/vale.tar.gz"
-          curl -fsSL https://github.com/errata-ai/vale/releases/download/v3.25.1/vale_3.25.1_checksums.txt -o "$RUNNER_TEMP/vale-checksums.txt"
-          grep 'vale_3.25.1_Linux_64-bit.tar.gz$' "$RUNNER_TEMP/vale-checksums.txt" > "$RUNNER_TEMP/vale.sha256"
-          (cd "$RUNNER_TEMP" && sha256sum -c vale.sha256)
-          tar -xzf "$RUNNER_TEMP/vale.tar.gz" -C "$RUNNER_TEMP"
+          curl --fail --show-error --silent --location --proto '=https' --proto-redir '=https' --tlsv1.2 https://github.com/vale-cli/vale/releases/download/v3.25.1/vale_3.25.1_Linux_64-bit.tar.gz -o "$RUNNER_TEMP/vale_3.25.1_Linux_64-bit.tar.gz"
+          printf '%s  %s\n' '4bf5c5176b682b1da0830f471584d3494f1c2e27ee3029e1ad6f6661d4962182' "$RUNNER_TEMP/vale_3.25.1_Linux_64-bit.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/vale_3.25.1_Linux_64-bit.tar.gz" -C "$RUNNER_TEMP"
+          chmod +x "$RUNNER_TEMP/vale"
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu/lychee" --version
+          "$RUNNER_TEMP/vale" --version
       - name: Install pinned VHS and ttyd capture tools
         run: |
           source tools/docs/versions.env
-          GOBIN="$RUNNER_TEMP" go install "github.com/charmbracelet/vhs@v${VHS_VERSION}"
-          curl -fsSL "https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64" -o "$RUNNER_TEMP/ttyd"
-          curl -fsSL "https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/SHA256SUMS" -o "$RUNNER_TEMP/ttyd-checksums.txt"
-          grep 'ttyd.x86_64$' "$RUNNER_TEMP/ttyd-checksums.txt" > "$RUNNER_TEMP/ttyd.sha256"
-          (cd "$RUNNER_TEMP" && sha256sum -c ttyd.sha256)
+          curl --fail --show-error --silent --location --proto '=https' --proto-redir '=https' --tlsv1.2 "https://github.com/charmbracelet/vhs/releases/download/v${VHS_VERSION}/vhs_${VHS_VERSION}_Linux_x86_64.tar.gz" -o "$RUNNER_TEMP/vhs_${VHS_VERSION}_Linux_x86_64.tar.gz"
+          printf '%s  %s\n' "$VHS_SHA256" "$RUNNER_TEMP/vhs_${VHS_VERSION}_Linux_x86_64.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/vhs_${VHS_VERSION}_Linux_x86_64.tar.gz" -C "$RUNNER_TEMP"
+          vhs_dir="$RUNNER_TEMP/vhs_${VHS_VERSION}_Linux_x86_64"
+          curl --fail --show-error --silent --location --proto '=https' --proto-redir '=https' --tlsv1.2 "https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64" -o "$RUNNER_TEMP/ttyd"
+          printf '%s  %s\n' "$TTYD_SHA256" "$RUNNER_TEMP/ttyd" | sha256sum -c -
           chmod +x "$RUNNER_TEMP/ttyd"
+          chmod +x "$vhs_dir/vhs"
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          echo "$vhs_dir" >> "$GITHUB_PATH"
+          "$vhs_dir/vhs" --version
+          "$RUNNER_TEMP/ttyd" --version
       - name: Capture synthetic CLI terminal demo
         run: make docs-capture
       - name: Run docs-required generation, audit, quality, and behavior gates
