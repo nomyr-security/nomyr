@@ -18,6 +18,14 @@
 - [ ] `make build`
 - [ ] `git diff --check`
 
+## Docs impact
+
+<!-- Describe changed documentation, generated references, or write "None". -->
+
+## Release note
+
+<!-- User-visible change for release notes, or write "None". -->
+
 ## Visual evidence
 
 <!-- Add before/after screenshots for UI changes at relevant desktop and mobile widths. Remove this section when it does not apply. -->

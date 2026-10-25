@@ -1,0 +1,5 @@
+exclude = ["127.0.0.1", "localhost"]
+no_progress = true
+max_concurrency = 4
+timeout = 20
+accept = ["200..=299"]

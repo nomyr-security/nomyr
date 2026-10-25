@@ -2,7 +2,7 @@ export GOCACHE ?= $(CURDIR)/.cache/go-build
 export GOMODCACHE ?= $(CURDIR)/.cache/go-mod
 export GOPATH ?= $(CURDIR)/.cache/go-path
 
-.PHONY: bootstrap check-dev build web-install web-build test test-fast test-bootstrap quality test-race lint vuln contracts-lint fuzz fmt clean dev dev-stack-up dev-stack-down dev-stack-reset dev-smoke dev-stack-config dev-stack-test
+.PHONY: bootstrap check-dev build web-install web-build test test-fast test-bootstrap quality test-race lint vuln contracts-lint fuzz fmt clean dev dev-stack-up dev-stack-down dev-stack-reset dev-smoke dev-stack-config dev-stack-test docs-install docs-gen docs-check docs-build docs-test docs-quickstart docs-capture docs-lint docs-audit docs-required
 
 bootstrap:
 	tools/bootstrap/bootstrap
@@ -40,6 +40,37 @@ dev-stack-config:
 
 dev-stack-test:
 	sh tools/dev/stack_test.sh
+
+docs-install:
+	cd docs-site && npm ci --ignore-scripts
+	cd web && npm ci --ignore-scripts
+
+docs-gen:
+	go run ./tools/docgen
+
+docs-check:
+	go test ./tools/docgen
+	go run ./tools/docgen --check
+
+docs-build: docs-gen
+	cd docs-site && npm run build
+
+docs-test: docs-build web-build
+	sh tools/docs/browser-test.sh
+
+docs-quickstart:
+	sh tools/docs/quickstart-test.sh
+
+docs-capture:
+	sh tools/docs/capture.sh
+
+docs-lint:
+	cd docs-site && npm run lint
+
+docs-audit:
+	cd docs-site && npm audit --audit-level=moderate
+
+docs-required: docs-check docs-build docs-lint docs-audit docs-quickstart docs-test
 
 web-build:
 	cd web && npm run build

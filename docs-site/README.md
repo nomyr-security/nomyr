@@ -1,0 +1,9 @@
+# Documentation site
+
+This Docusaurus site is a static build with local search. It uses the repository's exact Node.js pin (`22.23.4`). Install the lockfile with `npm ci --ignore-scripts`; build with `npm run build`. To create a release snapshot, run `npm run version:cut -- 0.1.0` after reviewing the current docs.
+
+`make docs-required` runs generated-reference drift tests, the site build, docs lint and links, a full lockfile audit at the `moderate` threshold, a telemetry-disabled CLI quickstart, and Playwright checks for the synthetic demo and built documentation's offline local search. The browser suite starts its own loopback servers and never reuses existing processes. `make docs-capture` creates the VHS terminal capture with telemetry disabled. CI pins Ubuntu 24.04 and FFmpeg 7:6.1.1-3ubuntu5; VHS and ttyd versions and SHA-256 digests are pinned in `tools/docs/versions.env`. Vale and lychee binaries are version-pinned and checked against release SHA-256 digests before use. Audit findings remain in the command output. The initial lockfile audit reports four low-severity KaTeX findings in the Markdown-lint tool dependency chain; no advisory is suppressed. Moderate, high, and critical findings fail the check.
+
+The demo screenshot suite captures the current default theme and an explicitly injected light-palette fixture for visual experimentation. The fixture is not a product-supported light theme, and no light-mode product capability is claimed.
+
+The generator reads only the exact file allowlist in `tools/docgen/main.go`. Do not add globs or copy the private planning/specification directories, ignored ADR sources, OpenWiki, or telemetry deployment material into the site. Pull requests retain the static site build and synthetic screenshots as workflow artifacts. This repository change does not configure public Pages hosting or a live preview service.

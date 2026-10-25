@@ -1,0 +1,7 @@
+extends: existence
+message: "Use '%s' only when supported by implementation and test evidence."
+level: error
+scope: text
+ignorecase: false
+tokens:
+  - "(?i)Nomyr (is|provides|offers) (fully implemented|production ready|certified|the complete product)"
