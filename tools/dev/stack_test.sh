@@ -82,10 +82,18 @@ if grep -q 'minio\|MINIO' "$repo_root/deploy/compose/compose.yaml" "$repo_root/t
 	echo "archived MinIO service unexpectedly remains in the dev stack" >&2
 	exit 1
 fi
-if grep -E '^    image:' "$repo_root/deploy/compose/compose.yaml" | grep -vE '(@sha256:[0-9a-f]{64}|nomyr-dev/(temporal|openbao|keycloak):scan)$'; then
-	echo "development images must be pinned by registry digest" >&2
+if grep -E '^    image:' "$repo_root/deploy/compose/compose.yaml" | grep -vE '(@sha256:[0-9a-f]{64}|nomyr-dev/(temporal|openbao|keycloak|postgres):scan)$'; then
+	echo "development images must be digest-pinned upstream or built from a reviewed local recipe" >&2
 	exit 1
 fi
+postgres_config=$(sed -n '/^  postgres:/,/^  clickhouse:/p' "$repo_root/deploy/compose/compose.yaml")
+printf '%s\n' "$postgres_config" | grep -Fq 'image: nomyr-dev/postgres:scan'
+printf '%s\n' "$postgres_config" | grep -Fq 'context: ./images/postgres'
+printf '%s\n' "$postgres_config" | grep -Fq 'dockerfile: Dockerfile'
+grep -Fq 'postgres:18.6-alpine3.24@sha256:898c60cb390d1085bc97bdd6a1ae968757421df394b071848b52b1c09c89d6a5' "$repo_root/deploy/compose/images/postgres/Dockerfile"
+grep -Fq 'brotli-libs=1.2.1-r0' "$repo_root/deploy/compose/images/postgres/Dockerfile"
+grep -Fq 'brotli-libs-1.2.1-r0' "$repo_root/deploy/compose/images/postgres/Dockerfile"
+grep -Fq 'apk list --installed -q brotli-libs' "$repo_root/deploy/compose/images/postgres/Dockerfile"
 grep -A4 '^  temporal:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/temporal/Dockerfile'
 grep -q -- '--db-filename' "$repo_root/deploy/compose/compose.yaml"
 grep -q 'temporal-data:/home/temporal/data' "$repo_root/deploy/compose/compose.yaml"
@@ -106,6 +114,11 @@ if grep -Eq 'chown -R .* /opt/keycloak(/lib)?([[:space:]]|$)' "$repo_root/deploy
 fi
 grep -A4 '^  openbao:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/openbao/Dockerfile'
 grep -A4 '^  keycloak:' "$repo_root/deploy/compose/compose.yaml" | grep -q 'dockerfile: deploy/compose/images/keycloak/Dockerfile'
+grep -Fq 'for service in temporal openbao keycloak postgres; do' "$repo_root/.github/workflows/dev-compose.yml"
+grep -Fq 'context=deploy/compose/images/postgres' "$repo_root/.github/workflows/dev-compose.yml"
+grep -Fq 'github.com/labstack/echo/v4 v4.16.1 // indirect' "$repo_root/deploy/compose/images/temporal/dependencies.patch"
+grep -Fq 'github.com/labstack/echo/v4 v4.16.1 h1:h05NuF1GvNu6jSAZxOv++AdjD/NJK+mZdGy0thiiuns=' "$repo_root/deploy/compose/images/temporal/dependencies.patch"
+grep -Fq 'github.com/labstack/echo/v4 v4.16.1/go.mod h1:V/EQaTVHYJH92QhbQe7kFQ4mjgcjxLQQUQtAN87zZdw=' "$repo_root/deploy/compose/images/temporal/dependencies.patch"
 grep -Fq '${NOMYR_DEV_OPENBAO_TOKEN:?run make dev-stack-up}' "$repo_root/deploy/compose/compose.yaml"
 clickhouse_config=$(sed -n '/^  clickhouse:/,/^  temporal:/p' "$repo_root/deploy/compose/compose.yaml")
 clickhouse_healthcheck=$(printf '%s\n' "$clickhouse_config" | sed -n '/^    healthcheck:/,$p')
@@ -157,7 +170,7 @@ grep -q 'nomyr-devcontainer:scan' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'go build -mod=readonly.*golang.org/x/vuln/cmd/govulncheck' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q '^tool golang.org/x/vuln/cmd/govulncheck$' "$repo_root/tools/security/govulncheck/go.mod"
 test -s "$repo_root/tools/security/govulncheck/go.sum"
-grep -q 'for service in temporal openbao keycloak; do' "$repo_root/.github/workflows/dev-compose.yml"
+grep -q 'for service in temporal openbao keycloak postgres; do' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'docker compose.*build --pull --no-cache "\$service"' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'compose-build-errors.txt' "$repo_root/.github/workflows/dev-compose.yml"
 grep -q 'docker image inspect "\$image"' "$repo_root/.github/workflows/dev-compose.yml"
