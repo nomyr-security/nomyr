@@ -29,9 +29,9 @@ or distributed in a product artifact.
 | Embedded OPA signed bundle | `cd tools/spikes && go test ./opa` | Embedded evaluation; an ephemeral RSA private key signs, while verification receives only its public key. The reader accepts a trusted signature and rejects tampering and a different public key. | No policy lifecycle, key rotation, authorization integration, or server status-path test. |
 | pgx bitemporal SQL | Set `NOMYR_SPIKE_POSTGRES_URL` to a disposable local PostgreSQL database and run `go test ./pgx`. | When run, checks valid-time inclusive/exclusive boundaries and record-time cutoff using actual SQL. | Not run unless the environment variable is present; no retention, correction, tenant isolation, throughput, or production schema review. |
 | AWS, Entra, Kubernetes enumeration | Contract inspection: `proto/nhi/connector/v1/connector.proto`. | Contract currently contains only `ConnectorService.Describe`; no enumeration request, response, pagination, identity model, or sanitized fixture schema exists. | Blocked pending a contract change and owner-approved provider fixture boundaries. No provider APIs or accounts were accessed. |
-| PostgreSQL / NATS platform behavior | `tools/spikes` workflow starts digest-pinned PostgreSQL 18.6 published only on `127.0.0.1`; the test starts pinned NATS server `v2.14.7` in-process on loopback with an ephemeral port and temporary JetStream store. | Local embedded NATS publish/ack/read runs in the spike test. PostgreSQL requires a disposable service; hosted run `40187790385` failed at the incorrect root-level `npm ci` step before database execution. Corrected hosted run is pending. |
+| PostgreSQL / NATS platform behavior | `tools/spikes` workflow starts digest-pinned PostgreSQL 18.6 published only on `127.0.0.1`; the test starts pinned NATS server `v2.14.7` in-process on loopback with an ephemeral port and temporary JetStream store. | Hosted PR run [40188374485](https://github.com/nomyr-security/nomyr/actions/runs/40188374485) succeeded at code SHA `ee8dc3d5417deef563bd8eea324b9f068b932cef`: actual pgx interval-boundary SQL passed against the disposable service; embedded NATS publish/ack/read passed; nested module compiler, audit, and test jobs passed. Run `40187790385` was the earlier root-level npm failure and is superseded. |
 | Embedded PostgreSQL OS/architecture matrix | No executable selected distribution. | Not run. No EOL database binary was downloaded or executed. | Maintained distribution, provenance, supported OS/architecture, offline path, and all six native runs remain unknown. |
-| Static identity route and Go embedding | `go test -count=1 -v ./staticui` after `make build`; launches the built binary on loopback with a temporary telemetry-disabled config. | Static export and all Go binaries built. `/identities/demo-service-account/?as_of=...` returned HTTP 200 and the expected static route content from embedded assets. No dynamic retrieval or authorization. | One generated static identity path only; no arbitrary identity routing. Hosted build-and-route run is pending. |
+| Static identity route and Go embedding | `go test -count=1 -v ./staticui` after `make build`; launches the built binary on loopback with a temporary telemetry-disabled config. | Local and hosted (`40188374485`) build-and-route tests passed. `/identities/demo-service-account/?as_of=...` returned HTTP 200 and the expected static route content from embedded assets. No dynamic retrieval or authorization. | One generated static identity path only; no arbitrary identity routing. |
 | Demo cold start | `go test -count=1 -v ./staticui` after `make build`. | One local process-start-to-first-HTTP-200 sample was **15.0 ms** on macOS arm64 (Go 1.26.10). | Single sample, not a benchmark or budget; standard CI runner, repeated sampling method, and target remain unspecified. |
 
 ## Validation record
@@ -41,17 +41,16 @@ Observed on 2026-10-25 with Go 1.26.10 on darwin/arm64:
 - `make web-install` — passed; npm reported 0 vulnerabilities in 354 audited packages.
 - `make build` — passed; Next.js exported `/identities/demo-service-account/` and all five Go binaries built.
 - `make test` — passed, including root Go tests, web tests/typecheck/lint, race tests, root lint/vulnerability checks, and Buf lint. Root tests do not include the nested spike module; it was tested and audited separately below.
-- `(cd tools/spikes && go test -count=1 -v ./...)` — passed with Go 1.26.10; embedded NATS, asymmetric OPA, Temporal, and static-route tests passed; the PostgreSQL test skipped because no local disposable URL was configured.
-- `(cd tools/spikes && go vet ./... && go mod verify && govulncheck -test ./...)` — passed with Go 1.26.10; all modules verified and the test-inclusive vulnerability scan reported no vulnerabilities. The earlier `govulncheck ./...` invocation did not include test-only imports and is not evidence for those imports.
+- `(cd tools/spikes && go test -count=1 -v ./...)` — passed locally with Go 1.26.10; embedded NATS, asymmetric OPA, Temporal, and static-route tests passed; PostgreSQL skipped locally because no disposable URL was configured. Hosted run `40188374485` then passed PostgreSQL boundary subtests against its disposable service.
+- `(cd tools/spikes && go vet ./... && go mod verify && govulncheck -test ./...)` — passed locally with Go 1.26.10; hosted run `40188374485` also verified modules and reported no vulnerabilities with test imports included. The earlier `govulncheck ./...` invocation did not include test-only imports and is not evidence for those imports.
 - Static route request — passed through the built Go binary on loopback; the latest single cold-start-to-health response measured at 15.0 ms.
 - `git diff --check` — passed.
-- Docker daemon was unavailable locally; no PostgreSQL result is claimed. Hosted run `40187790385` failed at the incorrect root-level `npm ci` step before reaching spike execution. The corrected hosted workflow has not yet run.
+- Docker daemon was unavailable locally; no local PostgreSQL result is claimed. The initial hosted run `40187790385` failed at root-level `npm ci`; corrected PR-head run `40188374485` at SHA `ee8dc3d5417deef563bd8eea324b9f068b932cef` passed the build, disposable PostgreSQL, nested compiler/vulnerability audit, and all spike tests.
 - Connector enumeration, embedded PostgreSQL platform tests, and the six-platform native matrix remain unrun and unresolved.
 
-Workflow configuration is not itself evidence that a hosted run completed successfully. The initial
-failed workflow run is not PostgreSQL, build, or spike execution evidence. Skipped service tests and
-unavailable platforms remain labeled as such. Main-branch execution evidence cannot exist before
-integration; the workflow is configured for future pushes to `main`.
+Hosted PR run `40188374485` is evidence for that PR head only, not for an integrated `main` commit.
+The workflow now also runs on pushes to `main`; main-branch evidence remains pending integration.
+Skipped local PostgreSQL tests and unsupported/unavailable platforms remain labeled as such.
 
 ## Decision status
 

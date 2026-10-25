@@ -22,7 +22,8 @@ reproducible evidence and the decision owner records a disposition.
 
 The repository source has a static `/identities/demo-service-account/` export route and a dynamic
 `as_of` query display. The demo server provides static fallback behavior, not arbitrary identity
-retrieval. The assigned spike report records build and cold-start evidence when measured. No
+retrieval. Local and hosted Phase 0 smoke tests build and exercise this one embedded route; the
+assigned spike report records the build and cold-start measurement. No
 embedded PostgreSQL distribution has been selected or run across the requested platform matrix;
 cross-compilation is not treated as runtime evidence. The isolated NATS spike exercises the actual
 NATS server library in-process with JetStream enabled; it does not establish production persistence,
