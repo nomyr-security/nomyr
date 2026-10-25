@@ -42,6 +42,10 @@ func TestCanaryScannerSanitizesSourceErrors(t *testing.T) {
 	if err == nil || strings.Contains(err.Error(), string(canary)) {
 		t.Fatal("source failure did not return a sanitized diagnostic")
 	}
+	_, err = ScanSources(canary, []Source{{Kind: SourceLog, Open: func() (io.ReadCloser, error) { return nil, nil }}})
+	if err == nil || strings.Contains(err.Error(), string(canary)) {
+		t.Fatal("nil reader did not return a sanitized diagnostic")
+	}
 	_, err = ScanSources(canary, []Source{{Kind: SourceKind(string(canary))}})
 	if err == nil || strings.Contains(err.Error(), string(canary)) {
 		t.Fatal("untrusted source metadata appeared in diagnostic")

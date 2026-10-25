@@ -51,7 +51,7 @@ func ScanSources(canary []byte, sources []Source) ([]CanaryFinding, error) {
 			return nil, fmt.Errorf("source cannot be opened")
 		}
 		reader, err := source.Open()
-		if err != nil {
+		if err != nil || reader == nil {
 			return nil, fmt.Errorf("source cannot be opened")
 		}
 		count, readErr := countCanary(reader, canary)
