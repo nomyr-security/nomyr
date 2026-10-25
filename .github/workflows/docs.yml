@@ -1,0 +1,63 @@
+name: docs-required
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docs-required:
+    name: docs-required
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+      - name: Install documentation dependencies
+        run: |
+          make docs-install
+          cd docs-site
+          npx playwright install --with-deps chromium
+      - name: Install pinned quality tools
+        run: |
+          go install github.com/vale-cli/vale/v3/cmd/vale@v3.25.1
+          curl -fsSL https://github.com/lycheeverse/lychee/releases/download/lychee-v0.24.2/lychee-x86_64-unknown-linux-gnu.tar.gz -o "$RUNNER_TEMP/lychee.tar.gz"
+          curl -fsSL https://github.com/lycheeverse/lychee/releases/download/lychee-v0.24.2/lychee-x86_64-unknown-linux-gnu.tar.gz.sha256 -o "$RUNNER_TEMP/lychee.sha256"
+          (cd "$RUNNER_TEMP" && sha256sum -c lychee.sha256)
+          tar -xzf "$RUNNER_TEMP/lychee.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu" >> "$GITHUB_PATH"
+          curl -fsSL https://github.com/errata-ai/vale/releases/download/v3.25.1/vale_3.25.1_Linux_64-bit.tar.gz -o "$RUNNER_TEMP/vale.tar.gz"
+          curl -fsSL https://github.com/errata-ai/vale/releases/download/v3.25.1/vale_3.25.1_checksums.txt -o "$RUNNER_TEMP/vale-checksums.txt"
+          grep 'vale_3.25.1_Linux_64-bit.tar.gz$' "$RUNNER_TEMP/vale-checksums.txt" > "$RUNNER_TEMP/vale.sha256"
+          (cd "$RUNNER_TEMP" && sha256sum -c vale.sha256)
+          tar -xzf "$RUNNER_TEMP/vale.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Install pinned VHS and ttyd capture tools
+        run: |
+          source tools/docs/versions.env
+          GOBIN="$RUNNER_TEMP" go install "github.com/charmbracelet/vhs@v${VHS_VERSION}"
+          curl -fsSL "https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/ttyd.x86_64" -o "$RUNNER_TEMP/ttyd"
+          curl -fsSL "https://github.com/tsl0922/ttyd/releases/download/${TTYD_VERSION}/SHA256SUMS" -o "$RUNNER_TEMP/ttyd-checksums.txt"
+          grep 'ttyd.x86_64$' "$RUNNER_TEMP/ttyd-checksums.txt" > "$RUNNER_TEMP/ttyd.sha256"
+          (cd "$RUNNER_TEMP" && sha256sum -c ttyd.sha256)
+          chmod +x "$RUNNER_TEMP/ttyd"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Capture synthetic CLI terminal demo
+        run: make docs-capture
+      - name: Run docs-required generation, audit, quality, and behavior gates
+        run: make docs-required
+        env:
+          CI: "true"
+      - name: Upload synthetic screenshots and browser results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: docs-preview-and-synthetic-screenshots
+          path: |
+            docs-site/build/
+            docs-site/artifacts/
+            docs-site/captures/
+          if-no-files-found: warn
