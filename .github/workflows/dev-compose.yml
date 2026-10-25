@@ -94,7 +94,7 @@ jobs:
           set -o pipefail
           report_dir="$RUNNER_TEMP/nomyr-image-scan"
           build_status=0
-          for service in temporal openbao keycloak; do
+          for service in temporal openbao keycloak postgres; do
             log="$report_dir/$service-compose-build.log"
             docker compose --env-file "$NOMYR_DEV_ENV_FILE" -f deploy/compose/compose.yaml build --pull --no-cache "$service" \
               2>&1 | tee "$log"
@@ -128,12 +128,17 @@ jobs:
           report_dir="$RUNNER_TEMP/nomyr-image-scan/arm64"
           mkdir -p "$report_dir"
           build_status=0
-          for service in temporal openbao keycloak; do
+          for service in temporal openbao keycloak postgres; do
             dockerfile="deploy/compose/images/$service/Dockerfile"
+            context=.
+            if [ "$service" = postgres ]; then
+              dockerfile=Dockerfile
+              context=deploy/compose/images/postgres
+            fi
             archive="$report_dir/$service.oci.tar"
             docker buildx build --platform linux/arm64 --pull --no-cache \
               --file "$dockerfile" --tag "nomyr-dev/$service:scan-arm64" \
-              --output "type=oci,dest=$archive" . \
+              --output "type=oci,dest=$archive" "$context" \
               > "$report_dir/$service-build.log" 2>&1
             result=$?
             if [ "$result" -ne 0 ]; then
@@ -225,7 +230,7 @@ jobs:
             [ -n "$image" ] || continue
             scan_one "$image" "$scheme" high
           done < "$image_list"
-          for service in temporal openbao keycloak; do
+          for service in temporal openbao keycloak postgres; do
             arm64_archive="$report_dir/arm64/$service.oci.tar"
             if [ -s "$arm64_archive" ]; then
               scan_one "$arm64_archive" oci-archive high
