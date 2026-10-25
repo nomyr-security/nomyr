@@ -22,11 +22,13 @@ module under `tools/spikes`; it is not a runtime dependency or a product capabil
 
 The isolated evidence and its reproducible commands are maintained in
 [`../spikes/phase-0-architecture.md`](../spikes/phase-0-architecture.md). Temporal's official Go
-SDK test environment and embedded OPA bundle verification APIs have passing local tests. A `pgx`
-PostgreSQL SQL test is authored but was skipped locally because no service was available. NATS
-runtime testing requires a local service; the connector protobuf does not define enumeration;
-cloud-provider execution was not attempted. These results do not establish provider support,
-production availability, or the complete suitability of Go.
+SDK test environment, embedded OPA bundle verification with an ephemeral RSA signer and public-key
+only verification, and in-process NATS JetStream tests have local test coverage. A `pgx` PostgreSQL
+SQL test is authored but requires a disposable database; the hosted workflow provisions one on
+loopback. The connector protobuf does not define enumeration; cloud-provider execution was not
+attempted. These results do not establish provider support, production availability, or the complete
+suitability of Go. See the spike report for exact workflow outcomes and the test-inclusive
+vulnerability scan.
 
 ## Consequences
 

@@ -3,8 +3,9 @@ package opa
 import (
 	"bytes"
 	"crypto/rand"
-	"encoding/base64"
-	"strings"
+	"crypto/rsa"
+	"crypto/x509"
+	"encoding/pem"
 	"testing"
 
 	"github.com/open-policy-agent/opa/ast"
@@ -25,10 +26,12 @@ func TestEmbeddedOPAAndSignedBundleVerification(t *testing.T) {
 		t.Fatalf("OPA evaluation result=%v error=%v", result, err)
 	}
 
-	key := make([]byte, 32)
-	if _, err := rand.Read(key); err != nil {
+	signer, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
 		t.Fatal(err)
 	}
+	privateKey := pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: mustMarshalPKCS8(t, signer)})
+	publicKey := pem.EncodeToMemory(&pem.Block{Type: "PUBLIC KEY", Bytes: mustMarshalPublicKey(t, &signer.PublicKey)})
 	module := "package spike\nimport rego.v1\nallow if input.enabled\n"
 	parsed, err := ast.ParseModule("spike.rego", module)
 	if err != nil {
@@ -39,26 +42,30 @@ func TestEmbeddedOPAAndSignedBundleVerification(t *testing.T) {
 		Data:     map[string]any{},
 		Modules:  []bundle.ModuleFile{{URL: "spike.rego", Path: "spike.rego", Raw: []byte(module), Parsed: parsed}},
 	}
-	keyText := base64.RawStdEncoding.EncodeToString(key)
-	if err := policyBundle.GenerateSignature(bundle.NewSigningConfig(keyText, "HS256", ""), "spike-key", false); err != nil {
+	if err := policyBundle.GenerateSignature(bundle.NewSigningConfig(string(privateKey), "RS256", ""), "spike-key", false); err != nil {
 		t.Fatal(err)
 	}
 	var archive bytes.Buffer
 	if err := bundle.NewWriter(&archive).Write(policyBundle); err != nil {
 		t.Fatal(err)
 	}
-	verify := func(data []byte, verificationKey string) error {
+	verify := func(data []byte, verificationKey []byte) error {
 		configuration := bundle.NewVerificationConfig(
-			map[string]*bundle.KeyConfig{"spike-key": {Key: verificationKey, Algorithm: "HS256"}},
+			map[string]*bundle.KeyConfig{"spike-key": {Key: string(verificationKey), Algorithm: "RS256"}},
 			"spike-key", "", nil,
 		)
 		_, err := bundle.NewReader(bytes.NewReader(data)).WithBundleVerificationConfig(configuration).Read()
 		return err
 	}
-	if err := verify(archive.Bytes(), keyText); err != nil {
+	if err := verify(archive.Bytes(), publicKey); err != nil {
 		t.Fatalf("trusted signed bundle rejected: %v", err)
 	}
-	if err := verify(archive.Bytes(), strings.Repeat("untrusted-key", 4)); err == nil {
+	untrustedSigner, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		t.Fatal(err)
+	}
+	untrustedPublicKey := pem.EncodeToMemory(&pem.Block{Type: "PUBLIC KEY", Bytes: mustMarshalPublicKey(t, &untrustedSigner.PublicKey)})
+	if err := verify(archive.Bytes(), untrustedPublicKey); err == nil {
 		t.Fatal("bundle signed by an untrusted key was accepted")
 	}
 
@@ -74,7 +81,25 @@ func TestEmbeddedOPAAndSignedBundleVerification(t *testing.T) {
 	if err := bundle.NewWriter(&tampered).Write(tamperedBundle); err != nil {
 		t.Fatal(err)
 	}
-	if err := verify(tampered.Bytes(), keyText); err == nil {
+	if err := verify(tampered.Bytes(), publicKey); err == nil {
 		t.Fatal("tampered bundle was accepted")
 	}
+}
+
+func mustMarshalPKCS8(t *testing.T, key *rsa.PrivateKey) []byte {
+	t.Helper()
+	encoded, err := x509.MarshalPKCS8PrivateKey(key)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return encoded
+}
+
+func mustMarshalPublicKey(t *testing.T, key *rsa.PublicKey) []byte {
+	t.Helper()
+	encoded, err := x509.MarshalPKIXPublicKey(key)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return encoded
 }

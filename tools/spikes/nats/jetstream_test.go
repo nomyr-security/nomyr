@@ -2,19 +2,36 @@ package nats
 
 import (
 	"fmt"
-	"os"
 	"testing"
 	"time"
 
+	"github.com/nats-io/nats-server/v2/server"
 	"github.com/nats-io/nats.go"
 )
 
 func TestJetStreamPublishAckAndRead(t *testing.T) {
-	serverURL := os.Getenv("NOMYR_SPIKE_NATS_URL")
-	if serverURL == "" {
-		t.Skip("NOMYR_SPIKE_NATS_URL is not set; NATS behavior not exercised")
+	options := &server.Options{
+		Host:      "127.0.0.1",
+		Port:      -1,
+		JetStream: true,
+		StoreDir:  t.TempDir(),
+		NoLog:     true,
+		NoSigs:    true,
 	}
-	connection, err := nats.Connect(serverURL, nats.Timeout(3*time.Second))
+	natsServer, err := server.NewServer(options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	go natsServer.Start()
+	if !natsServer.ReadyForConnections(10 * time.Second) {
+		natsServer.Shutdown()
+		t.Fatalf("embedded NATS server did not become ready")
+	}
+	t.Cleanup(func() {
+		natsServer.Shutdown()
+		natsServer.WaitForShutdown()
+	})
+	connection, err := nats.Connect("nats://"+natsServer.Addr().String(), nats.Timeout(3*time.Second))
 	if err != nil {
 		t.Fatalf("connect to explicit local NATS service: %v", err)
 	}

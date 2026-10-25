@@ -24,8 +24,9 @@ The repository source has a static `/identities/demo-service-account/` export ro
 `as_of` query display. The demo server provides static fallback behavior, not arbitrary identity
 retrieval. The assigned spike report records build and cold-start evidence when measured. No
 embedded PostgreSQL distribution has been selected or run across the requested platform matrix;
-cross-compilation is not treated as runtime evidence. The existing NATS recipe is a containerized
-development service, not an embedded NATS server.
+cross-compilation is not treated as runtime evidence. The isolated NATS spike exercises the actual
+NATS server library in-process with JetStream enabled; it does not establish production persistence,
+availability, or platform behavior.
 
 ## Consequences
 
