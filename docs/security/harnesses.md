@@ -15,7 +15,8 @@ and sorts declared paths and methods. Its reviewed Phase 0 inventory contains
 exactly `GET /healthz` (`getHealth`, implemented and public) and
 `GET /capabilities` (`listCapabilities`, known unimplemented and authenticated
 by contract). It checks the operation ID and effective OpenAPI security against
-that inventory. Any new operation, changed ID or security, or missing reviewed
+that inventory, including tenant-scope declarations. Any new operation, changed
+ID, security or tenant scope, invalid scope declaration, or missing reviewed
 operation is `not_verified`; `verify` fails with a fixed diagnostic and emits no
 report until inventory review is updated.
 

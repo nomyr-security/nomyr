@@ -85,6 +85,8 @@ func EnumerateOperations(document *openapi3.T) (OperationReport, error) {
 			key := method + " " + path
 			entry, reviewed := phaseZeroInventory[key]
 			access := effectiveAccess(document, operation)
+			scopeMarker, hasScopeMarker := operation.Extensions["x-nomyr-tenant-scoped"]
+			_, validScopeMarker := scopeMarker.(bool)
 			record := Operation{
 				Method:          method,
 				Path:            path,
@@ -96,7 +98,7 @@ func EnumerateOperations(document *openapi3.T) (OperationReport, error) {
 				TenantScoped:    isTenantScoped(path, operation.Extensions),
 				TenantIsolation: "not_verified",
 			}
-			if reviewed && entry.operationID == id && entry.access == access {
+			if reviewed && entry.operationID == id && entry.access == access && entry.tenantScoped == record.TenantScoped && (!hasScopeMarker || validScopeMarker) {
 				record.Review = "reviewed"
 				record.Implementation = entry.implementation
 				record.Access = entry.access

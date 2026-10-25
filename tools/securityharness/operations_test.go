@@ -148,3 +148,43 @@ paths:
 		t.Fatal("security drift passed the reviewed inventory policy")
 	}
 }
+
+func TestPhase0InventoryTenantScopeDriftIsNotVerified(t *testing.T) {
+	for _, testCase := range []struct {
+		name   string
+		path   string
+		marker any
+	}{
+		{name: "health becomes tenant scoped", path: "/healthz", marker: true},
+		{name: "capabilities becomes tenant scoped", path: "/capabilities", marker: true},
+		{name: "invalid tenant scope declaration", path: "/healthz", marker: "true"},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			data, err := os.ReadFile("../../api/openapi/v1.yaml")
+			if err != nil {
+				t.Fatal("could not read OpenAPI contract")
+			}
+			document, err := LoadOpenAPI(data)
+			if err != nil {
+				t.Fatal("could not load OpenAPI contract")
+			}
+			operation := document.Paths.Value(testCase.path).Get
+			if operation.Extensions == nil {
+				operation.Extensions = make(map[string]any)
+			}
+			operation.Extensions["x-nomyr-tenant-scoped"] = testCase.marker
+			report, err := EnumerateOperations(document)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, record := range report.Operations {
+				if record.Path == testCase.path && (record.Review != "not_verified" || record.TenantIsolation != "not_verified") {
+					t.Fatal("tenant scope drift retained reviewed or not-applicable status")
+				}
+			}
+			if err := ValidatePhase0Inventory(report); err == nil {
+				t.Fatal("tenant scope drift passed the inventory policy")
+			}
+		})
+	}
+}
