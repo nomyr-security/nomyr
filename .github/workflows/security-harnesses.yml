@@ -1,0 +1,44 @@
+name: Security harnesses
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-harnesses-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  harnesses:
+    name: Canary and tenant isolation harnesses
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.10"
+          cache: false
+      - name: Prepare isolated telemetry-disabled configuration
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/nomyr-config"
+          printf '%s\n' '{"enabled":false}' > "$RUNNER_TEMP/nomyr-config/telemetry.json"
+          chmod 700 "$RUNNER_TEMP/nomyr-config"
+          chmod 600 "$RUNNER_TEMP/nomyr-config/telemetry.json"
+      - name: Test harness enumeration and negative fixtures
+        env:
+          NOMYR_CONFIG_HOME: ${{ runner.temp }}/nomyr-config
+        run: go test ./tools/securityharness/...
+      - name: Run synthetic canary and foreign-tenant assertions
+        env:
+          NOMYR_CONFIG_HOME: ${{ runner.temp }}/nomyr-config
+        run: go run ./tools/securityharness/cmd verify
